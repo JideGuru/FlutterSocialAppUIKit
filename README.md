@@ -6,7 +6,8 @@ Star⭐ the repo if you like what you see😉.
 
 
 Images are from [Unsplash](https://unsplash.com)
-[![Download APP](https://playerzon.com/asset/download.png)](https://api.codemagic.io/artifacts/fa6fe6f1-bc3f-4cba-990f-d4f3e273db7d/883603b1-d0cb-47b1-936f-a4d272c9284e/app-debug.apk)
+<a href="ss/app.apk"><img src="https://playerzon.com/asset/download.png" width="200"></img></a>
+
 ## 📸 ScreenShots
 
 <img src="ss/1.png"/>
