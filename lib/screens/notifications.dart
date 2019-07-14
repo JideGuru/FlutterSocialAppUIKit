@@ -52,7 +52,6 @@ class _NotificationsState extends State<Notifications> {
 
               contentPadding: EdgeInsets.all(0),
               title: Text(notif['notif']),
-//            subtitle: Text(notif['notif']),
               trailing: Text(
                 notif['time'],
                 style: TextStyle(

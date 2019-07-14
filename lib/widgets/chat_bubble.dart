@@ -38,7 +38,6 @@ class _ChatBubbleState extends State<ChatBubble> {
   Widget build(BuildContext context) {
     final bg = widget.isMe ?Theme.of(context).accentColor : Colors.grey[200];
     final align = widget.isMe ? CrossAxisAlignment.end: CrossAxisAlignment.start;
-//    final icon = widget.delivered ? Icons.done_all : Icons.done;
     final radius = widget.isMe
         ? BorderRadius.only(
       topLeft: Radius.circular(5.0),
@@ -54,17 +53,9 @@ class _ChatBubbleState extends State<ChatBubble> {
       crossAxisAlignment: align,
       children: <Widget>[
         Container(
-//          width: MediaQuery.of(context).size.width/2,
           margin: const EdgeInsets.all(3.0),
           padding: const EdgeInsets.all(5.0),
           decoration: BoxDecoration(
-//            boxShadow: [
-//              BoxShadow(
-//                blurRadius: .5,
-//                spreadRadius: 1.0,
-//                color: Colors.black.withOpacity(.12),
-//              ),
-//            ],
             color: bg,
             borderRadius: radius,
           ),

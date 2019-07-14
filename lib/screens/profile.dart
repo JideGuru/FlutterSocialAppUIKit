@@ -73,7 +73,6 @@ class _ProfileState extends State<Profile> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 50),
                 child: Row(
-//                mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Column(
