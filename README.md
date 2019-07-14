@@ -6,6 +6,7 @@ Star⭐ the repo if you like what you see😉.
 
 
 Images are from [Unsplash](https://unsplash.com)
+
 <a href="ss/app.apk"><img src="https://playerzon.com/asset/download.png" width="200"></img></a>
 
 ## 📸 ScreenShots
@@ -13,7 +14,7 @@ Images are from [Unsplash](https://unsplash.com)
 <img src="ss/1.png"/>
 <img src="ss/2.png"/>
 
-| 1 | 2|
+| Light| Dark|
 |------|-------|
 |<img src="ss/3.png" width="400">|<img src="ss/4.png" width="400">|
 |<img src="ss/5.png" width="400">|<img src="ss/6.png" width="400">|
