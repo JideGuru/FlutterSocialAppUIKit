@@ -12,6 +12,13 @@ Images are from [Unsplash](https://unsplash.com)
 [Link to Mockup](https://www.ls.graphics/free/simple-iphone-x-mockups)
 
 
+## ✨ Requirements
+* Any Operating System (ie. MacOS X, Linux, Windows)
+* Any IDE with Flutter SDK installed (ie. IntelliJ, Android Studio, VSCode etc)
+* A little knowledge of Dart and Flutter
+* A brain to think 🤓🤓
+
+
 ## 📸 ScreenShots
 
 <img src="ss/1.png"/>
@@ -26,19 +33,16 @@ Images are from [Unsplash](https://unsplash.com)
 |<img src="ss/11.png" width="400">|<img src="ss/12.png" width="400">|
 |<img src="ss/13.png" width="400">|<img src="ss/14.png" width="400">|
 
+
 ## 🌗 Toggle theme
 To toggle the theme, change the `isDark` variable in `main.dart`.
 
 `true` for dark and `false` for light.
 
-## ✨ Requirements
-* Any Operating System (ie. MacOS X, Linux, Windows)
-* Any IDE with Flutter SDK installed (ie. IntelliJ, Android Studio, VSCode etc)
-* A little knowledge of Dart and Flutter
-* A brain to think 🤓🤓
 
 ## 🤓 Author(s)
 **Olusegun Festus Babajide**
+
 
 ## ☕️  Donate
 
