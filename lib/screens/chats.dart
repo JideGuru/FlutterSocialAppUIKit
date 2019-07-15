@@ -29,7 +29,7 @@ class _ChatsState extends State<Chats> with SingleTickerProviderStateMixin,
           icon: Icon(
             Icons.keyboard_backspace,
           ),
-          onPressed: ()=>Navigator.pop(context),
+          onPressed: (){},
         ),
         title: TextField(
           decoration: InputDecoration.collapsed(
