@@ -26,7 +26,7 @@ Images are from [Unsplash](https://unsplash.com)
 |<img src="ss/11.png" width="400">|<img src="ss/12.png" width="400">|
 |<img src="ss/13.png" width="400">|<img src="ss/14.png" width="400">|
 
-## Toggle theme
+## 🌗 Toggle theme
 To toggle the theme, change the `isDark` variable in `main.dart`.
 
 `true` for dark and `false` for light.
@@ -40,20 +40,14 @@ To toggle the theme, change the `isDark` variable in `main.dart`.
 ## 🤓 Author(s)
 **Olusegun Festus Babajide**
 
+## ☕️  Donate
 
-## Getting Started
+Buy me a cup of Coffee😁
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.io/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.io/docs/cookbook)
-
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.io/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+| Mode | Link/Wallet|
+| ------| ------------|
+| Bitcoin | 3GrziPW6Gz6S5mXo2EsiYpafW8vXVq5Rbv|
 
 
-## LICENCE
+## 🔖 LICENCE
 [WTFPL](http://www.wtfpl.net/about/)
