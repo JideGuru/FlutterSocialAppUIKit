@@ -5,9 +5,7 @@ import 'package:social_app_ui/util/const.dart';
 
 
 void main() async{
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((_) {
-    runApp(MyApp());
-  });
+  runApp(MyApp());
 }
 
 
