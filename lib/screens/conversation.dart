@@ -108,70 +108,63 @@ class _ConversationState extends State<Conversation> {
 
             Align(
               alignment: Alignment.bottomCenter,
-              child: Container(
-//                height: 140,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey[500],
-                      offset: Offset(0.0, 1.5),
-                      blurRadius: 4.0,
-                    ),
-                  ],
-                ),
-                constraints: BoxConstraints(
-                  maxHeight: 190,
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Flexible(
-                      child: ListTile(
-                        leading: IconButton(
-                          icon: Icon(
-                            Icons.add,
-                            color: Theme.of(context).accentColor,
+              child: BottomAppBar(
+                elevation: 4,
+                color: Theme.of(context).primaryColor,
+                child: Container(
+                  constraints: BoxConstraints(
+                    maxHeight: 190,
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Flexible(
+                        child: ListTile(
+                          leading: IconButton(
+                            icon: Icon(
+                              Icons.add,
+                              color: Theme.of(context).accentColor,
+                            ),
+                            onPressed: (){},
                           ),
-                          onPressed: (){},
-                        ),
 
-                        contentPadding: EdgeInsets.all(0),
-                        title: TextField(
-                          style: TextStyle(
-                            fontSize: 15.0,
-                            color: Theme.of(context).textTheme.title.color,
-                          ),
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.all(10.0),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                              borderSide: BorderSide(color: Theme.of(context).primaryColor,),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Theme.of(context).primaryColor,),
-                              borderRadius: BorderRadius.circular(5.0),
-                            ),
-                            hintText: "Write your message...",
-                            hintStyle: TextStyle(
+                          contentPadding: EdgeInsets.all(0),
+                          title: TextField(
+                            style: TextStyle(
                               fontSize: 15.0,
                               color: Theme.of(context).textTheme.title.color,
                             ),
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.all(10.0),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                borderSide: BorderSide(color: Theme.of(context).primaryColor,),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Theme.of(context).primaryColor,),
+                                borderRadius: BorderRadius.circular(5.0),
+                              ),
+                              hintText: "Write your message...",
+                              hintStyle: TextStyle(
+                                fontSize: 15.0,
+                                color: Theme.of(context).textTheme.title.color,
+                              ),
+                            ),
+                            maxLines: null,
                           ),
-                          maxLines: null,
-                        ),
 
 
-                        trailing: IconButton(
-                          icon: Icon(
-                            Icons.mic,
-                            color: Theme.of(context).accentColor,
+                          trailing: IconButton(
+                            icon: Icon(
+                              Icons.mic,
+                              color: Theme.of(context).accentColor,
+                            ),
+                            onPressed: (){},
                           ),
-                          onPressed: (){},
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
