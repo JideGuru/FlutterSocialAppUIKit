@@ -24,13 +24,6 @@ class _ChatsState extends State<Chats> with SingleTickerProviderStateMixin,
     super.build(context);
     return Scaffold(
       appBar: AppBar(
-//        elevation: 4,
-        leading: IconButton(
-          icon: Icon(
-            Icons.keyboard_backspace,
-          ),
-          onPressed: (){},
-        ),
         title: TextField(
           decoration: InputDecoration.collapsed(
             hintText: 'Search',

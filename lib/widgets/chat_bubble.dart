@@ -190,9 +190,10 @@ class _ChatBubbleState extends State<ChatBubble> {
           padding: widget.isMe
               ? EdgeInsets.only(right: 10, bottom: 10.0,)
               :EdgeInsets.only(left: 10, bottom: 10.0,),
-          child: Text(widget.time,
+          child: Text(
+            widget.time,
             style: TextStyle(
-              color: Colors.black,
+              color: Theme.of(context).textTheme.title.color,
               fontSize: 10.0,
             ),
           ),

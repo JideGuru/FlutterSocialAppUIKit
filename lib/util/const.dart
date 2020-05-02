@@ -5,11 +5,11 @@ class Constants{
 
   //Colors for theme
   static Color lightPrimary = Color(0xfffcfcff);
-  static Color darkPrimary = Colors.black;
+  static Color darkPrimary = Color(0xff313131);
   static Color lightAccent = Colors.blue;
-  static Color darkAccent = Colors.blueAccent;
+  static Color darkAccent = Colors.lightBlue;
   static Color lightBG = Color(0xfffcfcff);
-  static Color darkBG = Colors.black;
+  static Color darkBG = Color(0xff313131);
   static Color badgeColor = Colors.red;
 
   static ThemeData lightTheme = ThemeData(
