@@ -11,12 +11,6 @@ class _FriendsState extends State<Friends> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(
-            Icons.keyboard_backspace,
-          ),
-          onPressed: (){},
-        ),
         title: TextField(
           decoration: InputDecoration.collapsed(
             hintText: 'Search',

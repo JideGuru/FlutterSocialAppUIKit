@@ -14,10 +14,21 @@ class Conversation extends StatefulWidget {
 class _ConversationState extends State<Conversation> {
   static Random random = Random();
   String name = names[random.nextInt(10)];
+
+  Color backgroundColor(){
+    if(Theme.of(context).brightness == Brightness.dark){
+      return Colors.grey[700];
+    }else{
+      return Colors.grey[50];
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backgroundColor(),
       appBar: AppBar(
+        elevation: 3,
         leading: IconButton(
           icon: Icon(
             Icons.keyboard_backspace,
@@ -27,7 +38,6 @@ class _ConversationState extends State<Conversation> {
         titleSpacing: 0,
         title: InkWell(
           child: Row(
-
             children: <Widget>[
               Padding(
                 padding: EdgeInsets.only(left: 0.0, right: 10.0),
@@ -42,7 +52,6 @@ class _ConversationState extends State<Conversation> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    SizedBox(height: 15.0),
                     Text(
                       name,
                       style: TextStyle(
@@ -81,7 +90,6 @@ class _ConversationState extends State<Conversation> {
         height: MediaQuery.of(context).size.height,
         child: Column(
           children: <Widget>[
-            SizedBox(height: 10),
             Flexible(
               child: ListView.builder(
                 padding: EdgeInsets.symmetric(horizontal: 10),
@@ -109,66 +117,56 @@ class _ConversationState extends State<Conversation> {
             Align(
               alignment: Alignment.bottomCenter,
               child: BottomAppBar(
-                elevation: 4,
+                elevation: 10,
                 color: Theme.of(context).primaryColor,
                 child: Container(
                   constraints: BoxConstraints(
-                    maxHeight: 190,
+                    maxHeight: 100,
                   ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: <Widget>[
-                      Flexible(
-                        child: ListTile(
-                          leading: IconButton(
-                            icon: Icon(
-                              Icons.add,
-                              color: Theme.of(context).accentColor,
-                            ),
-                            onPressed: (){},
-                          ),
+                      IconButton(
+                        icon: Icon(
+                          Icons.add,
+                          color: Theme.of(context).accentColor,
+                        ),
+                        onPressed: (){},
+                      ),
 
-                          contentPadding: EdgeInsets.all(0),
-                          title: TextField(
-                            style: TextStyle(
+                      Flexible(
+                        child: TextField(
+                          style: TextStyle(
+                            fontSize: 15.0,
+                            color: Theme.of(context).textTheme.title.color,
+                          ),
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.all(10.0),
+                            border: InputBorder.none,
+                            enabledBorder: InputBorder.none,
+                            hintText: "Write your message...",
+                            hintStyle: TextStyle(
                               fontSize: 15.0,
                               color: Theme.of(context).textTheme.title.color,
                             ),
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.all(10.0),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                borderSide: BorderSide(color: Theme.of(context).primaryColor,),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Theme.of(context).primaryColor,),
-                                borderRadius: BorderRadius.circular(5.0),
-                              ),
-                              hintText: "Write your message...",
-                              hintStyle: TextStyle(
-                                fontSize: 15.0,
-                                color: Theme.of(context).textTheme.title.color,
-                              ),
-                            ),
-                            maxLines: null,
                           ),
-
-
-                          trailing: IconButton(
-                            icon: Icon(
-                              Icons.mic,
-                              color: Theme.of(context).accentColor,
-                            ),
-                            onPressed: (){},
-                          ),
+                          maxLines: null,
                         ),
                       ),
+
+                      IconButton(
+                        icon: Icon(
+                          Icons.mic,
+                          color: Theme.of(context).accentColor,
+                        ),
+                        onPressed: (){},
+                      )
                     ],
                   ),
                 ),
               ),
             ),
-            
+
           ],
         ),
       ),
