@@ -75,7 +75,7 @@ class _ChatItemState extends State<ChatItem> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        subtitle: Text("${widget.msg}"),
+        subtitle: Text("${widget.msg}", overflow: TextOverflow.ellipsis, maxLines: 2,),
         trailing: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
