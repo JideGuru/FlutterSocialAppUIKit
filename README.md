@@ -10,6 +10,7 @@ Images are from [Unsplash](https://unsplash.com)
 
 [Link to Mockup](https://www.ls.graphics/free/simple-iphone-x-mockups)
 
+[![Twitter Follow](https://img.shields.io/twitter/follow/iamjideguru.svg?style=social)](https://twitter.com/iamjideguru)
 
 ## ✨ Requirements
 * Any Operating System (ie. MacOS X, Linux, Windows)
@@ -33,10 +34,8 @@ Images are from [Unsplash](https://unsplash.com)
 |<img src="ss/13.png" width="400">|<img src="ss/14.png" width="400">|
 
 
-## 🌗 Toggle theme
-To toggle the theme, change the `isDark` variable in `main.dart`.
-
-`true` for dark and `false` for light.
+## 🌗 Dark theme
+Adapts to device theme
 
 
 ## 🤓 Author(s)

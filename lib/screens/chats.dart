@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:social_app_ui/util/data.dart';
 import 'package:social_app_ui/widgets/chat_item.dart';
 
-
 class Chats extends StatefulWidget {
   @override
   _ChatsState createState() => _ChatsState();
@@ -17,7 +16,6 @@ class _ChatsState extends State<Chats> with SingleTickerProviderStateMixin,
     super.initState();
     _tabController = TabController(vsync: this, initialIndex: 0, length: 2);
   }
-
 
   @override
   Widget build(BuildContext context) {

@@ -86,7 +86,6 @@ class _MainScreenState extends State<MainScreen> {
           currentIndex: _page,
         ),
       ),
-
     );
   }
 

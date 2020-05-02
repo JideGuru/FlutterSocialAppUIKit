@@ -6,7 +6,6 @@ class PostItem extends StatefulWidget {
   final String time;
   final String img;
 
-
   PostItem({
     Key key,
     @required this.dp,

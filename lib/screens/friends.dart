@@ -26,7 +26,6 @@ class _FriendsState extends State<Friends> {
         ],
       ),
 
-
       body: ListView.separated(
         padding: EdgeInsets.all(10),
         separatorBuilder: (BuildContext context, int index) {
@@ -79,7 +78,6 @@ class _FriendsState extends State<Friends> {
             ),
           );
         },
-
       ),
     );
   }

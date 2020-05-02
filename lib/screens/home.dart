@@ -24,7 +24,6 @@ class _HomeState extends State<Home> {
         ],
       ),
 
-
       body: ListView.builder(
         padding: EdgeInsets.symmetric(horizontal: 20),
         itemCount: posts.length,

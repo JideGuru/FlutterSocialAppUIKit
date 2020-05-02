@@ -22,7 +22,7 @@ class _ProfileState extends State<Profile> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
 
-              SizedBox(height: 40),
+              SizedBox(height: 60),
               CircleAvatar(
                 backgroundImage: AssetImage(
                   "assets/cm${random.nextInt(10)}.jpeg",
@@ -75,60 +75,11 @@ class _ProfileState extends State<Profile> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Column(
-                      children: <Widget>[
-                        Text(
-                          random.nextInt(10000).toString(),
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 22,
-                          ),
-                        ),
-                        SizedBox(height: 4),
-                        Text(
-                          "Posts",
-                          style: TextStyle(
-                          ),
-                        ),
-                      ],
-                    ),
+                    _buildCategory("Posts"),
 
-                    Column(
-                      children: <Widget>[
-                        Text(
-                          random.nextInt(10000).toString(),
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 22,
-                          ),
-                        ),
-                        SizedBox(height: 4),
-                        Text(
-                          "Friends",
-                          style: TextStyle(
-                          ),
-                        ),
-                      ],
-                    ),
+                    _buildCategory("Friends"),
 
-                    Column(
-                      children: <Widget>[
-                        Text(
-                          random.nextInt(10000).toString(),
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 22,
-                          ),
-                        ),
-                        SizedBox(height: 4),
-                        Text(
-                          "Groups",
-                          style: TextStyle(
-                          ),
-                        ),
-                      ],
-                    ),
-
+                    _buildCategory("Groups"),
                   ],
                 ),
               ),
@@ -157,6 +108,26 @@ class _ProfileState extends State<Profile> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildCategory(String title){
+    return Column(
+      children: <Widget>[
+        Text(
+          random.nextInt(10000).toString(),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 22,
+          ),
+        ),
+        SizedBox(height: 4),
+        Text(
+          title,
+          style: TextStyle(
+          ),
+        ),
+      ],
     );
   }
 }

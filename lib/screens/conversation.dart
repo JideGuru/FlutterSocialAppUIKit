@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:social_app_ui/util/data.dart';
 import 'dart:math';
-
 import 'package:social_app_ui/widgets/chat_bubble.dart';
-
-
 
 class Conversation extends StatefulWidget {
   @override
@@ -166,11 +163,9 @@ class _ConversationState extends State<Conversation> {
                 ),
               ),
             ),
-
           ],
         ),
       ),
-
     );
   }
 }
