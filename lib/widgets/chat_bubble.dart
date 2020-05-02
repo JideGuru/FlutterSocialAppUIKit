@@ -33,10 +33,28 @@ class _ChatBubbleState extends State<ChatBubble> {
   int rNum = random.nextInt(18);
 
 
+  Color chatBubbleColor(){
+    if(widget.isMe){
+      return Theme.of(context).accentColor;
+    }else{
+      if(Theme.of(context).brightness == Brightness.dark){
+        return Colors.grey[800];
+      }else{
+        return Colors.grey[200];
+      }
+    }
+  }
+
+  Color chatBubbleReplyColor(){
+    if(Theme.of(context).brightness == Brightness.dark){
+      return Colors.grey[600];
+    }else{
+      return Colors.grey[50];
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final bg = widget.isMe ?Theme.of(context).accentColor : Colors.grey[200];
     final align = widget.isMe ? CrossAxisAlignment.end: CrossAxisAlignment.start;
     final radius = widget.isMe
         ? BorderRadius.only(
@@ -56,7 +74,7 @@ class _ChatBubbleState extends State<ChatBubble> {
           margin: const EdgeInsets.all(3.0),
           padding: const EdgeInsets.all(5.0),
           decoration: BoxDecoration(
-            color: bg,
+            color: chatBubbleColor(),
             borderRadius: radius,
           ),
           constraints: BoxConstraints(
@@ -89,9 +107,7 @@ class _ChatBubbleState extends State<ChatBubble> {
 
               widget.isReply?Container(
                 decoration: BoxDecoration(
-                  color: !widget.isMe
-                      ?Colors.grey[50]
-                      :Colors.blue[50],
+                  color: chatBubbleReplyColor(),
                   borderRadius: BorderRadius.all(Radius.circular(5.0)),
                 ),
                 constraints: BoxConstraints(
@@ -124,7 +140,7 @@ class _ChatBubbleState extends State<ChatBubble> {
                         child:Text(
                           widget.replyText,
                           style: TextStyle(
-                            color: Colors.black,
+                            color: Theme.of(context).textTheme.title.color,
                             fontSize: 10,
                           ),
                           maxLines: 2,
@@ -145,8 +161,8 @@ class _ChatBubbleState extends State<ChatBubble> {
                   widget.message,
                   style:  TextStyle(
                     color: widget.isMe
-                        ?Colors.white
-                        :Colors.black,
+                        ? Colors.white
+                        : Theme.of(context).textTheme.title.color,
                   ),
                 )
                     :Container(
@@ -155,8 +171,8 @@ class _ChatBubbleState extends State<ChatBubble> {
                     widget.message,
                     style:  TextStyle(
                       color: widget.isMe
-                          ?Colors.white
-                          :Colors.black,
+                          ? Colors.white
+                          : Theme.of(context).textTheme.title.color,
                     ),
                   ),
                 ):Image.asset(
