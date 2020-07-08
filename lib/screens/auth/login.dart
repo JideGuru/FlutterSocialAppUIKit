@@ -1,24 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:social_app_ui/components/custom_button.dart';
 import 'package:social_app_ui/components/custom_text_field.dart';
-import 'package:social_app_ui/screens/auth/login.dart';
+import 'package:social_app_ui/screens/auth/register.dart';
 import 'package:social_app_ui/util/const.dart';
 import 'package:social_app_ui/util/router.dart';
 import 'package:social_app_ui/util/validations.dart';
 
-class CheckEmail extends StatefulWidget {
+class Login extends StatefulWidget {
+  final String email;
+
+  Login({@required this.email});
   @override
-  _CheckEmailState createState() => _CheckEmailState();
+  _LoginState createState() => _LoginState();
 }
 
-class _CheckEmailState extends State<CheckEmail> {
+class _LoginState extends State<Login> {
   bool loading = false;
   bool validate = false;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  String email = '';
+  String email, password = '';
+  FocusNode emailFN = FocusNode();
+  FocusNode passFN = FocusNode();
 
-  checkEmail() async{
+  login() async{
     FormState form = formKey.currentState;
     form.save();
     if (!form.validate()) {
@@ -26,7 +31,7 @@ class _CheckEmailState extends State<CheckEmail> {
       setState(() {});
       showInSnackBar('Please fix the errors in red before submitting.');
     }else{
-      Router.pushPage(context, Login(email: email,));
+      Router.pushPage(context, Register(email: email,));
     }
   }
 
@@ -64,34 +69,47 @@ class _CheckEmailState extends State<CheckEmail> {
                 height: 100.0,
               ),
 
-              Text(
-                'Please input your email address',
-                style: TextStyle(
-                  fontSize: 15.0,
-                ),
-              ),
-
-              SizedBox(
-                height: 12.0,
-              ),
-
               Form(
                 autovalidate: validate,
                 key: formKey,
-                child: CustomTextField(
-                  enabled: !loading,
-                  hintText: "jideguru@gmail.com",
-                  textInputAction: TextInputAction.done,
-                  validateFunction: Validations.validateEmail,
-                  submitAction: checkEmail,
-                  onSaved: (String val) {
-                    email = val;
-                  },
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    CustomTextField(
+                      enabled: false,
+                      hintText: "jideguru@gmail.com",
+                      textInputAction: TextInputAction.next,
+                      validateFunction: Validations.validateEmail,
+                      onSaved: (String val) {
+                        email = val;
+                      },
+                      initialValue: widget.email,
+                      focusNode: emailFN,
+                      nextFocusNode: passFN,
+                    ),
+
+                    SizedBox(
+                      height: 20.0,
+                    ),
+
+                    CustomTextField(
+                      enabled: !loading,
+                      hintText: "Password",
+                      textInputAction: TextInputAction.done,
+                      validateFunction: Validations.validatePassword,
+                      submitAction: login,
+                      obscureText: true,
+                      onSaved: (String val) {
+                        password = val;
+                      },
+                      focusNode: passFN,
+                    ),
+                  ],
                 ),
               ),
 
               SizedBox(
-                height: 20.0,
+                height: 40.0,
               ),
               buildButton(),
             ],
@@ -105,8 +123,8 @@ class _CheckEmailState extends State<CheckEmail> {
     return loading
         ? Center(child: CircularProgressIndicator())
         : CustomButton(
-      label: "Continue",
-      onPressed: () => checkEmail(),
+      label: "Login",
+      onPressed: () => login(),
     );
   }
 }
