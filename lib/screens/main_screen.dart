@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:social_app_ui/screens/chats.dart';
+import 'package:social_app_ui/components/icon_badge.dart';
+import 'package:social_app_ui/screens/chat/chats.dart';
 import 'package:social_app_ui/screens/friends.dart';
 import 'package:social_app_ui/screens/home.dart';
 import 'package:social_app_ui/screens/notifications.dart';
 import 'package:social_app_ui/screens/profile.dart';
-import 'package:social_app_ui/widgets/icon_badge.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -17,7 +17,6 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: PageView(
         physics: NeverScrollableScrollPhysics(),
@@ -31,18 +30,15 @@ class _MainScreenState extends State<MainScreen> {
           Profile(),
         ],
       ),
-
       bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(
           // sets the background color of the `BottomNavigationBar`
           canvasColor: Theme.of(context).primaryColor,
           // sets the active color of the `BottomNavigationBar` if `Brightness` is light
           primaryColor: Theme.of(context).accentColor,
-          textTheme: Theme
-              .of(context)
-              .textTheme
-              .copyWith(caption: TextStyle(color: Colors.grey[500]),
-          ),
+          textTheme: Theme.of(context).textTheme.copyWith(
+                caption: TextStyle(color: Colors.grey[500]),
+              ),
         ),
         child: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
@@ -53,28 +49,24 @@ class _MainScreenState extends State<MainScreen> {
               ),
               title: Container(height: 0.0),
             ),
-
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.group,
               ),
               title: Container(height: 0.0),
             ),
-
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.home,
               ),
               title: Container(height: 0.0),
             ),
-
             BottomNavigationBarItem(
               icon: IconBadge(
                 icon: Icons.notifications,
               ),
               title: Container(height: 0.0),
             ),
-
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.person,

@@ -20,11 +20,10 @@ class _NotificationsState extends State<Notifications> {
             icon: Icon(
               Icons.filter_list,
             ),
-            onPressed: (){},
+            onPressed: () {},
           ),
         ],
       ),
-
       body: ListView.separated(
         padding: EdgeInsets.all(10),
         separatorBuilder: (BuildContext context, int index) {
@@ -49,7 +48,6 @@ class _NotificationsState extends State<Notifications> {
                 ),
                 radius: 25,
               ),
-
               contentPadding: EdgeInsets.all(0),
               title: Text(notif['notif']),
               trailing: Text(
@@ -59,7 +57,7 @@ class _NotificationsState extends State<Notifications> {
                   fontSize: 11,
                 ),
               ),
-              onTap: (){},
+              onTap: () {},
             ),
           );
         },
