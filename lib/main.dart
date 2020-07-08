@@ -1,9 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:social_app_ui/screens/auth/check_email.dart';
-import 'package:social_app_ui/screens/main_screen.dart';
+import 'package:social_app_ui/screens/splash/splash.dart';
 import 'package:social_app_ui/util/const.dart';
 import 'package:social_app_ui/util/theme_config.dart';
 import 'package:social_app_ui/view_models/auth/check_email_view_model.dart';
@@ -15,8 +13,6 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  final FirebaseAuth auth = FirebaseAuth.instance;
-
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -30,7 +26,7 @@ class MyApp extends StatelessWidget {
         title: Constants.appName,
         theme: themeData(ThemeConfig.lightTheme),
         darkTheme: themeData(ThemeConfig.darkTheme),
-        home: buildHomeStream(),
+        home: Splash(),
       ),
     );
   }
@@ -40,26 +36,6 @@ class MyApp extends StatelessWidget {
       textTheme: GoogleFonts.sourceSansProTextTheme(
         theme.textTheme,
       ),
-    );
-  }
-
-  Widget buildHomeStream() {
-    return StreamBuilder(
-      stream: auth.onAuthStateChanged,
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        print(snapshot);
-        if (snapshot.data != null) {
-          print(snapshot.data);
-          FirebaseUser user = snapshot.data;
-          if (user != null) {
-            return MainScreen();
-          } else {
-            return CheckEmail();
-          }
-        } else {
-          return CheckEmail();
-        }
-      },
     );
   }
 }

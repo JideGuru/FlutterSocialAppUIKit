@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:social_app_ui/screens/main_screen.dart';
 import 'package:social_app_ui/services/auth_service.dart';
+import 'package:social_app_ui/util/router.dart';
 
 class LoginViewModel extends ChangeNotifier {
   AuthService auth = AuthService();
@@ -22,7 +24,7 @@ class LoginViewModel extends ChangeNotifier {
     } else {
       loading = true;
       notifyListeners();
-      await auth
+      bool loggedIn = await auth
           .loginUser(
         email: email,
         password: password,
@@ -34,6 +36,10 @@ class LoginViewModel extends ChangeNotifier {
           '${auth.handleFirebaseAuthError(e.toString())}',
         );
       });
+      if (loggedIn = true) {
+        Navigator.popUntil(context, (route) => route.isFirst);
+        Router.pushPage(context, MainScreen());
+      }
       loading = false;
       notifyListeners();
     }
