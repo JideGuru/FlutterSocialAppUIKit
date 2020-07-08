@@ -10,6 +10,7 @@ class Login extends StatefulWidget {
   final String email;
 
   Login({@required this.email});
+
   @override
   _LoginState createState() => _LoginState();
 }
@@ -23,22 +24,25 @@ class _LoginState extends State<Login> {
   FocusNode emailFN = FocusNode();
   FocusNode passFN = FocusNode();
 
-  login() async{
+  login() async {
     FormState form = formKey.currentState;
     form.save();
     if (!form.validate()) {
       validate = true;
       setState(() {});
       showInSnackBar('Please fix the errors in red before submitting.');
-    }else{
-      Router.pushPage(context, Register(email: email,));
+    } else {
+      Router.pushPage(
+          context,
+          Register(
+            email: email,
+          ));
     }
   }
 
   void showInSnackBar(String value) {
     _scaffoldKey.currentState.removeCurrentSnackBar();
-    _scaffoldKey.currentState
-        .showSnackBar(SnackBar(content: Text(value)));
+    _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(value)));
   }
 
   @override
@@ -64,11 +68,9 @@ class _LoginState extends State<Login> {
                   ),
                 ),
               ),
-
               SizedBox(
                 height: 100.0,
               ),
-
               Form(
                 autovalidate: validate,
                 key: formKey,
@@ -87,11 +89,9 @@ class _LoginState extends State<Login> {
                       focusNode: emailFN,
                       nextFocusNode: passFN,
                     ),
-
                     SizedBox(
                       height: 20.0,
                     ),
-
                     CustomTextField(
                       enabled: !loading,
                       hintText: "Password",
@@ -107,7 +107,6 @@ class _LoginState extends State<Login> {
                   ],
                 ),
               ),
-
               SizedBox(
                 height: 40.0,
               ),
@@ -123,8 +122,8 @@ class _LoginState extends State<Login> {
     return loading
         ? Center(child: CircularProgressIndicator())
         : CustomButton(
-      label: "Login",
-      onPressed: () => login(),
-    );
+            label: "Login",
+            onPressed: () => login(),
+          );
   }
 }

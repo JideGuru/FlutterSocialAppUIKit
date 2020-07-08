@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:social_app_ui/components/custom_button.dart';
 import 'package:social_app_ui/components/custom_text_field.dart';
+import 'package:social_app_ui/screens/main_screen.dart';
 import 'package:social_app_ui/util/const.dart';
+import 'package:social_app_ui/util/router.dart';
 import 'package:social_app_ui/util/validations.dart';
 
 class Register extends StatefulWidget {
@@ -23,22 +25,21 @@ class _RegisterState extends State<Register> {
   FocusNode emailFN = FocusNode();
   FocusNode passFN = FocusNode();
 
-  login() async{
+  register() async {
     FormState form = formKey.currentState;
     form.save();
     if (!form.validate()) {
       validate = true;
       setState(() {});
       showInSnackBar('Please fix the errors in red before submitting.');
-    }else{
-
+    } else {
+      Router.pushPage(context, MainScreen());
     }
   }
 
   void showInSnackBar(String value) {
     _scaffoldKey.currentState.removeCurrentSnackBar();
-    _scaffoldKey.currentState
-        .showSnackBar(SnackBar(content: Text(value)));
+    _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(value)));
   }
 
   @override
@@ -64,11 +65,9 @@ class _RegisterState extends State<Register> {
                   ),
                 ),
               ),
-
               SizedBox(
                 height: 100.0,
               ),
-
               Form(
                 autovalidate: validate,
                 key: formKey,
@@ -101,17 +100,15 @@ class _RegisterState extends State<Register> {
                       focusNode: emailFN,
                       nextFocusNode: passFN,
                     ),
-
                     SizedBox(
                       height: 20.0,
                     ),
-
                     CustomTextField(
                       enabled: !loading,
                       hintText: "Password",
                       textInputAction: TextInputAction.done,
                       validateFunction: Validations.validatePassword,
-                      submitAction: login,
+                      submitAction: register,
                       obscureText: true,
                       onSaved: (String val) {
                         password = val;
@@ -121,7 +118,6 @@ class _RegisterState extends State<Register> {
                   ],
                 ),
               ),
-
               SizedBox(
                 height: 40.0,
               ),
@@ -137,8 +133,8 @@ class _RegisterState extends State<Register> {
     return loading
         ? Center(child: CircularProgressIndicator())
         : CustomButton(
-      label: "Login",
-      onPressed: () => login(),
-    );
+            label: "Register",
+            onPressed: () => register(),
+          );
   }
 }

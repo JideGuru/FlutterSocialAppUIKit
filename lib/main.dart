@@ -20,7 +20,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: Constants.appName,
       theme: themeData(ThemeConfig.lightTheme),
-//      darkTheme: themeData(ThemeConfig.darkTheme),
+      darkTheme: themeData(ThemeConfig.darkTheme),
       home: Splash(),
     );
   }

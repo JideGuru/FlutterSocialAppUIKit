@@ -1,5 +1,5 @@
 
 
 class Constants {
-  static String appName = "Flux Chat";
+  static String appName = 'Let\'s Chat';
 }
