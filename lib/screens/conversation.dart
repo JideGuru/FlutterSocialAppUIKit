@@ -12,18 +12,9 @@ class _ConversationState extends State<Conversation> {
   static Random random = Random();
   String name = names[random.nextInt(10)];
 
-  Color backgroundColor(){
-    if(Theme.of(context).brightness == Brightness.dark){
-      return Colors.grey[700];
-    }else{
-      return Colors.grey[50];
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: backgroundColor(),
       appBar: AppBar(
         elevation: 3,
         leading: IconButton(
