@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:social_app_ui/components/custom_button.dart';
 import 'package:social_app_ui/components/custom_text_field.dart';
-import 'package:social_app_ui/screens/main_screen.dart';
 import 'package:social_app_ui/util/const.dart';
-import 'package:social_app_ui/util/router.dart';
 import 'package:social_app_ui/util/validations.dart';
 import 'package:social_app_ui/view_models/auth/register_view_model.dart';
 
@@ -81,7 +79,7 @@ class Register extends StatelessWidget {
                           hintText: "Password",
                           textInputAction: TextInputAction.done,
                           validateFunction: Validations.validatePassword,
-                          submitAction: ()=>viewModel.register(context),
+                          submitAction: () => viewModel.register(context),
                           obscureText: true,
                           onSaved: (String val) {
                             viewModel.password = val;

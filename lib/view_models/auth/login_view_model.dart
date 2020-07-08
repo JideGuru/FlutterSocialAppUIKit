@@ -22,7 +22,7 @@ class LoginViewModel extends ChangeNotifier {
     } else {
       loading = true;
       notifyListeners();
-      bool created = await auth
+      await auth
           .loginUser(
         email: email,
         password: password,

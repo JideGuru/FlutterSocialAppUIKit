@@ -23,11 +23,13 @@ class RegisterViewModel extends ChangeNotifier {
     } else {
       loading = true;
       notifyListeners();
-      bool created = await auth.registerUser(
+      await auth
+          .registerUser(
         email: email,
         password: password,
         name: name,
-      ).catchError((e){
+      )
+          .catchError((e) {
         loading = false;
         notifyListeners();
         showInSnackBar(
