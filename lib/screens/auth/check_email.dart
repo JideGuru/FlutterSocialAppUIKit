@@ -18,22 +18,21 @@ class _CheckEmailState extends State<CheckEmail> {
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   String email = '';
 
-  checkEmail() async{
+  checkEmail() async {
     FormState form = formKey.currentState;
     form.save();
     if (!form.validate()) {
       validate = true;
       setState(() {});
       showInSnackBar('Please fix the errors in red before submitting.');
-    }else{
-      Router.pushPage(context, Login(email: email,));
+    } else {
+      Router.pushPage(context, Login(email: email));
     }
   }
 
   void showInSnackBar(String value) {
     _scaffoldKey.currentState.removeCurrentSnackBar();
-    _scaffoldKey.currentState
-        .showSnackBar(SnackBar(content: Text(value)));
+    _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(value)));
   }
 
   @override
@@ -59,22 +58,18 @@ class _CheckEmailState extends State<CheckEmail> {
                   ),
                 ),
               ),
-
               SizedBox(
                 height: 100.0,
               ),
-
               Text(
                 'Please input your email address',
                 style: TextStyle(
                   fontSize: 15.0,
                 ),
               ),
-
               SizedBox(
                 height: 12.0,
               ),
-
               Form(
                 autovalidate: validate,
                 key: formKey,
@@ -89,7 +84,6 @@ class _CheckEmailState extends State<CheckEmail> {
                   },
                 ),
               ),
-
               SizedBox(
                 height: 20.0,
               ),
@@ -105,8 +99,8 @@ class _CheckEmailState extends State<CheckEmail> {
     return loading
         ? Center(child: CircularProgressIndicator())
         : CustomButton(
-      label: "Continue",
-      onPressed: () => checkEmail(),
-    );
+            label: "Continue",
+            onPressed: () => checkEmail(),
+          );
   }
 }

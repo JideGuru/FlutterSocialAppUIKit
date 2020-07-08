@@ -22,7 +22,7 @@ class CustomButton extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       child: FlatButton(
         onPressed: onPressed,
-        color: color??Theme.of(context).accentColor,
+        color: color ?? Theme.of(context).accentColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(10.0),
