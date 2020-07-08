@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:social_app_ui/services/auth_service.dart';
 import 'package:social_app_ui/util/data.dart';
 
 class Profile extends StatefulWidget {
@@ -14,6 +15,16 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        actions: <Widget>[
+          IconButton(
+            onPressed: ()=>AuthService().logOut(),
+            icon: Icon(
+              Icons.local_gas_station,
+            ),
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: 10),
         child: Container(
