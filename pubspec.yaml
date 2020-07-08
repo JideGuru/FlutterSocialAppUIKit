@@ -23,6 +23,7 @@ dependencies:
   google_fonts: ^1.0.0
   firebase_auth: ^0.16.1
   cloud_firestore: ^0.13.7
+  provider: ^4.2.0
 
 dev_dependencies:
   flutter_test:
