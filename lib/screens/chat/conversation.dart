@@ -1,7 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:social_app_ui/util/data.dart';
 import 'dart:math';
-import 'package:social_app_ui/widgets/chat_bubble.dart';
+
+import 'package:flutter/material.dart';
+import 'package:social_app_ui/components/chat_bubble.dart';
+import 'package:social_app_ui/util/data.dart';
 
 class Conversation extends StatefulWidget {
   @override
@@ -21,7 +22,7 @@ class _ConversationState extends State<Conversation> {
           icon: Icon(
             Icons.keyboard_backspace,
           ),
-          onPressed: ()=>Navigator.pop(context),
+          onPressed: () => Navigator.pop(context),
         ),
         titleSpacing: 0,
         title: InkWell(
@@ -35,7 +36,6 @@ class _ConversationState extends State<Conversation> {
                   ),
                 ),
               ),
-
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -60,20 +60,17 @@ class _ConversationState extends State<Conversation> {
               ),
             ],
           ),
-
-          onTap: (){},
+          onTap: () {},
         ),
         actions: <Widget>[
           IconButton(
             icon: Icon(
               Icons.more_horiz,
             ),
-            onPressed: (){},
+            onPressed: () {},
           ),
         ],
       ),
-
-
       body: Container(
         height: MediaQuery.of(context).size.height,
         child: Column(
@@ -87,8 +84,8 @@ class _ConversationState extends State<Conversation> {
                   Map msg = conversation[index];
                   return ChatBubble(
                     message: msg['type'] == "text"
-                        ?messages[random.nextInt(10)]
-                        :"assets/cm${random.nextInt(10)}.jpeg",
+                        ? messages[random.nextInt(10)]
+                        : "assets/cm${random.nextInt(10)}.jpeg",
                     username: msg["username"],
                     time: msg["time"],
                     type: msg['type'],
@@ -101,7 +98,6 @@ class _ConversationState extends State<Conversation> {
                 },
               ),
             ),
-
             Align(
               alignment: Alignment.bottomCenter,
               child: BottomAppBar(
@@ -119,9 +115,8 @@ class _ConversationState extends State<Conversation> {
                           Icons.add,
                           color: Theme.of(context).accentColor,
                         ),
-                        onPressed: (){},
+                        onPressed: () {},
                       ),
-
                       Flexible(
                         child: TextField(
                           style: TextStyle(
@@ -141,13 +136,12 @@ class _ConversationState extends State<Conversation> {
                           maxLines: null,
                         ),
                       ),
-
                       IconButton(
                         icon: Icon(
                           Icons.mic,
                           color: Theme.of(context).accentColor,
                         ),
-                        onPressed: (){},
+                        onPressed: () {},
                       )
                     ],
                   ),

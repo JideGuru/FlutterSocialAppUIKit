@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:social_app_ui/components/post_item.dart';
 import 'package:social_app_ui/util/data.dart';
-import 'package:social_app_ui/widgets/post_item.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -19,16 +19,14 @@ class _HomeState extends State<Home> {
             icon: Icon(
               Icons.filter_list,
             ),
-            onPressed: (){},
+            onPressed: () {},
           ),
         ],
       ),
-
       body: ListView.builder(
         padding: EdgeInsets.symmetric(horizontal: 20),
         itemCount: posts.length,
         itemBuilder: (BuildContext context, int index) {
-
           Map post = posts[index];
           return PostItem(
             img: post['img'],
@@ -43,7 +41,7 @@ class _HomeState extends State<Home> {
           Icons.add,
           color: Colors.white,
         ),
-        onPressed: (){},
+        onPressed: () {},
       ),
     );
   }

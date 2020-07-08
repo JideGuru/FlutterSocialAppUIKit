@@ -21,11 +21,10 @@ class _FriendsState extends State<Friends> {
             icon: Icon(
               Icons.filter_list,
             ),
-            onPressed: (){},
+            onPressed: () {},
           ),
         ],
       ),
-
       body: ListView.separated(
         padding: EdgeInsets.all(10),
         separatorBuilder: (BuildContext context, int index) {
@@ -50,31 +49,31 @@ class _FriendsState extends State<Friends> {
                 ),
                 radius: 25,
               ),
-
               contentPadding: EdgeInsets.all(0),
               title: Text(friend['name']),
               subtitle: Text(friend['status']),
               trailing: friend['isAccept']
                   ? FlatButton(
-                child: Text(
-                  "Unfollow",
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-                color: Colors.grey,
-                onPressed: (){},
-              ):FlatButton(
-                child: Text(
-                  "Follow",
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-                color: Theme.of(context).accentColor,
-                onPressed: (){},
-              ),
-              onTap: (){},
+                      child: Text(
+                        "Unfollow",
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                      color: Colors.grey,
+                      onPressed: () {},
+                    )
+                  : FlatButton(
+                      child: Text(
+                        "Follow",
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                      color: Theme.of(context).accentColor,
+                      onPressed: () {},
+                    ),
+              onTap: () {},
             ),
           );
         },

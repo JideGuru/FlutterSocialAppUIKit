@@ -10,6 +10,7 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   static Random random = Random();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +22,6 @@ class _ProfileState extends State<Profile> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-
               SizedBox(height: 60),
               CircleAvatar(
                 backgroundImage: AssetImage(
@@ -38,11 +38,9 @@ class _ProfileState extends State<Profile> {
                 ),
               ),
               SizedBox(height: 3),
-
               Text(
                 "Status should be here",
-                style: TextStyle(
-                ),
+                style: TextStyle(),
               ),
               SizedBox(height: 20),
               Row(
@@ -54,7 +52,7 @@ class _ProfileState extends State<Profile> {
                       color: Colors.white,
                     ),
                     color: Colors.grey,
-                    onPressed: (){},
+                    onPressed: () {},
                   ),
                   SizedBox(width: 10),
                   FlatButton(
@@ -63,12 +61,10 @@ class _ProfileState extends State<Profile> {
                       color: Colors.white,
                     ),
                     color: Theme.of(context).accentColor,
-                    onPressed: (){},
+                    onPressed: () {},
                   ),
-
                 ],
               ),
-
               SizedBox(height: 40),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 50),
@@ -76,9 +72,7 @@ class _ProfileState extends State<Profile> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     _buildCategory("Posts"),
-
                     _buildCategory("Friends"),
-
                     _buildCategory("Groups"),
                   ],
                 ),
@@ -111,7 +105,7 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  Widget _buildCategory(String title){
+  Widget _buildCategory(String title) {
     return Column(
       children: <Widget>[
         Text(
@@ -124,8 +118,7 @@ class _ProfileState extends State<Profile> {
         SizedBox(height: 4),
         Text(
           title,
-          style: TextStyle(
-          ),
+          style: TextStyle(),
         ),
       ],
     );

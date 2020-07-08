@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:social_app_ui/components/chat_item.dart';
 import 'package:social_app_ui/util/data.dart';
-import 'package:social_app_ui/widgets/chat_item.dart';
 
 class Chats extends StatefulWidget {
   @override
   _ChatsState createState() => _ChatsState();
 }
 
-class _ChatsState extends State<Chats> with SingleTickerProviderStateMixin,
-    AutomaticKeepAliveClientMixin{
+class _ChatsState extends State<Chats>
+    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   TabController _tabController;
 
   @override
@@ -32,7 +32,7 @@ class _ChatsState extends State<Chats> with SingleTickerProviderStateMixin,
             icon: Icon(
               Icons.filter_list,
             ),
-            onPressed: (){},
+            onPressed: () {},
           ),
         ],
         bottom: TabBar(
@@ -51,7 +51,6 @@ class _ChatsState extends State<Chats> with SingleTickerProviderStateMixin,
           ],
         ),
       ),
-
       body: TabBarView(
         controller: _tabController,
         children: <Widget>[
@@ -107,13 +106,12 @@ class _ChatsState extends State<Chats> with SingleTickerProviderStateMixin,
           ),
         ],
       ),
-
       floatingActionButton: FloatingActionButton(
         child: Icon(
           Icons.add,
           color: Colors.white,
         ),
-        onPressed: (){},
+        onPressed: () {},
       ),
     );
   }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-class ThemeConfig{
-
+class ThemeConfig {
   //Colors for theme
   static Color lightPrimary = Color(0xfffcfcff);
   static Color darkPrimary = Color(0xff1f1f1f);
@@ -14,7 +13,7 @@ class ThemeConfig{
   static ThemeData lightTheme = ThemeData(
     backgroundColor: lightBG,
     primaryColor: lightPrimary,
-    accentColor:  lightAccent,
+    accentColor: lightAccent,
     cursorColor: lightAccent,
     scaffoldBackgroundColor: lightBG,
     appBarTheme: AppBarTheme(
