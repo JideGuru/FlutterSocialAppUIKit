@@ -47,7 +47,7 @@ class Chats extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(
-          Icons.add,
+          Feather.edit_2,
           color: Colors.white,
         ),
         onPressed: () {},

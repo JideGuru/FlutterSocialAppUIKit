@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
-import 'package:social_app_ui/components/icon_badge.dart';
 import 'package:social_app_ui/screens/chat/chats/chats.dart';
 import 'package:social_app_ui/screens/friends/friends.dart';
 import 'package:social_app_ui/screens/home/home.dart';
@@ -14,7 +13,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   PageController _pageController;
-  int _page = 2;
+  int _page = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -33,13 +32,8 @@ class _MainScreenState extends State<MainScreen> {
       ),
       bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(
-          // sets the background color of the `BottomNavigationBar`
           canvasColor: Theme.of(context).primaryColor,
-          // sets the active color of the `BottomNavigationBar` if `Brightness` is light
           primaryColor: Theme.of(context).accentColor,
-          textTheme: Theme.of(context).textTheme.copyWith(
-                caption: TextStyle(color: Colors.grey[500]),
-              ),
         ),
         child: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
@@ -77,7 +71,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     super.initState();
-    _pageController = PageController(initialPage: 2);
+    _pageController = PageController(initialPage: 1);
   }
 
   @override

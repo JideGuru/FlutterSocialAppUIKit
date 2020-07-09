@@ -16,15 +16,18 @@ class _HomeState extends State<Home> {
         centerTitle: true,
       ),
       body: ListView.builder(
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: EdgeInsets.symmetric(horizontal: 10),
         itemCount: posts.length,
         itemBuilder: (BuildContext context, int index) {
           Map post = posts[index];
-          return PostItem(
-            img: post['img'],
-            name: post['name'],
-            dp: post['dp'],
-            time: post['time'],
+          return Padding(
+            padding: EdgeInsets.only(top: index == 0?10.0:0.0),
+            child: PostItem(
+              img: post['img'],
+              name: post['name'],
+              dp: post['dp'],
+              time: post['time'],
+            ),
           );
         },
       ),
