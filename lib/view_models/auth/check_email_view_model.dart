@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:social_app_ui/screens/auth/login.dart';
-import 'package:social_app_ui/screens/auth/register.dart';
+import 'package:social_app_ui/screens/auth/login/login.dart';
+import 'package:social_app_ui/screens/auth/register/register.dart';
 import 'package:social_app_ui/services/auth_service.dart';
 import 'package:social_app_ui/util/router.dart';
 

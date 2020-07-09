@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:social_app_ui/components/icon_badge.dart';
-import 'package:social_app_ui/screens/chat/chats.dart';
-import 'package:social_app_ui/screens/friends.dart';
-import 'package:social_app_ui/screens/home.dart';
+import 'package:social_app_ui/screens/chat/chats/chats.dart';
+import 'package:social_app_ui/screens/friends/friends.dart';
+import 'package:social_app_ui/screens/home/home.dart';
 import 'package:social_app_ui/screens/notifications.dart';
-import 'package:social_app_ui/screens/profile.dart';
+import 'package:social_app_ui/screens/profile/profile.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -24,10 +25,10 @@ class _MainScreenState extends State<MainScreen> {
         onPageChanged: onPageChanged,
         children: <Widget>[
           Chats(),
-          Friends(),
           Home(),
-          Notifications(),
           Profile(),
+          Friends(),
+          Notifications(),
         ],
       ),
       bottomNavigationBar: Theme(
@@ -45,31 +46,19 @@ class _MainScreenState extends State<MainScreen> {
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(
-                Icons.message,
+                Feather.message_circle,
               ),
               title: Container(height: 0.0),
             ),
             BottomNavigationBarItem(
               icon: Icon(
-                Icons.group,
+                Feather.home,
               ),
               title: Container(height: 0.0),
             ),
             BottomNavigationBarItem(
               icon: Icon(
-                Icons.home,
-              ),
-              title: Container(height: 0.0),
-            ),
-            BottomNavigationBarItem(
-              icon: IconBadge(
-                icon: Icons.notifications,
-              ),
-              title: Container(height: 0.0),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.person,
+                Feather.user,
               ),
               title: Container(height: 0.0),
             ),
