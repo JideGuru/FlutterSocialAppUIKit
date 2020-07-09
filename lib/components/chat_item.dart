@@ -26,81 +26,78 @@ class ChatItem extends StatefulWidget {
 class _ChatItemState extends State<ChatItem> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: ListTile(
-        contentPadding: EdgeInsets.all(0),
-        leading: Stack(
-          children: <Widget>[
-            CircleAvatar(
-              backgroundImage: AssetImage(
-                "${widget.dp}",
-              ),
-              radius: 25,
+    return ListTile(
+      contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
+      leading: Stack(
+        children: <Widget>[
+          CircleAvatar(
+            backgroundImage: AssetImage(
+              "${widget.dp}",
             ),
-            Positioned(
-              bottom: 0.0,
-              right: 0.0,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                height: 15,
-                width: 15,
-                child: Center(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: widget.isOnline
-                          ? Color(0xff00d72f)
-                          : Colors.grey,
-                      borderRadius: BorderRadius.circular(6),
-                    ),
-                    height: 11,
-                    width: 11,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-        title: Text(
-          "${widget.name}",
-          maxLines: 1,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
+            radius: 25.0,
           ),
-        ),
-        subtitle: Text(
-          "${widget.msg}",
-          overflow: TextOverflow.ellipsis,
-          maxLines: 2,
-        ),
-        trailing: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: <Widget>[
-            SizedBox(height: 10),
-            Text(
-              "${widget.time}",
-              style: TextStyle(
-                fontWeight: FontWeight.w300,
-                fontSize: 11,
+          Positioned(
+            bottom: 0.0,
+            right: 0.0,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(6.0),
+              ),
+              height: 15,
+              width: 15,
+              child: Center(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: widget.isOnline
+                        ? Color(0xff00d72f)
+                        : Colors.grey,
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  height: 11,
+                  width: 11,
+                ),
               ),
             ),
-            SizedBox(height: 5),
-            buildCounter(),
-          ],
-        ),
-        onTap: () {
-          Navigator.of(context, rootNavigator: true).push(
-            MaterialPageRoute(
-              builder: (BuildContext context) {
-                return Conversation();
-              },
-            ),
-          );
-        },
+          ),
+        ],
       ),
+      title: Text(
+        "${widget.name}",
+        maxLines: 1,
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      subtitle: Text(
+        "${widget.msg}",
+        overflow: TextOverflow.ellipsis,
+        maxLines: 2,
+      ),
+      trailing: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: <Widget>[
+          SizedBox(height: 10),
+          Text(
+            "${widget.time}",
+            style: TextStyle(
+              fontWeight: FontWeight.w300,
+              fontSize: 11,
+            ),
+          ),
+          SizedBox(height: 5),
+          buildCounter(),
+        ],
+      ),
+      onTap: () {
+        Navigator.of(context, rootNavigator: true).push(
+          MaterialPageRoute(
+            builder: (BuildContext context) {
+              return Conversation();
+            },
+          ),
+        );
+      },
     );
   }
 

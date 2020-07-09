@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:social_app_ui/components/custom_card.dart';
+import 'package:social_app_ui/screens/post/post.dart';
+import 'package:social_app_ui/util/router.dart';
 
 class PostItem extends StatefulWidget {
   final String dp;
@@ -117,7 +119,9 @@ class _PostItemState extends State<PostItem> {
               ],
             ),
           ),
-          onTap: () {},
+          onTap: () {
+            Router.pushPage(context, Post());
+          },
         ),
       ),
     );
