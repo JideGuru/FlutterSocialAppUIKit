@@ -13,6 +13,17 @@ class _ConversationState extends State<Conversation> {
   static Random random = Random();
   String name = names[random.nextInt(10)];
 
+  FocusNode focusNode = FocusNode();
+  ScrollController controller = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    controller.addListener(() {
+      focusNode.unfocus();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,6 +38,7 @@ class _ConversationState extends State<Conversation> {
           children: <Widget>[
             Flexible(
               child: ListView.builder(
+                controller: controller,
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 itemCount: conversation.length,
                 reverse: true,
@@ -69,6 +81,7 @@ class _ConversationState extends State<Conversation> {
                       ),
                       Flexible(
                         child: TextField(
+                          focusNode: focusNode,
                           style: TextStyle(
                             fontSize: 15.0,
                             color: Theme.of(context).textTheme.headline6.color,

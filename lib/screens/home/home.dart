@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:social_app_ui/components/post_item.dart';
+import 'package:social_app_ui/screens/post/add_post.dart';
 import 'package:social_app_ui/util/data.dart';
+import 'package:social_app_ui/util/router.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -21,7 +23,7 @@ class _HomeState extends State<Home> {
         itemBuilder: (BuildContext context, int index) {
           Map post = posts[index];
           return Padding(
-            padding: EdgeInsets.only(top: index == 0?10.0:0.0),
+            padding: EdgeInsets.only(top: index == 0 ? 10.0 : 0.0),
             child: PostItem(
               img: post['img'],
               name: post['name'],
@@ -36,7 +38,9 @@ class _HomeState extends State<Home> {
           Icons.add,
           color: Colors.white,
         ),
-        onPressed: () {},
+        onPressed: () {
+          Router.pushPageDialog(context, AddPost());
+        },
       ),
     );
   }

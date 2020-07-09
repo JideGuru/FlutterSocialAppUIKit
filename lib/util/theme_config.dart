@@ -5,7 +5,7 @@ class ThemeConfig {
   static Color lightPrimary = Color(0xfffcfcff);
   static Color darkPrimary = Color(0xff1f1f1f);
   static Color lightAccent = Color(0xff2663ff);
-  static Color darkAccent = Color(0xff2663ff);
+  static Color darkAccent = Colors.blue;
   static Color lightBG = Color(0xfffcfcff);
   static Color darkBG = Color(0xff121212);
   static Color badgeColor = Colors.red;
