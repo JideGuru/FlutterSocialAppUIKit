@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:social_app_ui/screens/main_screen.dart';
+import 'package:social_app_ui/screens/main_page/main_screen.dart';
 import 'package:social_app_ui/services/auth_service.dart';
 import 'package:social_app_ui/util/router.dart';
 
@@ -36,7 +36,7 @@ class LoginViewModel extends ChangeNotifier {
           '${auth.handleFirebaseAuthError(e.toString())}',
         );
       });
-      if (loggedIn = true) {
+      if (loggedIn == true) {
         Navigator.popUntil(context, (route) => route.isFirst);
         Router.pushPage(context, MainScreen());
       }

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:social_app_ui/components/icon_badge.dart';
-import 'package:social_app_ui/screens/chat/chats.dart';
-import 'package:social_app_ui/screens/friends.dart';
-import 'package:social_app_ui/screens/home.dart';
+import 'package:flutter_icons/flutter_icons.dart';
+import 'package:social_app_ui/screens/chat/chats/chats.dart';
+import 'package:social_app_ui/screens/friends/friends.dart';
+import 'package:social_app_ui/screens/home/home.dart';
 import 'package:social_app_ui/screens/notifications.dart';
-import 'package:social_app_ui/screens/profile.dart';
+import 'package:social_app_ui/screens/profile/profile.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -13,7 +13,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   PageController _pageController;
-  int _page = 2;
+  int _page = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -24,52 +24,35 @@ class _MainScreenState extends State<MainScreen> {
         onPageChanged: onPageChanged,
         children: <Widget>[
           Chats(),
-          Friends(),
           Home(),
-          Notifications(),
           Profile(),
+          Friends(),
+          Notifications(),
         ],
       ),
       bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(
-          // sets the background color of the `BottomNavigationBar`
           canvasColor: Theme.of(context).primaryColor,
-          // sets the active color of the `BottomNavigationBar` if `Brightness` is light
           primaryColor: Theme.of(context).accentColor,
-          textTheme: Theme.of(context).textTheme.copyWith(
-                caption: TextStyle(color: Colors.grey[500]),
-              ),
         ),
         child: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(
-                Icons.message,
+                Feather.message_circle,
               ),
               title: Container(height: 0.0),
             ),
             BottomNavigationBarItem(
               icon: Icon(
-                Icons.group,
+                Feather.home,
               ),
               title: Container(height: 0.0),
             ),
             BottomNavigationBarItem(
               icon: Icon(
-                Icons.home,
-              ),
-              title: Container(height: 0.0),
-            ),
-            BottomNavigationBarItem(
-              icon: IconBadge(
-                icon: Icons.notifications,
-              ),
-              title: Container(height: 0.0),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.person,
+                Feather.user,
               ),
               title: Container(height: 0.0),
             ),
@@ -88,7 +71,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     super.initState();
-    _pageController = PageController(initialPage: 2);
+    _pageController = PageController(initialPage: 1);
   }
 
   @override

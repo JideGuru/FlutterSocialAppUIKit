@@ -13,63 +13,24 @@ class _ConversationState extends State<Conversation> {
   static Random random = Random();
   String name = names[random.nextInt(10)];
 
+  FocusNode focusNode = FocusNode();
+  ScrollController controller = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    controller.addListener(() {
+      focusNode.unfocus();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         elevation: 3,
-        leading: IconButton(
-          icon: Icon(
-            Icons.keyboard_backspace,
-          ),
-          onPressed: () => Navigator.pop(context),
-        ),
         titleSpacing: 0,
-        title: InkWell(
-          child: Row(
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(left: 0.0, right: 10.0),
-                child: CircleAvatar(
-                  backgroundImage: AssetImage(
-                    "assets/cm${random.nextInt(10)}.jpeg",
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      name,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                      ),
-                    ),
-                    SizedBox(height: 5),
-                    Text(
-                      "Online",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 11,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          onTap: () {},
-        ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.more_horiz,
-            ),
-            onPressed: () {},
-          ),
-        ],
+        title: buildUserName(),
       ),
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -77,6 +38,7 @@ class _ConversationState extends State<Conversation> {
           children: <Widget>[
             Flexible(
               child: ListView.builder(
+                controller: controller,
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 itemCount: conversation.length,
                 reverse: true,
@@ -119,9 +81,10 @@ class _ConversationState extends State<Conversation> {
                       ),
                       Flexible(
                         child: TextField(
+                          focusNode: focusNode,
                           style: TextStyle(
                             fontSize: 15.0,
-                            color: Theme.of(context).textTheme.title.color,
+                            color: Theme.of(context).textTheme.headline6.color,
                           ),
                           decoration: InputDecoration(
                             contentPadding: EdgeInsets.all(10.0),
@@ -130,7 +93,8 @@ class _ConversationState extends State<Conversation> {
                             hintText: "Write your message...",
                             hintStyle: TextStyle(
                               fontSize: 15.0,
-                              color: Theme.of(context).textTheme.title.color,
+                              color: Theme.of(context)
+                                  .textTheme.headline6.color,
                             ),
                           ),
                           maxLines: null,
@@ -151,6 +115,46 @@ class _ConversationState extends State<Conversation> {
           ],
         ),
       ),
+    );
+  }
+
+  buildUserName() {
+    return InkWell(
+      child: Row(
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(left: 0.0, right: 10.0),
+            child: CircleAvatar(
+              backgroundImage: AssetImage(
+                "assets/cm${random.nextInt(10)}.jpeg",
+              ),
+            ),
+          ),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  name,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                  ),
+                ),
+                SizedBox(height: 5),
+                Text(
+                  "Online",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 11,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+      onTap: () {},
     );
   }
 }
