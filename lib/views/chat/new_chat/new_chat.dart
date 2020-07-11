@@ -40,7 +40,7 @@ class _NewChatState extends State<NewChat> {
               buildSearchBar(viewModel),
               SizedBox(height: 20.0),
               Flexible(
-                child: buildUserList(viewModel.filteredDocuments),
+                child: buildUserList(viewModel),
               ),
             ],
           ),
@@ -88,38 +88,42 @@ class _NewChatState extends State<NewChat> {
     return Theme.of(context).brightness == Brightness.dark;
   }
 
-  buildUserList(List documents) {
-    if (documents.isEmpty) {
-      return Center(child: Text("No users found"));
-    } else {
-      return ListView.builder(
-        itemCount: documents.length,
-        itemBuilder: (BuildContext context, int index) {
-          DocumentSnapshot doc = documents[index];
-          User user = User.fromJson(doc.data);
-          return ListTile(
-            contentPadding: EdgeInsets.symmetric(horizontal: 25.0),
-            onTap: () {
-              Navigator.pop(context);
-              Router.pushPage(
-                context,
-                Conversation(userId: doc.documentID),
-              );
-            },
-            leading: CircleAvatar(
-              backgroundImage: CachedNetworkImageProvider(
-                user.profilePicture,
+  buildUserList(NewChatViewModel viewModel) {
+    if(!viewModel.loading){
+      if (viewModel.filteredDocuments.isEmpty) {
+        return Center(child: Text("No users found"));
+      } else {
+        return ListView.builder(
+          itemCount: viewModel.filteredDocuments.length,
+          itemBuilder: (BuildContext context, int index) {
+            DocumentSnapshot doc = viewModel.filteredDocuments[index];
+            User user = User.fromJson(doc.data);
+            return ListTile(
+              contentPadding: EdgeInsets.symmetric(horizontal: 25.0),
+              onTap: () {
+                Navigator.pop(context);
+                Router.pushPage(
+                  context,
+                  Conversation(userId: doc.documentID),
+                );
+              },
+              leading: CircleAvatar(
+                backgroundImage: CachedNetworkImageProvider(
+                  user.profilePicture,
+                ),
               ),
-            ),
-            title: Text(
-              user?.name,
-            ),
-            subtitle: Text(
-              user?.email,
-            ),
-          );
-        },
-      );
+              title: Text(
+                user?.name,
+              ),
+              subtitle: Text(
+                user?.email,
+              ),
+            );
+          },
+        );
+      }
+    }else{
+      return Center(child: CircularProgressIndicator());
     }
   }
 }
