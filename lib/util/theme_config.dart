@@ -16,16 +16,7 @@ class ThemeConfig {
     accentColor: lightAccent,
     cursorColor: lightAccent,
     scaffoldBackgroundColor: lightBG,
-    appBarTheme: AppBarTheme(
-      elevation: 0,
-      textTheme: TextTheme(
-        title: TextStyle(
-          color: darkBG,
-          fontSize: 18.0,
-          fontWeight: FontWeight.w800,
-        ),
-      ),
-    ),
+    appBarTheme: appBarTheme(darkBG),
   );
 
   static ThemeData darkTheme = ThemeData(
@@ -35,17 +26,21 @@ class ThemeConfig {
     accentColor: darkAccent,
     scaffoldBackgroundColor: darkBG,
     cursorColor: darkAccent,
-    appBarTheme: AppBarTheme(
+    appBarTheme: appBarTheme(lightBG),
+  );
+
+  static AppBarTheme appBarTheme(Color titleColor) {
+    return AppBarTheme(
       elevation: 0,
       textTheme: TextTheme(
-        title: TextStyle(
-          color: lightBG,
+        headline6: TextStyle(
+          color: titleColor,
           fontSize: 18.0,
           fontWeight: FontWeight.w800,
         ),
       ),
-    ),
-  );
+    );
+  }
 
   static BoxShadow cardShadow = BoxShadow(
     color: lightAccent.withOpacity(0.1),

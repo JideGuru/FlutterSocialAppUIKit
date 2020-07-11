@@ -108,7 +108,7 @@ class _ChatItemState extends State<ChatItem> {
       return Container(
         padding: EdgeInsets.all(1),
         decoration: BoxDecoration(
-          color: Colors.red,
+          color: Theme.of(context).accentColor,
           borderRadius: BorderRadius.circular(6),
         ),
         constraints: BoxConstraints(

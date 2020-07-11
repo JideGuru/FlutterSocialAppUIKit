@@ -38,7 +38,7 @@ class RegisterViewModel extends ChangeNotifier {
           '${auth.handleFirebaseAuthError(e.toString())}',
         );
       });
-      if(userCreated = true){
+      if (userCreated == true) {
         Navigator.popUntil(context, (route) => route.isFirst);
         Router.pushPage(context, MainScreen());
       }

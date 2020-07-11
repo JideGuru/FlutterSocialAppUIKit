@@ -36,7 +36,7 @@ class LoginViewModel extends ChangeNotifier {
           '${auth.handleFirebaseAuthError(e.toString())}',
         );
       });
-      if (loggedIn = true) {
+      if (loggedIn == true) {
         Navigator.popUntil(context, (route) => route.isFirst);
         Router.pushPage(context, MainScreen());
       }
