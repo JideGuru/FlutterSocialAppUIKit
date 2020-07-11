@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:social_app_ui/screens/splash/splash.dart';
+import 'package:social_app_ui/view_models/chats/new_chat_view_model.dart';
+import 'package:social_app_ui/views/splash/splash.dart';
 import 'package:social_app_ui/util/const.dart';
 import 'package:social_app_ui/util/theme_config.dart';
 import 'package:social_app_ui/view_models/auth/check_email_view_model.dart';
@@ -20,6 +21,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => CheckEmailViewModel()),
         ChangeNotifierProvider(create: (_) => RegisterViewModel()),
         ChangeNotifierProvider(create: (_) => LoginViewModel()),
+        ChangeNotifierProvider(create: (_) => NewChatViewModel()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:social_app_ui/components/chat_item.dart';
+import 'package:social_app_ui/views/chat/new_chat/new_chat.dart';
 import 'package:social_app_ui/util/data.dart';
+import 'package:social_app_ui/util/router.dart';
 
 class Chats extends StatelessWidget {
   @override
@@ -49,7 +51,7 @@ class Chats extends StatelessWidget {
           Feather.edit_2,
           color: Colors.white,
         ),
-        onPressed: () {},
+        onPressed: () => Router.pushPageDialog(context, NewChat()),
       ),
     );
   }

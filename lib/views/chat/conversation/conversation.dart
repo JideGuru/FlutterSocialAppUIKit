@@ -5,6 +5,10 @@ import 'package:social_app_ui/components/chat_bubble.dart';
 import 'package:social_app_ui/util/data.dart';
 
 class Conversation extends StatefulWidget {
+  final String userId;
+
+  Conversation({@required this.userId});
+
   @override
   _ConversationState createState() => _ConversationState();
 }
@@ -93,8 +97,8 @@ class _ConversationState extends State<Conversation> {
                             hintText: "Write your message...",
                             hintStyle: TextStyle(
                               fontSize: 15.0,
-                              color: Theme.of(context)
-                                  .textTheme.headline6.color,
+                              color:
+                                  Theme.of(context).textTheme.headline6.color,
                             ),
                           ),
                           maxLines: null,
