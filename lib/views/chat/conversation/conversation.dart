@@ -1,7 +1,10 @@
 import 'dart:math';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:social_app_ui/components/chat_bubble.dart';
+import 'package:social_app_ui/models/message.dart';
+import 'package:social_app_ui/services/chat_service.dart';
 import 'package:social_app_ui/util/data.dart';
 
 class Conversation extends StatefulWidget {
@@ -109,8 +112,18 @@ class _ConversationState extends State<Conversation> {
                           Icons.mic,
                           color: Theme.of(context).accentColor,
                         ),
-                        onPressed: () {},
-                      )
+                        onPressed: () {
+                          ChatService().sendFirstMessage(
+                            Message(
+                              content: "Hey",
+                              senderUid: "bIIMBJbUOYO87MiKdZf4FRrAuP83",
+                              time: Timestamp.now(),
+                              type: "text"
+                            ),
+                            "wk6Rqjrrb8eQTodJZO0WslU7y7h1",
+                          );
+                        },
+                      ),
                     ],
                   ),
                 ),

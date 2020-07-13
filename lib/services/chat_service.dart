@@ -12,14 +12,12 @@ class ChatService extends Services {
         .add(message.toJson());
   }
 
-  sendFirstMessage(Message message, String recipient) async {
+  Future<String> sendFirstMessage(Message message, String recipient) async {
     FirebaseUser user = await auth.currentUser();
     DocumentReference ref = await firestore.collection("chats").add({
-      'users':[
-        recipient,
-        user.uid
-      ],
+      'users': [recipient, user.uid],
     });
     await sendMessage(message, ref.documentID);
+    return ref.documentID;
   }
 }
