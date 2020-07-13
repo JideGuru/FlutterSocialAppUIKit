@@ -26,6 +26,8 @@ dependencies:
   provider: ^4.2.0
   flutter_icons: ^1.1.0
   cached_network_image: ^2.0.0
+  intl: ^0.16.1
+  timeago: ^2.0.26
 
 dev_dependencies:
   flutter_test:
