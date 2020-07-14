@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:social_app_ui/components/chat_bubble.dart';
 import 'package:social_app_ui/models/message.dart';
 import 'package:social_app_ui/models/user.dart';
+import 'package:social_app_ui/util/enum/message_type.dart';
 import 'package:social_app_ui/view_models/chats/conversation_view_model.dart';
 import 'package:social_app_ui/view_models/user/user_view_model.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -74,7 +75,7 @@ class _ConversationState extends State<Conversation> {
                             return ChatBubble(
                               message: '${message.content}',
                               time: message.time,
-                              type: 'text',
+                              type: message.type,
                               isMe: message.senderUid == user.uid,
                             );
                           },
@@ -218,7 +219,7 @@ class _ConversationState extends State<Conversation> {
     Message message = Message(
       content: '$msg',
       senderUid: user.uid,
-      type: 'text',
+      type: MessageType.TEXT,
       time: Timestamp.now(),
     );
 

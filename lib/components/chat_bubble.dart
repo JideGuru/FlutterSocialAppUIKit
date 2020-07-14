@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:social_app_ui/util/enum/message_type.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class ChatBubble extends StatefulWidget {
-  final String message, type;
+  final String message;
+  final MessageType type;
   final Timestamp time;
   final bool isMe;
 
@@ -72,8 +74,8 @@ class _ChatBubbleState extends State<ChatBubble> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.all(widget.type == "text" ? 5 : 0),
-                child: widget.type == "text"
+                padding: EdgeInsets.all(widget.type == MessageType.TEXT ? 5 : 0),
+                child: widget.type ==  MessageType.TEXT
                     ? Text(
                       widget.message,
                       style: TextStyle(
