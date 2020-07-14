@@ -3,31 +3,36 @@ import 'package:flutter/foundation.dart';
 
 class NewChatViewModel extends ChangeNotifier {
   Firestore firestore = Firestore.instance;
-  List<DocumentSnapshot> documents = List();
-  List<DocumentSnapshot> filteredDocuments = List();
+  List<DocumentSnapshot> users = List();
+  List<DocumentSnapshot> filteredUsers = List();
   bool loading = true;
 
   getUsers() async {
     QuerySnapshot snap = await firestore
         .collection("users").getDocuments();
     List<DocumentSnapshot> docs = snap.documents;
-    documents = docs;
-    filteredDocuments = docs;
+    users = docs;
+    filteredUsers = docs;
     loading = false;
     notifyListeners();
   }
 
   search(String query) {
     if(query == ""){
-      filteredDocuments = documents;
+      filteredUsers = users;
     }else{
-      List userSearch = documents.where((userSnap){
+      List userSearch = users.where((userSnap){
         Map user = userSnap.data;
         String userName = user['name'];
         return userName.toLowerCase().contains(query.toLowerCase());
       }).toList();
-      filteredDocuments = userSearch;
+      filteredUsers = userSearch;
     }
+    notifyListeners();
+  }
+
+  removeFromList(index) {
+    filteredUsers.removeAt(index);
     notifyListeners();
   }
 }

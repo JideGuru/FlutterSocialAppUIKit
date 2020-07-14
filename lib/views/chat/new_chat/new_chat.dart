@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:social_app_ui/models/user.dart';
 import 'package:social_app_ui/util/router.dart';
 import 'package:social_app_ui/view_models/chats/new_chat_view_model.dart';
+import 'package:social_app_ui/view_models/user/user_view_model.dart';
 import 'package:social_app_ui/views/chat/conversation/conversation.dart';
 
 class NewChat extends StatefulWidget {
@@ -89,22 +92,32 @@ class _NewChatState extends State<NewChat> {
   }
 
   buildUserList(NewChatViewModel viewModel) {
+    var currentUser = Provider.of<UserViewModel>(context, listen: false).user;
     if(!viewModel.loading){
-      if (viewModel.filteredDocuments.isEmpty) {
+      if (viewModel.filteredUsers.isEmpty) {
         return Center(child: Text("No users found"));
       } else {
         return ListView.builder(
-          itemCount: viewModel.filteredDocuments.length,
+          itemCount: viewModel.filteredUsers.length,
           itemBuilder: (BuildContext context, int index) {
-            DocumentSnapshot doc = viewModel.filteredDocuments[index];
+            DocumentSnapshot doc = viewModel.filteredUsers[index];
             User user = User.fromJson(doc.data);
+
+            if(doc.documentID == currentUser.uid){
+              Timer(Duration(microseconds: 3), () {
+                viewModel.removeFromList(index);
+              });
+            }
             return ListTile(
               contentPadding: EdgeInsets.symmetric(horizontal: 25.0),
               onTap: () {
                 Navigator.pop(context);
                 Router.pushPage(
                   context,
-                  Conversation(userId: doc.documentID),
+                  Conversation(
+                    userId: doc.documentID,
+                    chatId: 'newChat',
+                  ),
                 );
               },
               leading: CircleAvatar(

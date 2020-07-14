@@ -4,10 +4,10 @@ import 'package:social_app_ui/models/message.dart';
 import 'package:social_app_ui/services/services.dart';
 
 class ChatService extends Services {
-  sendMessage(Message message, String id) async {
+  sendMessage(Message message, String chatId) async {
     await firestore
         .collection("chats")
-        .document("$id")
+        .document("$chatId")
         .collection("messages")
         .add(message.toJson());
   }

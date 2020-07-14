@@ -1,4 +1,4 @@
-import 'dart:math';
+import 'dart:async';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,13 +8,13 @@ import 'package:provider/provider.dart';
 import 'package:social_app_ui/components/chat_bubble.dart';
 import 'package:social_app_ui/models/message.dart';
 import 'package:social_app_ui/models/user.dart';
-import 'package:social_app_ui/util/data.dart';
+import 'package:social_app_ui/view_models/chats/conversation_view_model.dart';
 import 'package:social_app_ui/view_models/user/user_view_model.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class Conversation extends StatefulWidget {
   final String userId;
-  final String chatId;
+  String chatId;
 
   Conversation({@required this.userId, @required this.chatId});
 
@@ -24,11 +24,11 @@ class Conversation extends StatefulWidget {
 
 class _ConversationState extends State<Conversation> {
   final Firestore firestore = Firestore.instance;
-  static Random random = Random();
-  String name = names[random.nextInt(10)];
 
   FocusNode focusNode = FocusNode();
   ScrollController controller = ScrollController();
+  TextEditingController messageTEC = TextEditingController();
+  bool isFirst = false;
 
   @override
   void initState() {
@@ -36,106 +36,120 @@ class _ConversationState extends State<Conversation> {
     controller.addListener(() {
       focusNode.unfocus();
     });
+    if(widget.chatId == 'newChat'){
+      isFirst = true;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    UserViewModel viewModel =
-        Provider.of<UserViewModel>(context, listen: false);
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 3,
-        titleSpacing: 0,
-        title: buildUserName(),
-      ),
-      body: Container(
-        height: MediaQuery.of(context).size.height,
-        child: Column(
-          children: <Widget>[
-            Flexible(
-              child: StreamBuilder(
-                stream: messageListStream(widget.chatId),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    List messages = snapshot.data.documents;
+    var user = Provider.of<UserViewModel>(context, listen: false).user;
+    return Consumer<ConversationViewModel>(
+      builder: (BuildContext context, viewModel, Widget child) {
+        return Scaffold(
+          appBar: AppBar(
+            elevation: 3,
+            titleSpacing: 0,
+            title: buildUserName(),
+          ),
+          body: Container(
+            height: MediaQuery.of(context).size.height,
+            child: Column(
+              children: <Widget>[
+                Flexible(
+                  child: StreamBuilder(
+                    stream: messageListStream(widget.chatId),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        List messages = snapshot.data.documents;
 
-                    return ListView.builder(
-                      controller: controller,
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      itemCount: messages.length,
-                      reverse: true,
-                      itemBuilder: (BuildContext context, int index) {
-                        Message message =
-                            Message.fromJson(messages[index].data);
-                        return ChatBubble(
-                          message: '${message.content}',
-                          time: message.time,
-                          type: 'text',
-                          isMe: message.senderUid == viewModel.user.uid,
+                        return ListView.builder(
+                          controller: controller,
+                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          itemCount: messages.length,
+                          reverse: true,
+                          itemBuilder: (BuildContext context, int index) {
+                            Message message = Message.fromJson(
+                                messages.reversed.toList()[index].data);
+                            return ChatBubble(
+                              message: '${message.content}',
+                              time: message.time,
+                              type: 'text',
+                              isMe: message.senderUid == user.uid,
+                            );
+                          },
                         );
-                      },
-                    );
-                  } else {
-                    return Center(child: CircularProgressIndicator());
-                  }
-                },
-              ),
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: BottomAppBar(
-                elevation: 10,
-                color: Theme.of(context).primaryColor,
-                child: Container(
-                  constraints: BoxConstraints(
-                    maxHeight: 100,
-                  ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: <Widget>[
-                      IconButton(
-                        icon: Icon(
-                          Feather.plus,
-                          color: Theme.of(context).accentColor,
-                        ),
-                        onPressed: () {},
-                      ),
-                      Flexible(
-                        child: TextField(
-                          focusNode: focusNode,
-                          style: TextStyle(
-                            fontSize: 15.0,
-                            color: Theme.of(context).textTheme.headline6.color,
-                          ),
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.all(10.0),
-                            border: InputBorder.none,
-                            enabledBorder: InputBorder.none,
-                            hintText: "Write your message...",
-                            hintStyle: TextStyle(
-                              fontSize: 15.0,
-                              color:
-                                  Theme.of(context).textTheme.headline6.color,
-                            ),
-                          ),
-                          maxLines: null,
-                        ),
-                      ),
-                      IconButton(
-                        icon: Icon(
-                          Feather.send,
-                          color: Theme.of(context).accentColor,
-                        ),
-                        onPressed: () {},
-                      ),
-                    ],
+                      } else {
+                        return Center(child: CircularProgressIndicator());
+                      }
+                    },
                   ),
                 ),
-              ),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: BottomAppBar(
+                    elevation: 10,
+                    color: Theme.of(context).primaryColor,
+                    child: Container(
+                      constraints: BoxConstraints(
+                        maxHeight: 100,
+                      ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: <Widget>[
+                          IconButton(
+                            icon: Icon(
+                              Feather.plus,
+                              color: Theme.of(context).accentColor,
+                            ),
+                            onPressed: () {},
+                          ),
+                          Flexible(
+                            child: TextField(
+                              controller: messageTEC,
+                              focusNode: focusNode,
+                              style: TextStyle(
+                                fontSize: 15.0,
+                                color:
+                                    Theme.of(context).textTheme.headline6.color,
+                              ),
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.all(10.0),
+                                border: InputBorder.none,
+                                enabledBorder: InputBorder.none,
+                                hintText: "Write your message...",
+                                hintStyle: TextStyle(
+                                  fontSize: 15.0,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .headline6
+                                      .color,
+                                ),
+                              ),
+                              maxLines: null,
+                            ),
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              Feather.send,
+                              color: Theme.of(context).accentColor,
+                            ),
+                            onPressed: () {
+                              if(messageTEC.text.isNotEmpty){
+                                sendMessage(viewModel, user);
+                              }
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 
@@ -196,6 +210,32 @@ class _ConversationState extends State<Conversation> {
         }
       },
     );
+  }
+
+  sendMessage(ConversationViewModel viewModel, var user) async {
+    String msg = messageTEC.text.trim();
+    messageTEC.clear();
+    Message message = Message(
+      content: '$msg',
+      senderUid: user.uid,
+      type: 'text',
+      time: Timestamp.now(),
+    );
+
+    if(msg.isNotEmpty){
+      if(isFirst){
+        print("FIRST");
+        String id = await viewModel.sendFirstMessage(widget.userId, message);
+        setState(() {
+          widget.chatId = id;
+        });
+      }else{
+        viewModel.sendMessage(
+          widget.chatId,
+          message,
+        );
+      }
+    }
   }
 
   Stream<QuerySnapshot> messageListStream(String documentId) {

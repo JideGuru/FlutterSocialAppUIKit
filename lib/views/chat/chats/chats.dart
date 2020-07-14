@@ -34,45 +34,49 @@ class Chats extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             List chatList = snapshot.data.documents;
-            return ListView.separated(
-              itemCount: chatList.length,
-              itemBuilder: (BuildContext context, int index) {
-                DocumentSnapshot chatListSnapshot = chatList[index];
-                return StreamBuilder(
-                  stream: messageListStream(chatListSnapshot.documentID),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      List messages = snapshot.data.documents;
-                      Message message = Message.fromJson(messages.first.data);
-                      List users = chatListSnapshot.data['users'];
-                      // remove the current user's id from the Users
-                      // list so we can get the second user's id
-                      users.remove('${viewModel.user.uid}');
-                      String recipient = users[0];
-                      return ChatItem(
-                        userId: recipient,
-                        counter: 8,
-                        msg: message.content,
-                        time: message.time,
-                        chatId: chatListSnapshot.documentID,
-                      );
-                    }else{
-                      return SizedBox();
-                    }
-                  }
-                );
-              },
-              separatorBuilder: (BuildContext context, int index) {
-                return Align(
-                  alignment: Alignment.centerRight,
-                  child: Container(
-                    height: 0.5,
-                    width: MediaQuery.of(context).size.width / 1.3,
-                    child: Divider(),
-                  ),
-                );
-              },
-            );
+            if(chatList.isNotEmpty){
+              return ListView.separated(
+                itemCount: chatList.length,
+                itemBuilder: (BuildContext context, int index) {
+                  DocumentSnapshot chatListSnapshot = chatList[index];
+                  return StreamBuilder(
+                      stream: messageListStream(chatListSnapshot.documentID),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          List messages = snapshot.data.documents;
+                          Message message = Message.fromJson(messages.first.data);
+                          List users = chatListSnapshot.data['users'];
+                          // remove the current user's id from the Users
+                          // list so we can get the second user's id
+                          users.remove('${viewModel.user.uid}');
+                          String recipient = users[0];
+                          return ChatItem(
+                            userId: recipient,
+                            counter: 8,
+                            msg: message.content,
+                            time: message.time,
+                            chatId: chatListSnapshot.documentID,
+                          );
+                        }else{
+                          return SizedBox();
+                        }
+                      }
+                  );
+                },
+                separatorBuilder: (BuildContext context, int index) {
+                  return Align(
+                    alignment: Alignment.centerRight,
+                    child: Container(
+                      height: 0.5,
+                      width: MediaQuery.of(context).size.width / 1.3,
+                      child: Divider(),
+                    ),
+                  );
+                },
+              );
+            }else{
+              return Center(child: Text('No chats yet'));
+            }
           } else {
             return Center(child: CircularProgressIndicator());
           }
