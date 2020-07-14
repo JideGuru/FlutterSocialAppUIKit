@@ -7,7 +7,7 @@ class NewChatViewModel extends ChangeNotifier {
   List<DocumentSnapshot> filteredDocuments = List();
   bool loading = true;
 
-  getDocuments() async {
+  getUsers() async {
     QuerySnapshot snap = await firestore
         .collection("users").getDocuments();
     List<DocumentSnapshot> docs = snap.documents;

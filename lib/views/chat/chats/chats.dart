@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:provider/provider.dart';
 import 'package:social_app_ui/components/chat_item.dart';
 import 'package:social_app_ui/models/message.dart';
 import 'package:social_app_ui/util/router.dart';
+import 'package:social_app_ui/view_models/user/user_view_model.dart';
 import 'package:social_app_ui/views/chat/new_chat/new_chat.dart';
 
 class Chats extends StatelessWidget {
@@ -11,6 +13,8 @@ class Chats extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    UserViewModel viewModel =
+        Provider.of<UserViewModel>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -26,30 +30,31 @@ class Chats extends StatelessWidget {
         ],
       ),
       body: StreamBuilder(
-        stream: userChatsStream('bIIMBJbUOYO87MiKdZf4FRrAuP83'),
+        stream: userChatsStream('${viewModel.user.uid}'),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             List chatList = snapshot.data.documents;
             return ListView.separated(
               itemCount: chatList.length,
               itemBuilder: (BuildContext context, int index) {
-                DocumentSnapshot documentSnapshot = chatList[index];
+                DocumentSnapshot chatListSnapshot = chatList[index];
                 return StreamBuilder(
-                  stream: messageListStream(documentSnapshot.documentID),
+                  stream: messageListStream(chatListSnapshot.documentID),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       List messages = snapshot.data.documents;
                       Message message = Message.fromJson(messages.first.data);
-                      List users = documentSnapshot.data['users'];
+                      List users = chatListSnapshot.data['users'];
                       // remove the current user's id from the Users
                       // list so we can get the second user's id
-                      users.remove("bIIMBJbUOYO87MiKdZf4FRrAuP83");
+                      users.remove('${viewModel.user.uid}');
                       String recipient = users[0];
                       return ChatItem(
-                        userID: recipient,
+                        userId: recipient,
                         counter: 8,
                         msg: message.content,
                         time: message.time,
+                        chatId: chatListSnapshot.documentID,
                       );
                     }else{
                       return SizedBox();

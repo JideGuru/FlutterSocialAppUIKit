@@ -5,9 +5,17 @@ class User {
   String email;
   String profilePicture;
   Timestamp signedUpAt;
+  Timestamp lastSeen;
   bool isOnline;
 
-  User({this.name, this.email, this.profilePicture, this.signedUpAt, this.isOnline});
+  User({
+    this.name,
+    this.email,
+    this.profilePicture,
+    this.signedUpAt,
+    this.isOnline,
+    this.lastSeen,
+  });
 
   User.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -15,6 +23,7 @@ class User {
     profilePicture = json['profilePicture'];
     signedUpAt = json['signedUpAt'];
     isOnline = json['isOnline'];
+    lastSeen = json['lastSeen'];
   }
 
   Map<String, dynamic> toJson() {
@@ -24,6 +33,7 @@ class User {
     data['profilePicture'] = this.profilePicture;
     data['signedUpAt'] = this.signedUpAt;
     data['isOnline'] = this.isOnline;
+    data['lastSeen'] = this.lastSeen;
     return data;
   }
 }

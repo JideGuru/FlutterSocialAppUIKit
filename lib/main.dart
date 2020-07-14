@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:social_app_ui/view_models/chats/conversation_view_model.dart';
 import 'package:social_app_ui/view_models/chats/new_chat_view_model.dart';
+import 'package:social_app_ui/view_models/user/user_view_model.dart';
 import 'package:social_app_ui/views/splash/splash.dart';
 import 'package:social_app_ui/util/const.dart';
 import 'package:social_app_ui/util/theme_config.dart';
@@ -22,6 +24,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => RegisterViewModel()),
         ChangeNotifierProvider(create: (_) => LoginViewModel()),
         ChangeNotifierProvider(create: (_) => NewChatViewModel()),
+        ChangeNotifierProvider(create: (_) => ConversationViewModel()),
+        ChangeNotifierProvider(create: (_) => UserViewModel()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

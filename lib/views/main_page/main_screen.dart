@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:provider/provider.dart';
+import 'package:social_app_ui/view_models/user/user_view_model.dart';
 import 'package:social_app_ui/views/chat/chats/chats.dart';
 import 'package:social_app_ui/views/friends/friends.dart';
 import 'package:social_app_ui/views/home/home.dart';
@@ -72,6 +75,11 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     super.initState();
     _pageController = PageController(initialPage: 1);
+    SchedulerBinding.instance.addPostFrameCallback(
+          (_) {
+        Provider.of<UserViewModel>(context, listen: false).setUser();
+      },
+    );
   }
 
   @override

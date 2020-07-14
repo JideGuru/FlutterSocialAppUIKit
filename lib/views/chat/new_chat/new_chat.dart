@@ -19,7 +19,7 @@ class _NewChatState extends State<NewChat> {
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback(
       (_) {
-        Provider.of<NewChatViewModel>(context, listen: false).getDocuments();
+        Provider.of<NewChatViewModel>(context, listen: false).getUsers();
       },
     );
   }

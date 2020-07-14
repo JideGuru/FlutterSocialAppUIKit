@@ -6,17 +6,19 @@ import 'package:social_app_ui/views/chat/conversation/conversation.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class ChatItem extends StatelessWidget {
-  final String userID;
+  final String userId;
   final Timestamp time;
   final String msg;
   final int counter;
+  final String chatId;
 
   ChatItem({
     Key key,
-    @required this.userID,
+    @required this.userId,
     @required this.time,
     @required this.msg,
     @required this.counter,
+    @required this.chatId,
   }) : super(key: key);
 
   final Firestore firestore = Firestore.instance;
@@ -24,7 +26,7 @@ class ChatItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: firestore.collection('users').document('$userID').snapshots(),
+      stream: firestore.collection('users').document('$userId').snapshots(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           DocumentSnapshot documentSnapshot = snapshot.data;
@@ -35,11 +37,14 @@ class ChatItem extends StatelessWidget {
                 EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
             leading: Stack(
               children: <Widget>[
-                CircleAvatar(
-                  backgroundImage: CachedNetworkImageProvider(
-                    '${user.profilePicture}',
+                Hero(
+                  tag: user.name,
+                  child: CircleAvatar(
+                    backgroundImage: CachedNetworkImageProvider(
+                      '${user.profilePicture}',
+                    ),
+                    radius: 25.0,
                   ),
-                  radius: 25.0,
                 ),
                 Positioned(
                   bottom: 0.0,
@@ -54,7 +59,9 @@ class ChatItem extends StatelessWidget {
                     child: Center(
                       child: Container(
                         decoration: BoxDecoration(
-                          color: user.isOnline ? Color(0xff00d72f) : Colors.grey,
+                          color: user?.isOnline ?? false
+                              ? Color(0xff00d72f)
+                              : Colors.grey,
                           borderRadius: BorderRadius.circular(6),
                         ),
                         height: 11,
@@ -96,7 +103,10 @@ class ChatItem extends StatelessWidget {
               Navigator.of(context, rootNavigator: true).push(
                 MaterialPageRoute(
                   builder: (BuildContext context) {
-                    return Conversation();
+                    return Conversation(
+                      userId: userId,
+                      chatId: chatId,
+                    );
                   },
                 ),
               );
