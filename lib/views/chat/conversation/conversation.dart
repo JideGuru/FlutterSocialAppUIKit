@@ -100,7 +100,7 @@ class _ConversationState extends State<Conversation> {
                         children: <Widget>[
                           IconButton(
                             icon: Icon(
-                              Feather.plus,
+                              Feather.image,
                               color: Theme.of(context).accentColor,
                             ),
                             onPressed: () {},
