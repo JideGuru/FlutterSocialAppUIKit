@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:social_app_ui/components/chat_bubble.dart';
 import 'package:social_app_ui/models/message.dart';
@@ -30,6 +33,37 @@ class _ConversationState extends State<Conversation> {
   ScrollController controller = ScrollController();
   TextEditingController messageTEC = TextEditingController();
   bool isFirst = false;
+
+  File _image;
+  final picker = ImagePicker();
+
+  Future getImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.camera);
+
+    File croppedFile = await ImageCropper.cropImage(
+        sourcePath: pickedFile.path,
+        aspectRatioPresets: [
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio16x9
+        ],
+        androidUiSettings: AndroidUiSettings(
+          toolbarTitle: 'Crop image',
+          toolbarColor: Theme.of(context).appBarTheme.color,
+          toolbarWidgetColor: Theme.of(context).appBarTheme.iconTheme.color,
+          initAspectRatio: CropAspectRatioPreset.original,
+          lockAspectRatio: false,
+        ),
+        iosUiSettings: IOSUiSettings(
+          minimumAspectRatio: 1.0,
+        )
+    );
+    setState(() {
+      _image = File(pickedFile.path);
+    });
+  }
 
   @override
   void initState() {
@@ -103,7 +137,7 @@ class _ConversationState extends State<Conversation> {
                               Feather.image,
                               color: Theme.of(context).accentColor,
                             ),
-                            onPressed: () {},
+                            onPressed: () => getImage(),
                           ),
                           Flexible(
                             child: TextField(

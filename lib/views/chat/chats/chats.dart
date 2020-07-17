@@ -104,7 +104,7 @@ class Chats extends StatelessWidget {
         .collection("chats")
         .document(documentId)
         .collection('messages')
-        .orderBy('time')
+        .orderBy('time', descending: true)
         .snapshots();
   }
 }
