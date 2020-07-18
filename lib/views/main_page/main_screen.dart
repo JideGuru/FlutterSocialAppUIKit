@@ -45,19 +45,19 @@ class _MainScreenState extends State<MainScreen> {
               icon: Icon(
                 Feather.message_circle,
               ),
-              title: Container(height: 0.0),
+              title: Text('Chat'),
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Feather.home,
               ),
-              title: Container(height: 0.0),
+              title: Text('Home'),
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Feather.user,
               ),
-              title: Container(height: 0.0),
+              title: Text('Profile'),
             ),
           ],
           onTap: navigationTapped,
@@ -76,7 +76,7 @@ class _MainScreenState extends State<MainScreen> {
     super.initState();
     _pageController = PageController(initialPage: 1);
     SchedulerBinding.instance.addPostFrameCallback(
-          (_) {
+      (_) {
         Provider.of<UserViewModel>(context, listen: false).setUser();
       },
     );

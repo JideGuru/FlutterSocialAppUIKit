@@ -38,31 +38,36 @@ class _ConversationState extends State<Conversation> {
   final picker = ImagePicker();
 
   Future getImage() async {
-    final pickedFile = await picker.getImage(source: ImageSource.camera);
-
-    File croppedFile = await ImageCropper.cropImage(
-        sourcePath: pickedFile.path,
-        aspectRatioPresets: [
-          CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio3x2,
-          CropAspectRatioPreset.original,
-          CropAspectRatioPreset.ratio4x3,
-          CropAspectRatioPreset.ratio16x9
-        ],
-        androidUiSettings: AndroidUiSettings(
-          toolbarTitle: 'Crop image',
-          toolbarColor: Theme.of(context).appBarTheme.color,
-          toolbarWidgetColor: Theme.of(context).appBarTheme.iconTheme.color,
-          initAspectRatio: CropAspectRatioPreset.original,
-          lockAspectRatio: false,
-        ),
-        iosUiSettings: IOSUiSettings(
-          minimumAspectRatio: 1.0,
-        )
-    );
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+    crop(pickedFile.path);
     setState(() {
       _image = File(pickedFile.path);
     });
+  }
+
+  crop(path) async {
+    print(path);
+    File croppedFile = await ImageCropper.cropImage(
+      sourcePath: path,
+      aspectRatioPresets: [
+        CropAspectRatioPreset.square,
+        CropAspectRatioPreset.ratio3x2,
+        CropAspectRatioPreset.original,
+        CropAspectRatioPreset.ratio4x3,
+        CropAspectRatioPreset.ratio16x9
+      ],
+      androidUiSettings: AndroidUiSettings(
+        toolbarTitle: 'Crop image',
+        toolbarColor: Theme.of(context).appBarTheme.color,
+        toolbarWidgetColor: Theme.of(context).appBarTheme.iconTheme.color,
+        initAspectRatio: CropAspectRatioPreset.original,
+        lockAspectRatio: false,
+      ),
+      iosUiSettings: IOSUiSettings(
+        minimumAspectRatio: 1.0,
+      ),
+    ).catchError((e)=>print(e));
+    print(croppedFile.path);
   }
 
   @override
