@@ -84,7 +84,8 @@ class _ConversationState extends State<Conversation> {
                       if (snapshot.hasData) {
                         List messages = snapshot.data.documents;
 
-                        // set the message length as user read count everytime widget rebuilds
+                        // set the message length as user read
+                        // count everytime widget rebuilds
                         viewModel.setReadCount(
                           widget.chatId,
                           user,
@@ -327,6 +328,7 @@ class _ConversationState extends State<Conversation> {
         print("FIRST");
         String id = await viewModel.sendFirstMessage(widget.userId, message);
         setState(() {
+          isFirst = false;
           widget.chatId = id;
         });
       } else {

@@ -44,7 +44,7 @@ class ChatService extends Services {
   setUserRead(String chatId, FirebaseUser user, int count) async {
     DocumentSnapshot snap =
         await firestore.collection("chats").document(chatId).get();
-    Map reads = snap.data['reads'];
+    Map reads = snap.data['reads']??{};
     reads[user.uid] = count;
     await firestore
         .collection("chats")
