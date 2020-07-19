@@ -56,6 +56,7 @@ class Chats extends StatelessWidget {
                             msg: message.content,
                             time: message.time,
                             chatId: chatListSnapshot.documentID,
+                            type: message.type,
                           );
                         }else{
                           return SizedBox();

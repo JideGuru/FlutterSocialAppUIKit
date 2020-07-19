@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:social_app_ui/models/message.dart';
 import 'package:social_app_ui/services/services.dart';
 
 class ChatService extends Services {
+  FirebaseStorage storage = FirebaseStorage.instance;
   sendMessage(Message message, String chatId) async {
     await firestore
         .collection("chats")
@@ -19,5 +23,16 @@ class ChatService extends Services {
     });
     await sendMessage(message, ref.documentID);
     return ref.documentID;
+  }
+
+  Future<String> uploadImage(File image, String chatId) async {
+    StorageReference storageReference =
+        storage.ref().child("chats").child(chatId).child(uuid.v4());
+
+    StorageUploadTask uploadTask = storageReference.putFile(image);
+    String imageUrl = await (await uploadTask.onComplete).ref.getDownloadURL();
+
+    print(imageUrl);
+    return imageUrl;
   }
 }

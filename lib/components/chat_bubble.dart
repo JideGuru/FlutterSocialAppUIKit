@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:social_app_ui/util/enum/message_type.dart';
@@ -38,6 +41,16 @@ class _ChatBubbleState extends State<ChatBubble> {
     } else {
       return Colors.grey[50];
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    Timer.periodic(Duration(seconds: 1), (timer) {
+      if(mounted){
+        setState(() {});
+      }
+    });
   }
 
   @override
@@ -84,8 +97,8 @@ class _ChatBubbleState extends State<ChatBubble> {
                             : Theme.of(context).textTheme.headline6.color,
                       ),
                     )
-                    : Image.asset(
-                        "${widget.message}",
+                    : CachedNetworkImage(
+                        imageUrl: "${widget.message}",
                         height: 130,
                         width: MediaQuery.of(context).size.width / 1.3,
                         fit: BoxFit.cover,

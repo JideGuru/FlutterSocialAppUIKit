@@ -1,16 +1,20 @@
+import 'dart:async';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:social_app_ui/models/user.dart';
+import 'package:social_app_ui/util/enum/message_type.dart';
 import 'package:social_app_ui/views/chat/conversation/conversation.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-class ChatItem extends StatelessWidget {
+class ChatItem extends StatefulWidget {
   final String userId;
   final Timestamp time;
   final String msg;
   final int counter;
   final String chatId;
+  final MessageType type;
 
   ChatItem({
     Key key,
@@ -19,14 +23,30 @@ class ChatItem extends StatelessWidget {
     @required this.msg,
     @required this.counter,
     @required this.chatId,
+    @required this.type,
   }) : super(key: key);
 
+  @override
+  _ChatItemState createState() => _ChatItemState();
+}
+
+class _ChatItemState extends State<ChatItem> {
   final Firestore firestore = Firestore.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    Timer.periodic(Duration(seconds: 1), (timer) {
+      if(mounted){
+        setState(() {});
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: firestore.collection('users').document('$userId').snapshots(),
+      stream: firestore.collection('users').document('${widget.userId}').snapshots(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           DocumentSnapshot documentSnapshot = snapshot.data;
@@ -80,7 +100,7 @@ class ChatItem extends StatelessWidget {
               ),
             ),
             subtitle: Text(
-              "$msg",
+              widget.type == MessageType.IMAGE ? "IMAGE" : "${widget.msg}",
               overflow: TextOverflow.ellipsis,
               maxLines: 2,
             ),
@@ -89,7 +109,7 @@ class ChatItem extends StatelessWidget {
               children: <Widget>[
                 SizedBox(height: 10),
                 Text(
-                  "${timeago.format(time.toDate())}",
+                  "${timeago.format(widget.time.toDate())}",
                   style: TextStyle(
                     fontWeight: FontWeight.w300,
                     fontSize: 11,
@@ -104,8 +124,8 @@ class ChatItem extends StatelessWidget {
                 MaterialPageRoute(
                   builder: (BuildContext context) {
                     return Conversation(
-                      userId: userId,
-                      chatId: chatId,
+                      userId: widget.userId,
+                      chatId: widget.chatId,
                     );
                   },
                 ),
@@ -120,7 +140,7 @@ class ChatItem extends StatelessWidget {
   }
 
   buildCounter(BuildContext context) {
-    if (counter == 0) {
+    if (widget.counter == 0) {
       return SizedBox();
     } else {
       return Container(
@@ -136,7 +156,7 @@ class ChatItem extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.only(top: 1, left: 5, right: 5),
           child: Text(
-            "$counter",
+            "${widget.counter}",
             style: TextStyle(
               color: Colors.white,
               fontSize: 10,

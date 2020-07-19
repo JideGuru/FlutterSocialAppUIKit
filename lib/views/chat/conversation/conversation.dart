@@ -1,12 +1,9 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
-import 'package:image_cropper/image_cropper.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:social_app_ui/components/chat_bubble.dart';
 import 'package:social_app_ui/models/message.dart';
@@ -34,49 +31,13 @@ class _ConversationState extends State<Conversation> {
   TextEditingController messageTEC = TextEditingController();
   bool isFirst = false;
 
-  File _image;
-  final picker = ImagePicker();
-
-  Future getImage() async {
-    final pickedFile = await picker.getImage(source: ImageSource.gallery);
-    crop(pickedFile.path);
-    setState(() {
-      _image = File(pickedFile.path);
-    });
-  }
-
-  crop(path) async {
-    print(path);
-    File croppedFile = await ImageCropper.cropImage(
-      sourcePath: path,
-      aspectRatioPresets: [
-        CropAspectRatioPreset.square,
-        CropAspectRatioPreset.ratio3x2,
-        CropAspectRatioPreset.original,
-        CropAspectRatioPreset.ratio4x3,
-        CropAspectRatioPreset.ratio16x9
-      ],
-      androidUiSettings: AndroidUiSettings(
-        toolbarTitle: 'Crop image',
-        toolbarColor: Theme.of(context).appBarTheme.color,
-        toolbarWidgetColor: Theme.of(context).appBarTheme.iconTheme.color,
-        initAspectRatio: CropAspectRatioPreset.original,
-        lockAspectRatio: false,
-      ),
-      iosUiSettings: IOSUiSettings(
-        minimumAspectRatio: 1.0,
-      ),
-    ).catchError((e)=>print(e));
-    print(croppedFile.path);
-  }
-
   @override
   void initState() {
     super.initState();
     controller.addListener(() {
       focusNode.unfocus();
     });
-    if(widget.chatId == 'newChat'){
+    if (widget.chatId == 'newChat') {
       isFirst = true;
     }
   }
@@ -142,7 +103,7 @@ class _ConversationState extends State<Conversation> {
                               Feather.image,
                               color: Theme.of(context).accentColor,
                             ),
-                            onPressed: () => getImage(),
+                            onPressed: () => showPhotoOptions(viewModel, user),
                           ),
                           Flexible(
                             child: TextField(
@@ -175,7 +136,7 @@ class _ConversationState extends State<Conversation> {
                               color: Theme.of(context).accentColor,
                             ),
                             onPressed: () {
-                              if(messageTEC.text.isNotEmpty){
+                              if (messageTEC.text.isNotEmpty) {
                                 sendMessage(viewModel, user);
                               }
                             },
@@ -252,24 +213,65 @@ class _ConversationState extends State<Conversation> {
     );
   }
 
-  sendMessage(ConversationViewModel viewModel, var user) async {
-    String msg = messageTEC.text.trim();
-    messageTEC.clear();
+  showPhotoOptions(ConversationViewModel viewModel, var user) {
+    showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(10.0),
+        ),
+      ),
+      builder: (context) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            ListTile(
+              title: Text("Camera"),
+              onTap: () {
+                sendMessage(viewModel, user, imageType: 0, isImage: true);
+              },
+            ),
+            ListTile(
+              title: Text("Gallery"),
+              onTap: () {
+                sendMessage(viewModel, user, imageType: 1, isImage: true);
+              },
+            )
+          ],
+        );
+      },
+    );
+  }
+
+  sendMessage(ConversationViewModel viewModel, var user,
+      {bool isImage = false, int imageType}) async {
+    String msg;
+    if(isImage){
+      msg = await viewModel.pickImage(
+        source: imageType,
+        context: context,
+        chatId: widget.chatId,
+      );
+    }else{
+      msg = messageTEC.text.trim();
+      messageTEC.clear();
+    }
+
     Message message = Message(
       content: '$msg',
       senderUid: user.uid,
-      type: MessageType.TEXT,
+      type: isImage ? MessageType.IMAGE : MessageType.TEXT,
       time: Timestamp.now(),
     );
 
-    if(msg.isNotEmpty){
-      if(isFirst){
+    if (msg.isNotEmpty) {
+      if (isFirst) {
         print("FIRST");
         String id = await viewModel.sendFirstMessage(widget.userId, message);
         setState(() {
           widget.chatId = id;
         });
-      }else{
+      } else {
         viewModel.sendMessage(
           widget.chatId,
           message,
