@@ -3,15 +3,15 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:social_app_ui/components/life_cycle_event_handler.dart';
 import 'package:social_app_ui/services/user_service.dart';
-import 'package:social_app_ui/view_models/chats/conversation_view_model.dart';
-import 'package:social_app_ui/view_models/chats/new_chat_view_model.dart';
-import 'package:social_app_ui/view_models/user/user_view_model.dart';
-import 'package:social_app_ui/views/splash/splash.dart';
 import 'package:social_app_ui/util/const.dart';
 import 'package:social_app_ui/util/theme_config.dart';
 import 'package:social_app_ui/view_models/auth/check_email_view_model.dart';
 import 'package:social_app_ui/view_models/auth/login_view_model.dart';
 import 'package:social_app_ui/view_models/auth/register_view_model.dart';
+import 'package:social_app_ui/view_models/chats/conversation_view_model.dart';
+import 'package:social_app_ui/view_models/chats/new_chat_view_model.dart';
+import 'package:social_app_ui/view_models/user/user_view_model.dart';
+import 'package:social_app_ui/views/splash/splash.dart';
 
 void main() async {
   runApp(MyApp());
@@ -31,6 +31,7 @@ class _MyAppState extends State<MyApp> {
       resumeCallBack: () => UserService().setUserStatus(true),
     ));
   }
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
