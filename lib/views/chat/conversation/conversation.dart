@@ -67,6 +67,7 @@ class _ConversationState extends State<Conversation> {
     return Consumer<ConversationViewModel>(
       builder: (BuildContext context, viewModel, Widget child) {
         return Scaffold(
+          key: viewModel.scaffoldKey,
           appBar: AppBar(
             elevation: 3,
             titleSpacing: 0,

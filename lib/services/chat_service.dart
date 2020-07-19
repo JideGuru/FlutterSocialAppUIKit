@@ -8,6 +8,7 @@ import 'package:social_app_ui/services/services.dart';
 
 class ChatService extends Services {
   FirebaseStorage storage = FirebaseStorage.instance;
+
   sendMessage(Message message, String chatId) async {
     await firestore
         .collection("chats")
@@ -32,24 +33,24 @@ class ChatService extends Services {
     StorageUploadTask uploadTask = storageReference.putFile(image);
     String imageUrl = await (await uploadTask.onComplete).ref.getDownloadURL();
 
-    print(imageUrl);
     return imageUrl;
   }
 
   setUserRead(String chatId, FirebaseUser user, int count) async {
     DocumentSnapshot snap =
-      await firestore.collection("chats").document(chatId).get();
+        await firestore.collection("chats").document(chatId).get();
     Map reads = snap.data['reads'];
     reads[user.uid] = count;
-    await firestore.collection("chats").document(chatId).updateData({
-      'reads': reads
-    });
+    await firestore
+        .collection("chats")
+        .document(chatId)
+        .updateData({'reads': reads});
   }
 
   setUserTyping(String chatId, FirebaseUser user, bool userTyping) async {
     DocumentSnapshot snap =
-      await firestore.collection("chats").document(chatId).get();
-    Map typing = snap.data['typing']??{};
+        await firestore.collection("chats").document(chatId).get();
+    Map typing = snap.data['typing'] ?? {};
     typing[user.uid] = userTyping;
     await firestore.collection("chats").document(chatId).updateData({
       'typing': typing,

@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -9,6 +8,7 @@ import 'package:social_app_ui/models/message.dart';
 import 'package:social_app_ui/services/chat_service.dart';
 
 class ConversationViewModel extends ChangeNotifier {
+  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   ChatService chatService = ChatService();
   bool uploadingImage = false;
   File image;
@@ -46,8 +46,6 @@ class ConversationViewModel extends ChangeNotifier {
             source: ImageSource.gallery,
           );
 
-    print(image.path);
-
     if (image != null) {
       File croppedFile = await ImageCropper.cropImage(
         sourcePath: image.path,
@@ -76,9 +74,15 @@ class ConversationViewModel extends ChangeNotifier {
         uploadingImage = true;
         image = croppedFile;
         notifyListeners();
+        showInSnackBar("Uploading image...");
         String imageUrl = await chatService.uploadImage(croppedFile, chatId);
         return imageUrl;
       }
     }
+  }
+
+  void showInSnackBar(String value) {
+    scaffoldKey.currentState.removeCurrentSnackBar();
+    scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(value)));
   }
 }

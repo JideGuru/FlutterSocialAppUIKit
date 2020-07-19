@@ -90,7 +90,7 @@ class _ChatBubbleState extends State<ChatBubble> {
                     )
                     : CachedNetworkImage(
                         imageUrl: "${widget.message}",
-                        height: 130,
+                        height: 200,
                         width: MediaQuery.of(context).size.width / 1.3,
                         fit: BoxFit.cover,
                       ),
@@ -101,11 +101,11 @@ class _ChatBubbleState extends State<ChatBubble> {
         Padding(
           padding: widget.isMe
               ? EdgeInsets.only(
-                  right: 10,
+                  right: 10.0,
                   bottom: 10.0,
                 )
               : EdgeInsets.only(
-                  left: 10,
+                  left: 10.0,
                   bottom: 10.0,
                 ),
           child: TimeText(
