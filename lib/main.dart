@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:social_app_ui/components/life_cycle_event_handler.dart';
+import 'package:social_app_ui/services/user_service.dart';
 import 'package:social_app_ui/view_models/chats/conversation_view_model.dart';
 import 'package:social_app_ui/view_models/chats/new_chat_view_model.dart';
 import 'package:social_app_ui/view_models/user/user_view_model.dart';
@@ -15,7 +17,20 @@ void main() async {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(LifecycleEventHandler(
+      detachedCallBack: () => UserService().setUserStatus(false),
+      resumeCallBack: () => UserService().setUserStatus(true),
+    ));
+  }
   @override
   Widget build(BuildContext context) {
     return MultiProvider(

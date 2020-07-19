@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:social_app_ui/components/chat_bubble.dart';
 import 'package:social_app_ui/models/message.dart';
@@ -185,7 +186,7 @@ class _ConversationState extends State<Conversation> {
   ) {
     if (user.isOnline) {
       if (typing) {
-        return "typing";
+        return "typing...";
       } else {
         return "online";
       }
