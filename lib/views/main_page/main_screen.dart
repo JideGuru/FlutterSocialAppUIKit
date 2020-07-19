@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_icons/flutter_icons.dart';
-import 'package:social_app_ui/screens/chat/chats/chats.dart';
-import 'package:social_app_ui/screens/friends/friends.dart';
-import 'package:social_app_ui/screens/home/home.dart';
-import 'package:social_app_ui/screens/notifications.dart';
-import 'package:social_app_ui/screens/profile/profile.dart';
+import 'package:provider/provider.dart';
+import 'package:social_app_ui/view_models/user/user_view_model.dart';
+import 'package:social_app_ui/views/chat/chats/chats.dart';
+import 'package:social_app_ui/views/friends/friends.dart';
+import 'package:social_app_ui/views/home/home.dart';
+import 'package:social_app_ui/views/notifications.dart';
+import 'package:social_app_ui/views/profile/profile.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -42,19 +45,19 @@ class _MainScreenState extends State<MainScreen> {
               icon: Icon(
                 Feather.message_circle,
               ),
-              title: Container(height: 0.0),
+              title: Text('Chat'),
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Feather.home,
               ),
-              title: Container(height: 0.0),
+              title: Text('Home'),
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Feather.user,
               ),
-              title: Container(height: 0.0),
+              title: Text('Profile'),
             ),
           ],
           onTap: navigationTapped,
@@ -72,6 +75,11 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     super.initState();
     _pageController = PageController(initialPage: 1);
+    SchedulerBinding.instance.addPostFrameCallback(
+      (_) {
+        Provider.of<UserViewModel>(context, listen: false).setUser();
+      },
+    );
   }
 
   @override

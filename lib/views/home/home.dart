@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:social_app_ui/components/post_item.dart';
-import 'package:social_app_ui/screens/post/add_post.dart';
+import 'package:social_app_ui/views/post/add_post.dart';
 import 'package:social_app_ui/util/data.dart';
 import 'package:social_app_ui/util/router.dart';
 
