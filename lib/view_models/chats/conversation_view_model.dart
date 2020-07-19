@@ -29,6 +29,14 @@ class ConversationViewModel extends ChangeNotifier {
     return newChatId;
   }
 
+  setReadCount(String chatId, var user, int count){
+    chatService.setUserRead(chatId, user, count);
+  }
+
+  setUserTyping(String chatId, var user, bool typing){
+    chatService.setUserTyping(chatId, user, typing);
+  }
+
   pickImage({int source, BuildContext context, String chatId}) async {
     File image = source == 0
         ? await ImagePicker.pickImage(

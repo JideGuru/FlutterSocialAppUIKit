@@ -1,52 +1,38 @@
-import 'dart:async';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:social_app_ui/components/time_text.dart';
 import 'package:social_app_ui/models/user.dart';
 import 'package:social_app_ui/util/enum/message_type.dart';
 import 'package:social_app_ui/views/chat/conversation/conversation.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-class ChatItem extends StatefulWidget {
+class ChatItem extends StatelessWidget {
   final String userId;
   final Timestamp time;
   final String msg;
-  final int counter;
+  final int messageCount;
   final String chatId;
   final MessageType type;
+  final String currentUserId;
 
   ChatItem({
     Key key,
     @required this.userId,
     @required this.time,
     @required this.msg,
-    @required this.counter,
+    @required this.messageCount,
     @required this.chatId,
     @required this.type,
+    @required this.currentUserId,
   }) : super(key: key);
 
-  @override
-  _ChatItemState createState() => _ChatItemState();
-}
-
-class _ChatItemState extends State<ChatItem> {
   final Firestore firestore = Firestore.instance;
-
-  @override
-  void initState() {
-    super.initState();
-    Timer.periodic(Duration(seconds: 1), (timer) {
-      if(mounted){
-        setState(() {});
-      }
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: firestore.collection('users').document('${widget.userId}').snapshots(),
+      stream: firestore.collection('users').document('$userId').snapshots(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           DocumentSnapshot documentSnapshot = snapshot.data;
@@ -100,7 +86,7 @@ class _ChatItemState extends State<ChatItem> {
               ),
             ),
             subtitle: Text(
-              widget.type == MessageType.IMAGE ? "IMAGE" : "${widget.msg}",
+              type == MessageType.IMAGE ? "IMAGE" : "$msg",
               overflow: TextOverflow.ellipsis,
               maxLines: 2,
             ),
@@ -108,11 +94,13 @@ class _ChatItemState extends State<ChatItem> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
                 SizedBox(height: 10),
-                Text(
-                  "${timeago.format(widget.time.toDate())}",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w300,
-                    fontSize: 11,
+                TimeText(
+                  child: Text(
+                    "${timeago.format(time.toDate())}",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w300,
+                      fontSize: 11,
+                    ),
                   ),
                 ),
                 SizedBox(height: 5),
@@ -124,8 +112,8 @@ class _ChatItemState extends State<ChatItem> {
                 MaterialPageRoute(
                   builder: (BuildContext context) {
                     return Conversation(
-                      userId: widget.userId,
-                      chatId: widget.chatId,
+                      userId: userId,
+                      chatId: chatId,
                     );
                   },
                 ),
@@ -140,31 +128,51 @@ class _ChatItemState extends State<ChatItem> {
   }
 
   buildCounter(BuildContext context) {
-    if (widget.counter == 0) {
-      return SizedBox();
-    } else {
-      return Container(
-        padding: EdgeInsets.all(1),
-        decoration: BoxDecoration(
-          color: Theme.of(context).accentColor,
-          borderRadius: BorderRadius.circular(6),
-        ),
-        constraints: BoxConstraints(
-          minWidth: 11,
-          minHeight: 11,
-        ),
-        child: Padding(
-          padding: EdgeInsets.only(top: 1, left: 5, right: 5),
-          child: Text(
-            "${widget.counter}",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 10,
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ),
-      );
-    }
+    return StreamBuilder(
+      stream: messageBodyStream(),
+      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+        if(snapshot.hasData){
+          DocumentSnapshot snap = snapshot.data;
+          Map usersReads = snap.data['reads']??{};
+          int readCount = usersReads[currentUserId]??0;
+          int counter = messageCount - readCount;
+          if (counter == 0) {
+            return SizedBox();
+          } else {
+            return Container(
+              padding: EdgeInsets.all(1),
+              decoration: BoxDecoration(
+                color: Theme.of(context).accentColor,
+                borderRadius: BorderRadius.circular(6),
+              ),
+              constraints: BoxConstraints(
+                minWidth: 11,
+                minHeight: 11,
+              ),
+              child: Padding(
+                padding: EdgeInsets.only(top: 1, left: 5, right: 5),
+                child: Text(
+                  "$counter",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 10,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            );
+          }
+        }else{
+          return SizedBox();
+        }
+      },
+    );
+  }
+
+  Stream<DocumentSnapshot> messageBodyStream(){
+    return firestore
+        .collection("chats")
+        .document(chatId)
+        .snapshots();
   }
 }

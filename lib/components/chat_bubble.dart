@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:social_app_ui/components/time_text.dart';
 import 'package:social_app_ui/util/enum/message_type.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -41,16 +42,6 @@ class _ChatBubbleState extends State<ChatBubble> {
     } else {
       return Colors.grey[50];
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    Timer.periodic(Duration(seconds: 1), (timer) {
-      if(mounted){
-        setState(() {});
-      }
-    });
   }
 
   @override
@@ -117,11 +108,13 @@ class _ChatBubbleState extends State<ChatBubble> {
                   left: 10,
                   bottom: 10.0,
                 ),
-          child: Text(
-            timeago.format(widget.time.toDate()),
-            style: TextStyle(
-              color: Theme.of(context).textTheme.headline6.color,
-              fontSize: 10.0,
+          child: TimeText(
+            child: Text(
+              timeago.format(widget.time.toDate()),
+              style: TextStyle(
+                color: Theme.of(context).textTheme.headline6.color,
+                fontSize: 10.0,
+              ),
             ),
           ),
         ),

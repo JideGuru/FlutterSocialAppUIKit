@@ -40,6 +40,24 @@ class _ConversationState extends State<Conversation> {
     if (widget.chatId == 'newChat') {
       isFirst = true;
     }
+
+    messageTEC.addListener(() {
+      if (focusNode.hasFocus && messageTEC.text.isNotEmpty) {
+        setTyping(true);
+      } else if (!focusNode.hasFocus ||
+          (focusNode.hasFocus && messageTEC.text.isEmpty)) {
+        setTyping(false);
+      }
+    });
+  }
+
+  setTyping(typing) {
+    var user = Provider.of<UserViewModel>(context, listen: false).user;
+    Provider.of<ConversationViewModel>(context, listen: false).setUserTyping(
+      widget.chatId,
+      user,
+      typing,
+    );
   }
 
   @override
@@ -63,6 +81,13 @@ class _ConversationState extends State<Conversation> {
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         List messages = snapshot.data.documents;
+
+                        // set the message length as user read count everytime widget rebuilds
+                        viewModel.setReadCount(
+                          widget.chatId,
+                          user,
+                          messages.length,
+                        );
 
                         return ListView.builder(
                           controller: controller,
@@ -154,6 +179,21 @@ class _ConversationState extends State<Conversation> {
     );
   }
 
+  _buildOnlineText(
+    var user,
+    bool typing,
+  ) {
+    if (user.isOnline) {
+      if (typing) {
+        return "typing";
+      } else {
+        return "online";
+      }
+    } else {
+      return 'last seen ${timeago.format(user.lastSeen.toDate())}';
+    }
+  }
+
   buildUserName() {
     return StreamBuilder(
       stream: firestore
@@ -190,14 +230,29 @@ class _ConversationState extends State<Conversation> {
                         ),
                       ),
                       SizedBox(height: 5),
-                      Text(
-                        user.isOnline
-                            ? 'online'
-                            : 'last seen ${timeago.format(user.lastSeen.toDate())}',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 11,
-                        ),
+                      StreamBuilder(
+                        stream: firestore
+                            .collection('chats')
+                            .document('${widget.chatId}')
+                            .snapshots(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            DocumentSnapshot snap = snapshot.data;
+                            Map usersTyping = snap.data['typing'];
+                            return Text(
+                              _buildOnlineText(
+                                user,
+                                usersTyping[widget.userId] ?? false,
+                              ),
+                              style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 11,
+                              ),
+                            );
+                          } else {
+                            return SizedBox();
+                          }
+                        },
                       ),
                     ],
                   ),
@@ -246,13 +301,13 @@ class _ConversationState extends State<Conversation> {
   sendMessage(ConversationViewModel viewModel, var user,
       {bool isImage = false, int imageType}) async {
     String msg;
-    if(isImage){
+    if (isImage) {
       msg = await viewModel.pickImage(
         source: imageType,
         context: context,
         chatId: widget.chatId,
       );
-    }else{
+    } else {
       msg = messageTEC.text.trim();
       messageTEC.clear();
     }

@@ -52,11 +52,12 @@ class Chats extends StatelessWidget {
                           String recipient = users[0];
                           return ChatItem(
                             userId: recipient,
-                            counter: 8,
+                            messageCount: messages.length,
                             msg: message.content,
                             time: message.time,
                             chatId: chatListSnapshot.documentID,
                             type: message.type,
+                            currentUserId: viewModel.user.uid,
                           );
                         }else{
                           return SizedBox();

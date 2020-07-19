@@ -35,4 +35,24 @@ class ChatService extends Services {
     print(imageUrl);
     return imageUrl;
   }
+
+  setUserRead(String chatId, FirebaseUser user, int count) async {
+    DocumentSnapshot snap =
+      await firestore.collection("chats").document(chatId).get();
+    Map reads = snap.data['reads'];
+    reads[user.uid] = count;
+    await firestore.collection("chats").document(chatId).updateData({
+      'reads': reads
+    });
+  }
+
+  setUserTyping(String chatId, FirebaseUser user, bool userTyping) async {
+    DocumentSnapshot snap =
+      await firestore.collection("chats").document(chatId).get();
+    Map typing = snap.data['typing']??{};
+    typing[user.uid] = userTyping;
+    await firestore.collection("chats").document(chatId).updateData({
+      'typing': typing,
+    });
+  }
 }
