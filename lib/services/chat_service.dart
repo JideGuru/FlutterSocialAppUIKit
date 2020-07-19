@@ -15,6 +15,11 @@ class ChatService extends Services {
         .document("$chatId")
         .collection("messages")
         .add(message.toJson());
+
+    await firestore
+        .collection("chats")
+        .document("$chatId")
+        .updateData({"lastTextTime": Timestamp.now()});
   }
 
   Future<String> sendFirstMessage(Message message, String recipient) async {

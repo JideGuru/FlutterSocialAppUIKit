@@ -98,6 +98,7 @@ class Chats extends StatelessWidget {
     return firestore
         .collection('chats')
         .where('users', arrayContains: '$uid')
+        .orderBy('lastTextTime', descending: true)
         .snapshots();
   }
 

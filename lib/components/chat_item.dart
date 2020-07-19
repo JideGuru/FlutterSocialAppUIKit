@@ -44,7 +44,7 @@ class ChatItem extends StatelessWidget {
             leading: Stack(
               children: <Widget>[
                 Hero(
-                  tag: user.name,
+                  tag: user.email,
                   child: CircleAvatar(
                     backgroundImage: CachedNetworkImageProvider(
                       '${user.profilePicture}',

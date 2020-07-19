@@ -212,7 +212,7 @@ class _ConversationState extends State<Conversation> {
                 Padding(
                   padding: EdgeInsets.only(left: 0.0, right: 10.0),
                   child: Hero(
-                    tag: user.name,
+                    tag: user.email,
                     child: CircleAvatar(
                       backgroundImage: CachedNetworkImageProvider(
                         '${user.profilePicture}',
@@ -240,7 +240,8 @@ class _ConversationState extends State<Conversation> {
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
                             DocumentSnapshot snap = snapshot.data;
-                            Map usersTyping = snap.data['typing'];
+                            Map data = snap.data??{};
+                            Map usersTyping = data['typing']??{};
                             return Text(
                               _buildOnlineText(
                                 user,
@@ -293,7 +294,7 @@ class _ConversationState extends State<Conversation> {
               onTap: () {
                 sendMessage(viewModel, user, imageType: 1, isImage: true);
               },
-            )
+            ),
           ],
         );
       },
