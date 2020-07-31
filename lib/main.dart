@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -11,6 +12,8 @@ import 'package:social_app_ui/view_models/auth/register_view_model.dart';
 import 'package:social_app_ui/view_models/chats/conversation_view_model.dart';
 import 'package:social_app_ui/view_models/chats/new_chat_view_model.dart';
 import 'package:social_app_ui/view_models/user/user_view_model.dart';
+import 'package:social_app_ui/views/auth/check_email/check_email.dart';
+import 'package:social_app_ui/views/main_page/main_screen.dart';
 import 'package:social_app_ui/views/splash/splash.dart';
 
 void main() async {
@@ -48,7 +51,7 @@ class _MyAppState extends State<MyApp> {
         title: Constants.appName,
         theme: themeData(ThemeConfig.lightTheme),
         darkTheme: themeData(ThemeConfig.darkTheme),
-        home: Splash(),
+        home: buildHome(),
       ),
     );
   }
@@ -58,6 +61,20 @@ class _MyAppState extends State<MyApp> {
       textTheme: GoogleFonts.sourceSansProTextTheme(
         theme.textTheme,
       ),
+    );
+  }
+
+  buildHome() {
+    return StreamBuilder(
+      stream: FirebaseAuth.instance.onAuthStateChanged,
+      builder: (BuildContext context, AsyncSnapshot<FirebaseUser> snapshot) {
+        if (snapshot.hasData) {
+          print(snapshot);
+          return MainScreen();
+        } else {
+          return Splash();
+        }
+      },
     );
   }
 }
