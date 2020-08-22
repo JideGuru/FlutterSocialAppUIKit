@@ -29,7 +29,7 @@ dependencies:
   intl: ^0.16.1
   timeago: ^2.0.26
   image_picker: ^0.6.7+4
-  image_cropper: ^1.2.3
+  image_cropper: ^1.3.0
   firebase_storage: ^4.0.0
   uuid: ^2.2.0
 

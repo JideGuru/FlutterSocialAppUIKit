@@ -43,7 +43,7 @@ class Chats extends StatelessWidget {
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
                           List messages = snapshot.data.documents;
-                          Message message = Message.fromJson(messages.first.data);
+                          Message message = Message.fromJson(messages.first.data());
                           List users = chatListSnapshot.data()['users'];
                           // remove the current user's id from the Users
                           // list so we can get the second user's id

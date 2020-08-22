@@ -100,7 +100,7 @@ class _ConversationState extends State<Conversation> {
                           reverse: true,
                           itemBuilder: (BuildContext context, int index) {
                             Message message = Message.fromJson(
-                                messages.reversed.toList()[index].data);
+                                messages.reversed.toList()[index].data());
                             return ChatBubble(
                               message: '${message.content}',
                               time: message.time,
@@ -240,7 +240,7 @@ class _ConversationState extends State<Conversation> {
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
                             DocumentSnapshot snap = snapshot.data;
-                            Map data = snap.data??{};
+                            Map data = snap.data()??{};
                             Map usersTyping = data['typing']??{};
                             return Text(
                               _buildOnlineText(
