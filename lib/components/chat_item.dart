@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:social_app_ui/components/time_text.dart';
 import 'package:social_app_ui/models/user.dart';
+import 'package:social_app_ui/services/chat_service.dart';
 import 'package:social_app_ui/util/enum/message_type.dart';
 import 'package:social_app_ui/views/chat/conversation/conversation.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -27,16 +28,14 @@ class ChatItem extends StatelessWidget {
     @required this.currentUserId,
   }) : super(key: key);
 
-  final Firestore firestore = Firestore.instance;
-
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: firestore.collection('users').document('$userId').snapshots(),
+      stream: ChatService().userRef.doc('$userId').snapshots(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           DocumentSnapshot documentSnapshot = snapshot.data;
-          User user = User.fromJson(documentSnapshot.data);
+          User user = User.fromJson(documentSnapshot.data());
 
           return ListTile(
             contentPadding:
@@ -133,7 +132,7 @@ class ChatItem extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         if(snapshot.hasData){
           DocumentSnapshot snap = snapshot.data;
-          Map usersReads = snap.data['reads']??{};
+          Map usersReads = snap.data()['reads']??{};
           int readCount = usersReads[currentUserId]??0;
           int counter = messageCount - readCount;
           if (counter == 0) {
@@ -170,9 +169,8 @@ class ChatItem extends StatelessWidget {
   }
 
   Stream<DocumentSnapshot> messageBodyStream(){
-    return firestore
-        .collection("chats")
-        .document(chatId)
+    return ChatService().chatRef
+        .doc(chatId)
         .snapshots();
   }
 }

@@ -4,13 +4,12 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:social_app_ui/components/chat_item.dart';
 import 'package:social_app_ui/models/message.dart';
+import 'package:social_app_ui/services/chat_service.dart';
 import 'package:social_app_ui/util/router.dart';
 import 'package:social_app_ui/view_models/user/user_view_model.dart';
 import 'package:social_app_ui/views/chat/new_chat/new_chat.dart';
 
 class Chats extends StatelessWidget {
-  final Firestore firestore = Firestore.instance;
-
   @override
   Widget build(BuildContext context) {
     UserViewModel viewModel =
@@ -40,12 +39,12 @@ class Chats extends StatelessWidget {
                 itemBuilder: (BuildContext context, int index) {
                   DocumentSnapshot chatListSnapshot = chatList[index];
                   return StreamBuilder(
-                      stream: messageListStream(chatListSnapshot.documentID),
+                      stream: messageListStream(chatListSnapshot.id),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
                           List messages = snapshot.data.documents;
                           Message message = Message.fromJson(messages.first.data);
-                          List users = chatListSnapshot.data['users'];
+                          List users = chatListSnapshot.data()['users'];
                           // remove the current user's id from the Users
                           // list so we can get the second user's id
                           users.remove('${viewModel.user.uid}');
@@ -55,7 +54,7 @@ class Chats extends StatelessWidget {
                             messageCount: messages.length,
                             msg: message.content,
                             time: message.time,
-                            chatId: chatListSnapshot.documentID,
+                            chatId: chatListSnapshot.id,
                             type: message.type,
                             currentUserId: viewModel.user.uid,
                           );
@@ -95,17 +94,15 @@ class Chats extends StatelessWidget {
   }
 
   Stream<QuerySnapshot> userChatsStream(String uid){
-    return firestore
-        .collection('chats')
+    return ChatService().chatRef
         .where('users', arrayContains: '$uid')
         .orderBy('lastTextTime', descending: true)
         .snapshots();
   }
 
   Stream<QuerySnapshot> messageListStream(String documentId){
-    return firestore
-        .collection("chats")
-        .document(documentId)
+    return ChatService().chatRef
+        .doc(documentId)
         .collection('messages')
         .orderBy('time', descending: true)
         .snapshots();

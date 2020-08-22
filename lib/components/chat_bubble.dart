@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -13,11 +11,12 @@ class ChatBubble extends StatefulWidget {
   final Timestamp time;
   final bool isMe;
 
-  ChatBubble(
-      {@required this.message,
-      @required this.time,
-      @required this.isMe,
-      @required this.type,});
+  ChatBubble({
+    @required this.message,
+    @required this.time,
+    @required this.isMe,
+    @required this.type,
+  });
 
   @override
   _ChatBubbleState createState() => _ChatBubbleState();
@@ -78,16 +77,17 @@ class _ChatBubbleState extends State<ChatBubble> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.all(widget.type == MessageType.TEXT ? 5 : 0),
-                child: widget.type ==  MessageType.TEXT
+                padding:
+                    EdgeInsets.all(widget.type == MessageType.TEXT ? 5 : 0),
+                child: widget.type == MessageType.TEXT
                     ? Text(
-                      widget.message,
-                      style: TextStyle(
-                        color: widget.isMe
-                            ? Colors.white
-                            : Theme.of(context).textTheme.headline6.color,
-                      ),
-                    )
+                        widget.message,
+                        style: TextStyle(
+                          color: widget.isMe
+                              ? Colors.white
+                              : Theme.of(context).textTheme.headline6.color,
+                        ),
+                      )
                     : CachedNetworkImage(
                         imageUrl: "${widget.message}",
                         height: 200,

@@ -49,8 +49,8 @@ class _MyAppState extends State<MyApp> {
 
   buildHome() {
     return StreamBuilder(
-      stream: FirebaseAuth.instance.onAuthStateChanged,
-      builder: (BuildContext context, AsyncSnapshot<FirebaseUser> snapshot) {
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
         if (snapshot.hasData) {
           print(snapshot);
           return MainScreen();

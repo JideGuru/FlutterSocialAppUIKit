@@ -1,8 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:social_app_ui/views/main_page/main_screen.dart';
 import 'package:social_app_ui/services/auth_service.dart';
-import 'package:social_app_ui/util/router.dart';
 
 class LoginViewModel extends ChangeNotifier {
   AuthService auth = AuthService();
@@ -24,18 +22,18 @@ class LoginViewModel extends ChangeNotifier {
     } else {
       loading = true;
       notifyListeners();
-      bool loggedIn = await auth
-          .loginUser(
-        email: email,
-        password: password,
-      )
-          .catchError((e) {
+      try {
+        await auth.loginUser(
+          email: email,
+          password: password,
+        );
+      } catch (e) {
         loading = false;
         notifyListeners();
         showInSnackBar(
           '${auth.handleFirebaseAuthError(e.toString())}',
         );
-      });
+      }
       loading = false;
       notifyListeners();
     }
