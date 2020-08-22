@@ -101,9 +101,9 @@ class _NewChatState extends State<NewChat> {
           itemCount: viewModel.filteredUsers.length,
           itemBuilder: (BuildContext context, int index) {
             DocumentSnapshot doc = viewModel.filteredUsers[index];
-            User user = User.fromJson(doc.data);
+            User user = User.fromJson(doc.data());
 
-            if(doc.documentID == currentUser.uid){
+            if(doc.id == currentUser.uid){
               Timer(Duration(microseconds: 3), () {
                 viewModel.removeFromList(index);
               });
@@ -115,7 +115,7 @@ class _NewChatState extends State<NewChat> {
                 Router.pushPage(
                   context,
                   Conversation(
-                    userId: doc.documentID,
+                    userId: doc.id,
                     chatId: 'newChat',
                   ),
                 );

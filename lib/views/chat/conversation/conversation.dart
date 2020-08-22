@@ -4,11 +4,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:social_app_ui/components/chat_bubble.dart';
 import 'package:social_app_ui/models/message.dart';
 import 'package:social_app_ui/models/user.dart';
+import 'package:social_app_ui/services/chat_service.dart';
+import 'package:social_app_ui/services/user_service.dart';
 import 'package:social_app_ui/util/enum/message_type.dart';
 import 'package:social_app_ui/view_models/chats/conversation_view_model.dart';
 import 'package:social_app_ui/view_models/user/user_view_model.dart';
@@ -16,7 +17,7 @@ import 'package:timeago/timeago.dart' as timeago;
 
 class Conversation extends StatefulWidget {
   final String userId;
-  String chatId;
+  final String chatId;
 
   Conversation({@required this.userId, @required this.chatId});
 
@@ -25,12 +26,11 @@ class Conversation extends StatefulWidget {
 }
 
 class _ConversationState extends State<Conversation> {
-  final Firestore firestore = Firestore.instance;
-
   FocusNode focusNode = FocusNode();
   ScrollController controller = ScrollController();
   TextEditingController messageTEC = TextEditingController();
   bool isFirst = false;
+  String chatId;
 
   @override
   void initState() {
@@ -41,6 +41,7 @@ class _ConversationState extends State<Conversation> {
     if (widget.chatId == 'newChat') {
       isFirst = true;
     }
+    chatId = widget.chatId;
 
     messageTEC.addListener(() {
       if (focusNode.hasFocus && messageTEC.text.isNotEmpty) {
@@ -99,7 +100,7 @@ class _ConversationState extends State<Conversation> {
                           reverse: true,
                           itemBuilder: (BuildContext context, int index) {
                             Message message = Message.fromJson(
-                                messages.reversed.toList()[index].data);
+                                messages.reversed.toList()[index].data());
                             return ChatBubble(
                               message: '${message.content}',
                               time: message.time,
@@ -199,14 +200,13 @@ class _ConversationState extends State<Conversation> {
 
   buildUserName() {
     return StreamBuilder(
-      stream: firestore
-          .collection('users')
-          .document('${widget.userId}')
+      stream: UserService().userRef
+          .doc('${widget.userId}')
           .snapshots(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           DocumentSnapshot documentSnapshot = snapshot.data;
-          User user = User.fromJson(documentSnapshot.data);
+          User user = User.fromJson(documentSnapshot.data());
           return InkWell(
             child: Row(
               children: <Widget>[
@@ -234,14 +234,13 @@ class _ConversationState extends State<Conversation> {
                       ),
                       SizedBox(height: 5),
                       StreamBuilder(
-                        stream: firestore
-                            .collection('chats')
-                            .document('${widget.chatId}')
+                        stream: ChatService().chatRef
+                            .doc('${widget.chatId}')
                             .snapshots(),
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
                             DocumentSnapshot snap = snapshot.data;
-                            Map data = snap.data??{};
+                            Map data = snap.data()??{};
                             Map usersTyping = data['typing']??{};
                             return Text(
                               _buildOnlineText(
@@ -329,7 +328,7 @@ class _ConversationState extends State<Conversation> {
         String id = await viewModel.sendFirstMessage(widget.userId, message);
         setState(() {
           isFirst = false;
-          widget.chatId = id;
+          chatId = id;
         });
       } else {
         viewModel.sendMessage(
@@ -341,9 +340,9 @@ class _ConversationState extends State<Conversation> {
   }
 
   Stream<QuerySnapshot> messageListStream(String documentId) {
-    return firestore
-        .collection("chats")
-        .document(documentId)
+    return ChatService()
+        .chatRef
+        .doc(documentId)
         .collection('messages')
         .orderBy('time')
         .snapshots();

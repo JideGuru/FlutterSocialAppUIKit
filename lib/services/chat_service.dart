@@ -10,25 +10,23 @@ class ChatService extends Services {
   FirebaseStorage storage = FirebaseStorage.instance;
 
   sendMessage(Message message, String chatId) async {
-    await firestore
-        .collection("chats")
-        .document("$chatId")
+    await chatRef
+        .doc("$chatId")
         .collection("messages")
         .add(message.toJson());
 
-    await firestore
-        .collection("chats")
-        .document("$chatId")
-        .updateData({"lastTextTime": Timestamp.now()});
+    await chatRef
+        .doc("$chatId")
+        .update({"lastTextTime": Timestamp.now()});
   }
 
   Future<String> sendFirstMessage(Message message, String recipient) async {
-    FirebaseUser user = await auth.currentUser();
-    DocumentReference ref = await firestore.collection("chats").add({
+    User user = auth.currentUser;
+    DocumentReference ref = await chatRef.add({
       'users': [recipient, user.uid],
     });
-    await sendMessage(message, ref.documentID);
-    return ref.documentID;
+    await sendMessage(message, ref.id);
+    return ref.id;
   }
 
   Future<String> uploadImage(File image, String chatId) async {
@@ -41,23 +39,20 @@ class ChatService extends Services {
     return imageUrl;
   }
 
-  setUserRead(String chatId, FirebaseUser user, int count) async {
-    DocumentSnapshot snap =
-        await firestore.collection("chats").document(chatId).get();
-    Map reads = snap.data['reads']??{};
+  setUserRead(String chatId, User user, int count) async {
+    DocumentSnapshot snap = await chatRef.doc(chatId).get();
+    Map reads = snap.data()['reads']??{};
     reads[user.uid] = count;
-    await firestore
-        .collection("chats")
-        .document(chatId)
-        .updateData({'reads': reads});
+    await chatRef
+        .doc(chatId)
+        .update({'reads': reads});
   }
 
-  setUserTyping(String chatId, FirebaseUser user, bool userTyping) async {
-    DocumentSnapshot snap =
-        await firestore.collection("chats").document(chatId).get();
-    Map typing = snap.data['typing'] ?? {};
+  setUserTyping(String chatId, User user, bool userTyping) async {
+    DocumentSnapshot snap = await chatRef.doc(chatId).get();
+    Map typing = snap.data()['typing'] ?? {};
     typing[user.uid] = userTyping;
-    await firestore.collection("chats").document(chatId).updateData({
+    await chatRef.doc(chatId).update({
       'typing': typing,
     });
   }

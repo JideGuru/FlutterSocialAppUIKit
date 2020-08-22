@@ -1,20 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:social_app_ui/services/services.dart';
+import 'package:social_app_ui/util/const.dart';
 
 class AuthService extends Services {
-  String defaultPicture = "https://firebasestorage.googleapis.com/v0/b/le-chat-"
-      "3111c.appspot.com/o/profilePictures%2Fblank-profile-picture-973460_"
-      "640.png?alt=media&token=d2e6ecae-2b4c-4b69-be59-96e734874f4b";
-
-  /// Search our [Firestore] database to see if the user email exists
+  /// Search our [FirebaseFirestore] database to see if the user email exists
   Future<bool> checkUser(String email) async {
-    QuerySnapshot snap = await firestore
-        .collection('users')
+    QuerySnapshot snap = await userRef
         .where("email", isEqualTo: email)
-        .getDocuments();
+        .get();
 
-    if (snap.documents.isNotEmpty) {
+    if (snap.docs.isNotEmpty) {
       return true;
     } else {
       return false;
@@ -22,7 +18,7 @@ class AuthService extends Services {
   }
 
   /// Register user with [FirebaseAuth] then store the user details
-  /// on our [Firestore] database
+  /// on our [FirebaseFirestore] database
   Future<bool> registerUser({String email, password, name}) async {
     // Create user with [FirebaseAuth]
     var res = await auth.createUserWithEmailAndPassword(
@@ -31,15 +27,13 @@ class AuthService extends Services {
     );
 
     if (res.user != null) {
-      // After registration is successful, store user details to [Firestore].
-      FirebaseUser user = res.user;
-      await firestore.collection("users").document("${user.uid}").setData({
+      // After registration is successful, store user details to [FirebaseFirestore].
+      User user = res.user;
+      await userRef.doc("${user.uid}").set({
         "email": user.email,
         "name": name,
         "signedUpAt": Timestamp.now(),
-        "profilePicture": defaultPicture,
-      }).catchError((e) {
-        print(e);
+        "profilePicture": Constants.defaultPicture,
       });
       return true;
     } else {

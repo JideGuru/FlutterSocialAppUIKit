@@ -1,8 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:social_app_ui/views/main_page/main_screen.dart';
 import 'package:social_app_ui/services/auth_service.dart';
-import 'package:social_app_ui/util/router.dart';
 
 class RegisterViewModel extends ChangeNotifier {
   AuthService auth = AuthService();
@@ -25,19 +23,19 @@ class RegisterViewModel extends ChangeNotifier {
     } else {
       loading = true;
       notifyListeners();
-      bool userCreated = await auth
-          .registerUser(
-        email: email,
-        password: password,
-        name: name,
-      )
-          .catchError((e) {
+      try {
+        await auth.registerUser(
+          email: email,
+          password: password,
+          name: name,
+        );
+      } catch (e) {
         loading = false;
         notifyListeners();
         showInSnackBar(
           '${auth.handleFirebaseAuthError(e.toString())}',
         );
-      });
+      }
       loading = false;
       notifyListeners();
     }
