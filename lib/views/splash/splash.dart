@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:social_app_ui/components/animations/type_write.dart';
 import 'package:social_app_ui/util/const.dart';
 import 'package:social_app_ui/util/router.dart';
-import 'package:social_app_ui/views/auth/check_email/check_email.dart';
+import 'package:social_app_ui/views/auth/login/login.dart';
 
 class Splash extends StatefulWidget {
   @override
@@ -22,7 +22,7 @@ class _SplashState extends State<Splash> {
   }
 
   changeScreen() async {
-    Router.pushPageWithFadeAnimation(context, CheckEmail());
+    Router.pushPageWithFadeAnimation(context, Login());
   }
 
   @override

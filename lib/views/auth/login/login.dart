@@ -7,10 +7,6 @@ import 'package:social_app_ui/util/validations.dart';
 import 'package:social_app_ui/view_models/auth/login_view_model.dart';
 
 class Login extends StatelessWidget {
-  final String email;
-
-  Login({@required this.email});
-
   @override
   Widget build(BuildContext context) {
     return Consumer<LoginViewModel>(
@@ -46,14 +42,12 @@ class Login extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         CustomTextField(
-                          enabled: false,
                           hintText: "jideguru@gmail.com",
                           textInputAction: TextInputAction.next,
                           validateFunction: Validations.validateEmail,
                           onSaved: (String val) {
                             viewModel.email = val;
                           },
-                          initialValue: email,
                           focusNode: viewModel.emailFN,
                           nextFocusNode: viewModel.passFN,
                         ),
