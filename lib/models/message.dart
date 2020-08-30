@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:social_app_ui/util/enum/message_type.dart';
+import 'package:social_app_ui/models/enum/message_type.dart';
 
 class Message {
   String content;

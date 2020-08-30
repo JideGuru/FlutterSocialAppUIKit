@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:social_app_ui/components/custom_button.dart';
 import 'package:social_app_ui/components/custom_text_field.dart';
+import 'package:social_app_ui/util/config.dart';
 import 'package:social_app_ui/util/const.dart';
+import 'package:social_app_ui/util/router.dart';
 import 'package:social_app_ui/util/validations.dart';
 import 'package:social_app_ui/view_models/auth/login_view_model.dart';
+import 'package:social_app_ui/views/auth/register/register.dart';
 
 class Login extends StatelessWidget {
   @override
@@ -32,9 +35,7 @@ class Login extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 100.0,
-                  ),
+                  SizedBox(height: 60.0),
                   Form(
                     autovalidate: viewModel.validate,
                     key: viewModel.formKey,
@@ -42,7 +43,7 @@ class Login extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         CustomTextField(
-                          hintText: "jideguru@gmail.com",
+                          hintText: "Email",
                           textInputAction: TextInputAction.next,
                           validateFunction: Validations.validateEmail,
                           onSaved: (String val) {
@@ -51,9 +52,7 @@ class Login extends StatelessWidget {
                           focusNode: viewModel.emailFN,
                           nextFocusNode: viewModel.passFN,
                         ),
-                        SizedBox(
-                          height: 20.0,
-                        ),
+                        SizedBox(height: 20.0),
                         CustomTextField(
                           enabled: !viewModel.loading,
                           hintText: "Password",
@@ -69,10 +68,51 @@ class Login extends StatelessWidget {
                       ],
                     ),
                   ),
-                  SizedBox(
-                    height: 40.0,
+                  SizedBox(height: 20.0),
+                  Container(
+                    width: Config.isSmallScreen(context) ? 332.0 : 375.0,
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: GestureDetector(
+                        onTap: () => viewModel.forgotPassword(),
+                        child: Text(
+                          'Forgot Password?',
+                          style: TextStyle(
+                            color: Theme.of(context).accentColor,
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
+                  SizedBox(height: 30.0),
                   buildButton(context, viewModel),
+                  SizedBox(height: 25.0),
+                  Container(
+                    width: Config.isSmallScreen(context) ? 332.0 : 375.0,
+                    child: Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Don't have an account? ",
+                          ),
+
+                          GestureDetector(
+                            onTap: () => Router.pushPage(
+                              context,
+                              Register(),
+                            ),
+                            child: Text(
+                              'Signup here',
+                              style: TextStyle(
+                                color: Theme.of(context).accentColor,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),

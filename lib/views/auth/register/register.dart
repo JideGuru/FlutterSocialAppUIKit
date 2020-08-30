@@ -2,15 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:social_app_ui/components/custom_button.dart';
 import 'package:social_app_ui/components/custom_text_field.dart';
+import 'package:social_app_ui/util/config.dart';
 import 'package:social_app_ui/util/const.dart';
 import 'package:social_app_ui/util/validations.dart';
 import 'package:social_app_ui/view_models/auth/register_view_model.dart';
 
 class Register extends StatelessWidget {
-  final String email;
-
-  Register({@required this.email});
-
   @override
   Widget build(BuildContext context) {
     return Consumer<RegisterViewModel>(
@@ -37,7 +34,7 @@ class Register extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    height: 100.0,
+                    height: 60.0
                   ),
                   Form(
                     autovalidate: viewModel.validate,
@@ -57,12 +54,10 @@ class Register extends StatelessWidget {
                           nextFocusNode: viewModel.emailFN,
                         ),
                         SizedBox(
-                          height: 20.0,
+                          height: 20.0
                         ),
                         CustomTextField(
-                          enabled: false,
-                          initialValue: email,
-                          hintText: "jideguru@gmail.com",
+                          hintText: "Email",
                           textInputAction: TextInputAction.next,
                           validateFunction: Validations.validateEmail,
                           onSaved: (String val) {
@@ -72,7 +67,7 @@ class Register extends StatelessWidget {
                           nextFocusNode: viewModel.passFN,
                         ),
                         SizedBox(
-                          height: 20.0,
+                          height: 20.0
                         ),
                         CustomTextField(
                           enabled: !viewModel.loading,
@@ -90,9 +85,33 @@ class Register extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    height: 40.0,
+                    height: 40.0
                   ),
                   buildButton(context, viewModel),
+                  SizedBox(height: 25.0),
+                  Container(
+                    width: Config.isSmallScreen(context) ? 332.0 : 375.0,
+                    child: Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Already have an account? ',
+                          ),
+
+                          GestureDetector(
+                            onTap: () => Navigator.pop(context),
+                            child: Text(
+                              'Login',
+                              style: TextStyle(
+                                color: Theme.of(context).accentColor,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),

@@ -43,7 +43,7 @@ class ThemeConfig {
   }
 
   static BoxShadow cardShadow = BoxShadow(
-    color: lightAccent.withOpacity(0.1),
+    color: lightAccent.withOpacity(0.4),
     blurRadius: 8.0,
     spreadRadius: 0.0,
     offset: Offset(

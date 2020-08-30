@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:social_app_ui/util/config.dart';
 
 class CustomTextField extends StatelessWidget {
   final String initialValue;
@@ -14,27 +15,26 @@ class CustomTextField extends StatelessWidget {
   final void Function(String) onSaved, onChange;
   final Key key;
 
-
-  CustomTextField({
-    this.initialValue,
-    this.enabled,
-    this.hintText,
-    this.textInputType,
-    this.controller,
-    this.textInputAction,
-    this.focusNode,
-    this.nextFocusNode,
-    this.submitAction,
-    this.obscureText = false,
-    this.validateFunction,
-    this.onSaved,
-    this.onChange,
-    this.key});
+  CustomTextField(
+      {this.initialValue,
+      this.enabled,
+      this.hintText,
+      this.textInputType,
+      this.controller,
+      this.textInputAction,
+      this.focusNode,
+      this.nextFocusNode,
+      this.submitAction,
+      this.obscureText = false,
+      this.validateFunction,
+      this.onSaved,
+      this.onChange,
+      this.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width,
+      width: Config.isSmallScreen(context) ? 332.0 : 375.0,
       child: TextFormField(
         initialValue: initialValue,
         enabled: enabled,
@@ -61,26 +61,18 @@ class CustomTextField extends StatelessWidget {
         decoration: InputDecoration(
           hintText: hintText,
           hintStyle: TextStyle(
-            color: Colors.grey[400],
+            color: Theme.of(context).textTheme.headline1.color,
           ),
-          contentPadding: EdgeInsets.symmetric(horizontal: 20.0),
-          border: border(),
-          focusedBorder: border(),
-          disabledBorder: border()
+          contentPadding: EdgeInsets.symmetric(horizontal: 5.0),
+          border: border(context),
+          focusedBorder: border(context),
+          disabledBorder: border(context),
         ),
       ),
     );
   }
 
-  border(){
-    return OutlineInputBorder(
-      borderRadius: BorderRadius.all(
-        Radius.circular(10.0),
-      ),
-      borderSide: BorderSide(
-        color: Color(0xffB3ABAB),
-        width: 1.0,
-      ),
-    );
+  border(BuildContext context) {
+    return UnderlineInputBorder();
   }
 }

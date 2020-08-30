@@ -55,6 +55,10 @@ class AuthService extends Services {
     }
   }
 
+  forgotPassword(String email) async {
+    await auth.sendPasswordResetEmail(email: email);
+  }
+
   logOut() async {
     print("logout");
     await auth.signOut();
