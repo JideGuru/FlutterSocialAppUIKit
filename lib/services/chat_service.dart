@@ -6,7 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:social_app_ui/models/message.dart';
 import 'package:social_app_ui/services/services.dart';
 
-class ChatService extends Services {
+class ChatService {
   FirebaseStorage storage = FirebaseStorage.instance;
 
   sendMessage(Message message, String chatId) async {

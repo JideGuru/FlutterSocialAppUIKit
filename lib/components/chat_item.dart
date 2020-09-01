@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:social_app_ui/components/time_text.dart';
 import 'package:social_app_ui/models/enum/message_type.dart';
 import 'package:social_app_ui/models/user.dart';
-import 'package:social_app_ui/services/chat_service.dart';
+import 'package:social_app_ui/services/services.dart';
 import 'package:social_app_ui/views/chat/conversation/conversation.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -31,7 +31,7 @@ class ChatItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: ChatService().userRef.doc('$userId').snapshots(),
+      stream: userRef.doc('$userId').snapshots(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           DocumentSnapshot documentSnapshot = snapshot.data;
@@ -169,7 +169,7 @@ class ChatItem extends StatelessWidget {
   }
 
   Stream<DocumentSnapshot> messageBodyStream(){
-    return ChatService().chatRef
+    return chatRef
         .doc(chatId)
         .snapshots();
   }

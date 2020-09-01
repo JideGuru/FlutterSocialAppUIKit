@@ -9,8 +9,7 @@ import 'package:social_app_ui/components/chat_bubble.dart';
 import 'package:social_app_ui/models/enum/message_type.dart';
 import 'package:social_app_ui/models/message.dart';
 import 'package:social_app_ui/models/user.dart';
-import 'package:social_app_ui/services/chat_service.dart';
-import 'package:social_app_ui/services/user_service.dart';
+import 'package:social_app_ui/services/services.dart';
 import 'package:social_app_ui/view_models/chats/conversation_view_model.dart';
 import 'package:social_app_ui/view_models/user/user_view_model.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -200,7 +199,7 @@ class _ConversationState extends State<Conversation> {
 
   buildUserName() {
     return StreamBuilder(
-      stream: UserService().userRef
+      stream: userRef
           .doc('${widget.userId}')
           .snapshots(),
       builder: (context, snapshot) {
@@ -234,7 +233,7 @@ class _ConversationState extends State<Conversation> {
                       ),
                       SizedBox(height: 5),
                       StreamBuilder(
-                        stream: ChatService().chatRef
+                        stream: chatRef
                             .doc('${widget.chatId}')
                             .snapshots(),
                         builder: (context, snapshot) {
@@ -340,8 +339,7 @@ class _ConversationState extends State<Conversation> {
   }
 
   Stream<QuerySnapshot> messageListStream(String documentId) {
-    return ChatService()
-        .chatRef
+    return chatRef
         .doc(documentId)
         .collection('messages')
         .orderBy('time')

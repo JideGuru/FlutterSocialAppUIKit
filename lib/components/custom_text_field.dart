@@ -50,7 +50,7 @@ class CustomTextField extends StatelessWidget {
         onSaved: onSaved,
         textInputAction: textInputAction,
         focusNode: focusNode,
-        onFieldSubmitted: (String term) {
+        onFieldSubmitted: (String input) {
           if (nextFocusNode != null) {
             focusNode.unfocus();
             FocusScope.of(context).requestFocus(nextFocusNode);

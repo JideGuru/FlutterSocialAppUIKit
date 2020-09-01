@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
-import 'package:social_app_ui/services/user_service.dart';
+import 'package:social_app_ui/services/services.dart';
 
 class NewChatViewModel extends ChangeNotifier {
   List<DocumentSnapshot> users = List();
@@ -8,7 +8,7 @@ class NewChatViewModel extends ChangeNotifier {
   bool loading = true;
 
   getUsers() async {
-    QuerySnapshot snap = await UserService().userRef.get();
+    QuerySnapshot snap = await userRef.get();
     List<DocumentSnapshot> docs = snap.docs;
     users = docs;
     filteredUsers = docs;

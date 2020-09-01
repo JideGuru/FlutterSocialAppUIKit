@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:social_app_ui/services/services.dart';
 import 'package:social_app_ui/util/const.dart';
 
-class AuthService extends Services {
+class AuthService {
   /// Search our [FirebaseFirestore] database to see if the user email exists
   Future<bool> checkUser(String email) async {
     QuerySnapshot snap = await userRef

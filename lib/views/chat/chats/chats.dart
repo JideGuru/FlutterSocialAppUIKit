@@ -4,7 +4,7 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:social_app_ui/components/chat_item.dart';
 import 'package:social_app_ui/models/message.dart';
-import 'package:social_app_ui/services/chat_service.dart';
+import 'package:social_app_ui/services/services.dart';
 import 'package:social_app_ui/util/router.dart';
 import 'package:social_app_ui/view_models/user/user_view_model.dart';
 import 'package:social_app_ui/views/chat/new_chat/new_chat.dart';
@@ -94,14 +94,14 @@ class Chats extends StatelessWidget {
   }
 
   Stream<QuerySnapshot> userChatsStream(String uid){
-    return ChatService().chatRef
+    return chatRef
         .where('users', arrayContains: '$uid')
         .orderBy('lastTextTime', descending: true)
         .snapshots();
   }
 
   Stream<QuerySnapshot> messageListStream(String documentId){
-    return ChatService().chatRef
+    return chatRef
         .doc(documentId)
         .collection('messages')
         .orderBy('time', descending: true)
