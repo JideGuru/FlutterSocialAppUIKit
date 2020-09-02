@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 import 'package:social_app_ui/util/config.dart';
 
 class CustomTextField extends StatelessWidget {
@@ -65,7 +66,7 @@ class CustomTextField extends StatelessWidget {
           ),
           contentPadding: EdgeInsets.symmetric(horizontal: 5.0),
           border: border(context),
-          focusedBorder: border(context),
+          focusedBorder: focusedBorder(context),
           disabledBorder: border(context),
         ),
       ),
@@ -74,5 +75,13 @@ class CustomTextField extends StatelessWidget {
 
   border(BuildContext context) {
     return UnderlineInputBorder();
+  }
+
+  focusedBorder(BuildContext context) {
+    return UnderlineInputBorder(
+      borderSide: BorderSide(
+          color: Theme.of(context).accentColor
+      ),
+    );
   }
 }
