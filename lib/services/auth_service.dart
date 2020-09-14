@@ -35,6 +35,10 @@ class AuthService {
         "signedUpAt": Timestamp.now(),
         "profilePicture": Constants.defaultPicture,
       });
+      await res.user.updateProfile(
+        displayName: name,
+        photoURL: Constants.defaultPicture,
+      );
       return true;
     } else {
       return false;

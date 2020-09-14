@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:responsive_builder/responsive_builder.dart';
 import 'package:social_app_ui/util/config.dart';
 
 class CustomTextField extends StatelessWidget {
