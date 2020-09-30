@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:social_app_ui/screens/splash/splash.dart';
 import 'package:social_app_ui/util/const.dart';
