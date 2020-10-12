@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Router;
 import 'package:social_app_ui/components/animations/type_write.dart';
 import 'package:social_app_ui/screens/auth/check_email.dart';
 import 'package:social_app_ui/util/const.dart';
