@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Router;
 import 'package:social_app_ui/components/custom_button.dart';
 import 'package:social_app_ui/components/custom_text_field.dart';
 import 'package:social_app_ui/screens/main_screen.dart';
