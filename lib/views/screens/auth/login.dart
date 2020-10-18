@@ -5,10 +5,10 @@ import 'package:social_app_ui/util/const.dart';
 import 'package:social_app_ui/util/enum.dart';
 import 'package:social_app_ui/util/router.dart';
 import 'package:social_app_ui/util/validations.dart';
-import 'package:social_app_ui/views/screens/home.dart';
+import 'package:social_app_ui/views/screens/main_screen.dart';
 import 'package:social_app_ui/views/widgets/custom_button.dart';
 import 'package:social_app_ui/views/widgets/custom_text_field.dart';
-
+import 'package:social_app_ui/util/extensions.dart';
 class Login extends StatefulWidget {
   @override
   _LoginState createState() => _LoginState();
@@ -33,7 +33,7 @@ class _LoginState extends State<Login> {
       setState(() {});
       showInSnackBar('Please fix the errors in red before submitting.');
     } else {
-      Navigate.pushPage(context, Home());
+      Navigate.pushPageReplacement(context, MainScreen());
     }
   }
 
@@ -97,7 +97,7 @@ class _LoginState extends State<Login> {
             fontSize: 40.0,
             fontWeight: FontWeight.bold,
           ),
-        ),
+        ).fadeInList(0, false),
         SizedBox(height: 70.0),
         Form(
           autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -121,7 +121,7 @@ class _LoginState extends State<Login> {
               ),
             ],
           ),
-        ),
+        ).fadeInList(3, false),
         SizedBox(height: 20.0),
         buildButton(),
         Visibility(
@@ -139,8 +139,7 @@ class _LoginState extends State<Login> {
               ),
             ],
           ),
-        ),
-
+        ).fadeInList(5, false),
         Visibility(
           visible: formMode != FormMode.LOGIN,
           child: Row(
@@ -194,7 +193,7 @@ class _LoginState extends State<Login> {
           },
           focusNode: emailFN,
           nextFocusNode: passFN,
-        ),
+        ).fadeInList(1, false),
         Visibility(
           visible: formMode != FormMode.FORGOT_PASSWORD,
           child: Column(
@@ -214,7 +213,7 @@ class _LoginState extends State<Login> {
               ),
             ],
           ),
-        ),
+        ).fadeInList(2, false),
       ],
     );
   }
@@ -225,6 +224,6 @@ class _LoginState extends State<Login> {
         : CustomButton(
             label: "Submit",
             onPressed: () => login(),
-          );
+          ).fadeInList(4, false);
   }
 }
