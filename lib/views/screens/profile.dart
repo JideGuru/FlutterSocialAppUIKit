@@ -25,7 +25,7 @@ class _ProfileState extends State<Profile> {
               SizedBox(height: 60),
               CircleAvatar(
                 backgroundImage: AssetImage(
-                  "assets/cm${random.nextInt(10)}.jpeg",
+                  "assets/images/cm${random.nextInt(10)}.jpeg",
                 ),
                 radius: 50,
               ),
@@ -92,7 +92,7 @@ class _ProfileState extends State<Profile> {
                   return Padding(
                     padding: EdgeInsets.all(5.0),
                     child: Image.asset(
-                      "assets/cm${random.nextInt(10)}.jpeg",
+                      "assets/images/cm${random.nextInt(10)}.jpeg",
                       fit: BoxFit.cover,
                     ),
                   );
