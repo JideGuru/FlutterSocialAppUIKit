@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart' hide Router;
+import 'package:flutter/material.dart';
 import 'package:social_app_ui/components/custom_button.dart';
 import 'package:social_app_ui/components/custom_text_field.dart';
 import 'package:social_app_ui/screens/main_screen.dart';
@@ -33,7 +33,7 @@ class _RegisterState extends State<Register> {
       setState(() {});
       showInSnackBar('Please fix the errors in red before submitting.');
     } else {
-      Router.pushPage(context, MainScreen());
+      Navigate.pushPage(context, MainScreen());
     }
   }
 
@@ -65,11 +65,9 @@ class _RegisterState extends State<Register> {
                   ),
                 ),
               ),
-              SizedBox(
-                height: 100.0,
-              ),
+              SizedBox(height: 100.0),
               Form(
-                autovalidate: validate,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
                 key: formKey,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -85,9 +83,7 @@ class _RegisterState extends State<Register> {
                       focusNode: nameFN,
                       nextFocusNode: emailFN,
                     ),
-                    SizedBox(
-                      height: 20.0,
-                    ),
+                    SizedBox(height: 20.0),
                     CustomTextField(
                       enabled: false,
                       initialValue: widget.email,
@@ -100,9 +96,7 @@ class _RegisterState extends State<Register> {
                       focusNode: emailFN,
                       nextFocusNode: passFN,
                     ),
-                    SizedBox(
-                      height: 20.0,
-                    ),
+                    SizedBox(height: 20.0),
                     CustomTextField(
                       enabled: !loading,
                       hintText: "Password",
@@ -118,9 +112,7 @@ class _RegisterState extends State<Register> {
                   ],
                 ),
               ),
-              SizedBox(
-                height: 40.0,
-              ),
+              SizedBox(height: 40.0),
               buildButton(),
             ],
           ),

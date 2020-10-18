@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart' hide Router;
+import 'package:flutter/material.dart';
 import 'package:social_app_ui/components/custom_button.dart';
 import 'package:social_app_ui/components/custom_text_field.dart';
 import 'package:social_app_ui/screens/auth/login.dart';
@@ -26,7 +26,7 @@ class _CheckEmailState extends State<CheckEmail> {
       setState(() {});
       showInSnackBar('Please fix the errors in red before submitting.');
     } else {
-      Router.pushPage(context, Login(email: email));
+      Navigate.pushPage(context, Login(email: email));
     }
   }
 
@@ -71,7 +71,7 @@ class _CheckEmailState extends State<CheckEmail> {
                 height: 12.0,
               ),
               Form(
-                autovalidate: validate,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
                 key: formKey,
                 child: CustomTextField(
                   enabled: !loading,

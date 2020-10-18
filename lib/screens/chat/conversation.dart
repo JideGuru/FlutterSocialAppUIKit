@@ -121,7 +121,7 @@ class _ConversationState extends State<Conversation> {
                         child: TextField(
                           style: TextStyle(
                             fontSize: 15.0,
-                            color: Theme.of(context).textTheme.title.color,
+                            color: Theme.of(context).textTheme.headline6.color,
                           ),
                           decoration: InputDecoration(
                             contentPadding: EdgeInsets.all(10.0),
@@ -130,7 +130,7 @@ class _ConversationState extends State<Conversation> {
                             hintText: "Write your message...",
                             hintStyle: TextStyle(
                               fontSize: 15.0,
-                              color: Theme.of(context).textTheme.title.color,
+                              color: Theme.of(context).textTheme.headline6.color,
                             ),
                           ),
                           maxLines: null,

@@ -47,31 +47,27 @@ class _MainScreenState extends State<MainScreen> {
               icon: Icon(
                 Icons.message,
               ),
-              title: Container(height: 0.0),
+              label: '',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.group,
               ),
-              title: Container(height: 0.0),
+              label: '',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.home,
               ),
-              title: Container(height: 0.0),
+              label: '',
             ),
             BottomNavigationBarItem(
-              icon: IconBadge(
-                icon: Icons.notifications,
-              ),
-              title: Container(height: 0.0),
+              icon: IconBadge(icon: Icons.notifications),
+              label: '',
             ),
             BottomNavigationBarItem(
-              icon: Icon(
-                Icons.person,
-              ),
-              title: Container(height: 0.0),
+              icon: Icon(Icons.person),
+              label: '',
             ),
           ],
           onTap: navigationTapped,

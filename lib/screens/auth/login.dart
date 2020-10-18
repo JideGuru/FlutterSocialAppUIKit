@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart' hide Router;
+import 'package:flutter/material.dart';
 import 'package:social_app_ui/components/custom_button.dart';
 import 'package:social_app_ui/components/custom_text_field.dart';
 import 'package:social_app_ui/screens/auth/register.dart';
@@ -32,7 +32,7 @@ class _LoginState extends State<Login> {
       setState(() {});
       showInSnackBar('Please fix the errors in red before submitting.');
     } else {
-      Router.pushPage(
+      Navigate.pushPage(
           context,
           Register(
             email: email,
@@ -68,11 +68,9 @@ class _LoginState extends State<Login> {
                   ),
                 ),
               ),
-              SizedBox(
-                height: 100.0,
-              ),
+              SizedBox(height: 100.0),
               Form(
-                autovalidate: validate,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
                 key: formKey,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -89,9 +87,7 @@ class _LoginState extends State<Login> {
                       focusNode: emailFN,
                       nextFocusNode: passFN,
                     ),
-                    SizedBox(
-                      height: 20.0,
-                    ),
+                    SizedBox(height: 20.0),
                     CustomTextField(
                       enabled: !loading,
                       hintText: "Password",
@@ -107,9 +103,7 @@ class _LoginState extends State<Login> {
                   ],
                 ),
               ),
-              SizedBox(
-                height: 40.0,
-              ),
+              SizedBox(height: 40.0),
               buildButton(),
             ],
           ),
