@@ -1,5 +1,3 @@
-
-
 class Constants {
-  static String appName = 'Let\'s Chat';
+  static String appName = 'Chat App';
 }
