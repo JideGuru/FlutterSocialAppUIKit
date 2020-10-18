@@ -14,13 +14,15 @@ description: A Social app UI made with flutter.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^0.1.2
   google_fonts: ^1.0.0
+  flutter_staggered_animations: ^0.1.2
+  lottie: ^0.6.0
 
 dev_dependencies:
   flutter_test:
@@ -34,7 +36,8 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/
+    - assets/images/
+    - assets/animations/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
   # For details regarding adding assets from package dependencies, see

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:social_app_ui/screens/splash/splash.dart';
 import 'package:social_app_ui/util/const.dart';
 import 'package:social_app_ui/util/theme_config.dart';
+import 'package:social_app_ui/views/screens/auth/login.dart';
 
 class MyApp extends StatelessWidget {
   @override
@@ -11,8 +11,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: Constants.appName,
       theme: themeData(ThemeConfig.lightTheme),
-      darkTheme: themeData(ThemeConfig.darkTheme),
-      home: Splash(),
+      // darkTheme: themeData(ThemeConfig.darkTheme),
+      home: Login(),
     );
   }
 

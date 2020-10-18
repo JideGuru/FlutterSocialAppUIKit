@@ -47,7 +47,7 @@ List notifications = List.generate(
     13,
     (index) => {
           "name": names[random.nextInt(10)],
-          "dp": "assets/cm${random.nextInt(10)}.jpeg",
+          "dp": "assets/images/cm${random.nextInt(10)}.jpeg",
           "time": "${random.nextInt(50)} min ago",
           "notif": notifs[random.nextInt(10)]
         });
@@ -56,16 +56,16 @@ List posts = List.generate(
     13,
     (index) => {
           "name": names[random.nextInt(10)],
-          "dp": "assets/cm${random.nextInt(10)}.jpeg",
+          "dp": "assets/images/cm${random.nextInt(10)}.jpeg",
           "time": "${random.nextInt(50)} min ago",
-          "img": "assets/cm${random.nextInt(10)}.jpeg"
+          "img": "assets/images/cm${random.nextInt(10)}.jpeg"
         });
 
 List chats = List.generate(
     13,
     (index) => {
           "name": names[random.nextInt(10)],
-          "dp": "assets/cm${random.nextInt(10)}.jpeg",
+          "dp": "assets/images/cm${random.nextInt(10)}.jpeg",
           "msg": messages[random.nextInt(10)],
           "counter": random.nextInt(20),
           "time": "${random.nextInt(50)} min ago",
@@ -76,7 +76,7 @@ List groups = List.generate(
     13,
     (index) => {
           "name": "Group ${random.nextInt(20)}",
-          "dp": "assets/cm${random.nextInt(10)}.jpeg",
+          "dp": "assets/images/cm${random.nextInt(10)}.jpeg",
           "msg": messages[random.nextInt(10)],
           "counter": random.nextInt(20),
           "time": "${random.nextInt(50)} min ago",
@@ -100,7 +100,7 @@ List friends = List.generate(
     13,
     (index) => {
           "name": names[random.nextInt(10)],
-          "dp": "assets/cm${random.nextInt(10)}.jpeg",
+          "dp": "assets/images/cm${random.nextInt(10)}.jpeg",
           "status": "Anything could be here",
           "isAccept": random.nextBool(),
         });

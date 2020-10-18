@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:social_app_ui/components/icon_badge.dart';
-import 'package:social_app_ui/screens/chat/chats.dart';
-import 'package:social_app_ui/screens/friends.dart';
-import 'package:social_app_ui/screens/home.dart';
-import 'package:social_app_ui/screens/notifications.dart';
-import 'package:social_app_ui/screens/profile.dart';
+import 'package:social_app_ui/views/widgets/icon_badge.dart';
+import 'package:social_app_ui/views/screens/chat/chats.dart';
+import 'package:social_app_ui/views/screens/friends.dart';
+import 'package:social_app_ui/views/screens/home.dart';
+import 'package:social_app_ui/views/screens/notifications.dart';
+import 'package:social_app_ui/views/screens/profile.dart';
 
 class MainScreen extends StatefulWidget {
   @override

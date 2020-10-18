@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:social_app_ui/components/post_item.dart';
+import 'package:social_app_ui/views/widgets/post_item.dart';
 import 'package:social_app_ui/util/data.dart';
 
 class Home extends StatefulWidget {
