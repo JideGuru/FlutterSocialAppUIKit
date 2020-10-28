@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="dev.jideguru.FlutterSocialAppUIKit">
+    package="dev.jideguru.snapam">
    <application
-        android:label="FlutterSocialAppUIKit"
+        android:label="snapam"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

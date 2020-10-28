@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:social_app_ui/util/data.dart';
+import 'package:snapam/util/data.dart';
 
 class Profile extends StatefulWidget {
   @override

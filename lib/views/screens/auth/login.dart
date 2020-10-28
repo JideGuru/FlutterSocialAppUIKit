@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:social_app_ui/util/animations.dart';
-import 'package:social_app_ui/util/const.dart';
-import 'package:social_app_ui/util/enum.dart';
-import 'package:social_app_ui/util/router.dart';
-import 'package:social_app_ui/util/validations.dart';
-import 'package:social_app_ui/views/screens/main_screen.dart';
-import 'package:social_app_ui/views/widgets/custom_button.dart';
-import 'package:social_app_ui/views/widgets/custom_text_field.dart';
-import 'package:social_app_ui/util/extensions.dart';
+import 'package:snapam/util/animations.dart';
+import 'package:snapam/util/const.dart';
+import 'package:snapam/util/enum.dart';
+import 'package:snapam/util/router.dart';
+import 'package:snapam/util/validations.dart';
+import 'package:snapam/views/screens/main_screen.dart';
+import 'package:snapam/views/widgets/custom_button.dart';
+import 'package:snapam/views/widgets/custom_text_field.dart';
+import 'package:snapam/util/extensions.dart';
 class Login extends StatefulWidget {
   @override
   _LoginState createState() => _LoginState();

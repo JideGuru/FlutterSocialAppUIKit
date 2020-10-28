@@ -1,4 +1,4 @@
-package dev.jideguru.FlutterSocialAppUIKit
+package dev.jideguru.snapam
 
 import io.flutter.embedding.android.FlutterActivity
 
