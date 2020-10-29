@@ -3,12 +3,13 @@ import 'package:lottie/lottie.dart';
 import 'package:snapam/util/animations.dart';
 import 'package:snapam/util/const.dart';
 import 'package:snapam/util/enum.dart';
+import 'package:snapam/util/extensions.dart';
 import 'package:snapam/util/router.dart';
 import 'package:snapam/util/validations.dart';
 import 'package:snapam/views/screens/main_screen.dart';
 import 'package:snapam/views/widgets/custom_button.dart';
 import 'package:snapam/views/widgets/custom_text_field.dart';
-import 'package:snapam/util/extensions.dart';
+
 class Login extends StatefulWidget {
   @override
   _LoginState createState() => _LoginState();
@@ -124,18 +125,22 @@ class _LoginState extends State<Login> {
         ).fadeInList(3, false),
         SizedBox(height: 20.0),
         buildButton(),
+        SizedBox(height: 5.0),
         Visibility(
           visible: formMode == FormMode.LOGIN,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Don\'t have an account?'),
-              FlatButton(
-                onPressed: () {
+              Text('Don\'t have an account? '),
+              InkWell(
+                onTap: () {
                   formMode = FormMode.REGISTER;
                   setState(() {});
                 },
-                child: Text('Register'),
+                child: Text(
+                  'Register',
+                  style: TextStyle(color: Theme.of(context).accentColor),
+                ),
               ),
             ],
           ),
@@ -145,13 +150,16 @@ class _LoginState extends State<Login> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Already have an account?'),
-              FlatButton(
-                onPressed: () {
+              Text('Already have an account? '),
+              InkWell(
+                onTap: () {
                   formMode = FormMode.LOGIN;
                   setState(() {});
                 },
-                child: Text('Login'),
+                child: Text(
+                  'Login',
+                  style: TextStyle(color: Theme.of(context).accentColor),
+                ),
               ),
             ],
           ),
