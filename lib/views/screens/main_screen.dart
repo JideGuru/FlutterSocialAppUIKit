@@ -10,7 +10,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   PageController _pageController;
-  int _page = 2;
+  int _page = 1;
 
   @override
   Widget build(BuildContext context) {
