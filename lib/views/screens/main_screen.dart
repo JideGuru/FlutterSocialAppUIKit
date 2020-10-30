@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:snapam/views/widgets/icon_badge.dart';
 import 'package:snapam/views/screens/chat/chats.dart';
-import 'package:snapam/views/screens/friends.dart';
 import 'package:snapam/views/screens/home.dart';
-import 'package:snapam/views/screens/notifications.dart';
 import 'package:snapam/views/screens/profile.dart';
 
 class MainScreen extends StatefulWidget {
@@ -22,57 +19,18 @@ class _MainScreenState extends State<MainScreen> {
         physics: NeverScrollableScrollPhysics(),
         controller: _pageController,
         onPageChanged: onPageChanged,
-        children: <Widget>[
-          Chats(),
-          Friends(),
-          Home(),
-          Notifications(),
-          Profile(),
-        ],
+        children: <Widget>[Chats(), Home(), Profile()],
       ),
-      bottomNavigationBar: Theme(
-        data: Theme.of(context).copyWith(
-          // sets the background color of the `BottomNavigationBar`
-          canvasColor: Theme.of(context).primaryColor,
-          // sets the active color of the `BottomNavigationBar` if `Brightness` is light
-          primaryColor: Theme.of(context).accentColor,
-          textTheme: Theme.of(context).textTheme.copyWith(
-                caption: TextStyle(color: Colors.grey[500]),
-              ),
-        ),
-        child: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.message,
-              ),
-              label: '',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.group,
-              ),
-              label: '',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.home,
-              ),
-              label: '',
-            ),
-            BottomNavigationBarItem(
-              icon: IconBadge(icon: Icons.notifications),
-              label: '',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: '',
-            ),
-          ],
-          onTap: navigationTapped,
-          currentIndex: _page,
-        ),
+      bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: Theme.of(context).accentColor,
+        type: BottomNavigationBarType.fixed,
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(icon: Icon(Icons.message), label: 'Chat'),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+        ],
+        onTap: navigationTapped,
+        currentIndex: _page,
       ),
     );
   }

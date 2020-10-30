@@ -125,7 +125,7 @@ class _LoginState extends State<Login> {
         ).fadeInList(3, false),
         SizedBox(height: 20.0),
         buildButton(),
-        SizedBox(height: 5.0),
+        SizedBox(height: 10.0),
         Visibility(
           visible: formMode == FormMode.LOGIN,
           child: Row(

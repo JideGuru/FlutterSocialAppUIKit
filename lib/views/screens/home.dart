@@ -12,16 +12,8 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Feeds"),
+        title: Text("Home"),
         centerTitle: true,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.filter_list,
-            ),
-            onPressed: () {},
-          ),
-        ],
       ),
       body: ListView.builder(
         padding: EdgeInsets.symmetric(horizontal: 20),
