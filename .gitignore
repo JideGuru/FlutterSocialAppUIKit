@@ -39,3 +39,8 @@ app.*.symbols
 
 # Obfuscation related
 app.*.map.json
+
+# Firebase related
+.firebaserc
+firebase.json
+.firebase
