@@ -38,8 +38,9 @@ class _LoginState extends State<Login> {
   }
 
   void showInSnackBar(String value) {
-    _scaffoldKey.currentState.removeCurrentSnackBar();
-    _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(value)));
+    ScaffoldMessenger.of(_scaffoldKey.currentContext).removeCurrentSnackBar();
+    ScaffoldMessenger.of(_scaffoldKey.currentContext)
+        .showSnackBar(SnackBar(content: Text(value)));
   }
 
   @override
