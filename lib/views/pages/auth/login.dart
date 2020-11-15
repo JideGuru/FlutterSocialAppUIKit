@@ -8,7 +8,7 @@ import 'package:snapam/util/navigate.dart';
 import 'package:snapam/util/validations.dart';
 import 'package:snapam/views/components/custom_button.dart';
 import 'package:snapam/views/components/custom_text_field.dart';
-import 'package:snapam/views/pages/main_screen.dart';
+import 'package:snapam/views/pages/tabs_screen/base_page.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -34,7 +34,7 @@ class _LoginState extends State<Login> {
       setState(() {});
       showInSnackBar('Please fix the errors in red before submitting.');
     } else {
-      Navigate.pushPageReplacement(context, MainScreen());
+      Navigate.pushPageReplacement(context, BasePage());
     }
   }
 

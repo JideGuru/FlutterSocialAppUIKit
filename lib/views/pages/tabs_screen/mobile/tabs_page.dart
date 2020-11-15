@@ -3,12 +3,12 @@ import 'package:snapam/views/pages/chat/chats.dart';
 import 'package:snapam/views/pages/home.dart';
 import 'package:snapam/views/pages/profile.dart';
 
-class MainScreen extends StatefulWidget {
+class TabsPage extends StatefulWidget {
   @override
-  _MainScreenState createState() => _MainScreenState();
+  _TabsPageState createState() => _TabsPageState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class _TabsPageState extends State<TabsPage> {
   PageController _pageController;
   int _page = 1;
 

@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:snapam/util/constants/strings.dart';
 import 'package:snapam/util/theme_config.dart';
-import 'package:snapam/views/pages/auth/login.dart';
-import 'package:snapam/views/pages/main_screen.dart';
+import 'package:snapam/views/pages/tabs_screen/base_page.dart';
 
 class MyApp extends StatelessWidget {
   @override
@@ -13,7 +12,7 @@ class MyApp extends StatelessWidget {
       title: appName,
       theme: themeData(ThemeConfig.lightTheme),
       // darkTheme: themeData(ThemeConfig.darkTheme),
-      home: MainScreen(),
+      home:  BasePage(),
     );
   }
 
