@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:snapam/views/widgets/chat_bubble.dart';
+import 'package:snapam/views/components/chat_bubble.dart';
 import 'package:snapam/util/data.dart';
 
 class Conversation extends StatefulWidget {

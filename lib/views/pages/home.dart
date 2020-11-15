@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:snapam/views/widgets/post_item.dart';
+import 'package:snapam/views/components/post_item.dart';
 import 'package:snapam/util/data.dart';
 
 class Home extends StatefulWidget {

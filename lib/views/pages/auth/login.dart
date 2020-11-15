@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:snapam/util/animations.dart';
-import 'package:snapam/util/const.dart';
+import 'package:snapam/util/constants/animations.dart';
+import 'package:snapam/util/constants/strings.dart';
 import 'package:snapam/util/enum.dart';
 import 'package:snapam/util/extensions.dart';
-import 'package:snapam/util/router.dart';
+import 'package:snapam/util/navigate.dart';
 import 'package:snapam/util/validations.dart';
-import 'package:snapam/views/screens/main_screen.dart';
-import 'package:snapam/views/widgets/custom_button.dart';
-import 'package:snapam/views/widgets/custom_text_field.dart';
+import 'package:snapam/views/components/custom_button.dart';
+import 'package:snapam/views/components/custom_text_field.dart';
+import 'package:snapam/views/pages/main_screen.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -93,7 +93,7 @@ class _LoginState extends State<Login> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Text(
-          '${Constants.appName}',
+          '$appName',
           style: TextStyle(
             fontSize: 40.0,
             fontWeight: FontWeight.bold,
@@ -227,11 +227,13 @@ class _LoginState extends State<Login> {
   }
 
   buildButton() {
-    return loading
-        ? Center(child: CircularProgressIndicator())
-        : CustomButton(
-            label: "Submit",
-            onPressed: () => login(),
-          ).fadeInList(4, false);
+    return Visibility(
+      visible: !loading,
+      replacement: Center(child: CircularProgressIndicator()),
+      child: CustomButton(
+        label: "Submit",
+        onPressed: () => login(),
+      ).fadeInList(4, false),
+    );
   }
 }

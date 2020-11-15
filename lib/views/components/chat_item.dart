@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:snapam/views/screens/chat/conversation.dart';
+import 'package:snapam/views/pages/chat/conversation.dart';
 
 
 class ChatItem extends StatefulWidget {

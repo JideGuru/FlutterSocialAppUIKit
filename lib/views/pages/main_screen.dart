@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:snapam/views/screens/chat/chats.dart';
-import 'package:snapam/views/screens/home.dart';
-import 'package:snapam/views/screens/profile.dart';
+import 'package:snapam/views/pages/chat/chats.dart';
+import 'package:snapam/views/pages/home.dart';
+import 'package:snapam/views/pages/profile.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -42,7 +42,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     super.initState();
-    _pageController = PageController(initialPage: 2);
+    _pageController = PageController(initialPage: 1);
   }
 
   @override
