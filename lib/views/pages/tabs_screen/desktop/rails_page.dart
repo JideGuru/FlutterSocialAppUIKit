@@ -71,8 +71,8 @@ class _RailsPageState extends State<RailsPage> {
     return AnimatedContainer(
       duration: Duration(milliseconds: 500),
       // color: Color(0xFF1a1a27),
-      padding: EdgeInsets.symmetric(
-          vertical: 10.0, horizontal: extended ? 10.0 : 5),
+      padding:
+          EdgeInsets.symmetric(vertical: 10.0, horizontal: extended ? 10.0 : 5),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
