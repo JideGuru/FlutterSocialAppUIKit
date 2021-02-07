@@ -43,40 +43,6 @@ class _ProfileState extends State<Profile> {
                 style: TextStyle(),
               ),
               SizedBox(height: 20),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  FlatButton(
-                    child: Icon(
-                      Icons.message,
-                      color: Colors.white,
-                    ),
-                    color: Colors.grey,
-                    onPressed: () {},
-                  ),
-                  SizedBox(width: 10),
-                  FlatButton(
-                    child: Icon(
-                      Icons.add,
-                      color: Colors.white,
-                    ),
-                    color: Theme.of(context).accentColor,
-                    onPressed: () {},
-                  ),
-                ],
-              ),
-              SizedBox(height: 40),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 50),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    _buildCategory("Posts"),
-                    _buildCategory("Friends"),
-                    _buildCategory("Groups"),
-                  ],
-                ),
-              ),
               SizedBox(height: 20),
               GridView.builder(
                 shrinkWrap: true,

@@ -1,1 +1,1 @@
-const String appName = 'Snapam';
+const String appName = 'Chat app';

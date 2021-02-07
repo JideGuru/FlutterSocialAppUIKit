@@ -31,7 +31,7 @@ class _ChatItemState extends State<ChatItem> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: ListTile(
-        contentPadding: EdgeInsets.all(0),
+        contentPadding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
         leading: Stack(
           children: <Widget>[
             CircleAvatar(
