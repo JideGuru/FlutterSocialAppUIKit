@@ -1,8 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:snapam/views/components/chat_bubble.dart';
 import 'package:snapam/util/data.dart';
+import 'package:snapam/views/components/chat_bubble.dart';
 
 class Conversation extends StatefulWidget {
   @override
@@ -24,7 +24,7 @@ class _ConversationState extends State<Conversation> {
           ),
           onPressed: () => Navigator.pop(context),
         ),
-        titleSpacing: 0,
+        titleSpacing: 0.0,
         title: InkWell(
           child: Row(
             children: <Widget>[
@@ -62,14 +62,6 @@ class _ConversationState extends State<Conversation> {
           ),
           onTap: () {},
         ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.more_horiz,
-            ),
-            onPressed: () {},
-          ),
-        ],
       ),
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -112,7 +104,7 @@ class _ConversationState extends State<Conversation> {
                     children: <Widget>[
                       IconButton(
                         icon: Icon(
-                          Icons.add,
+                          Icons.photo,
                           color: Theme.of(context).accentColor,
                         ),
                         onPressed: () {},
@@ -130,19 +122,13 @@ class _ConversationState extends State<Conversation> {
                             hintText: "Write your message...",
                             hintStyle: TextStyle(
                               fontSize: 15.0,
-                              color: Theme.of(context).textTheme.headline6.color,
+                              color:
+                                  Theme.of(context).textTheme.headline6.color,
                             ),
                           ),
                           maxLines: null,
                         ),
                       ),
-                      IconButton(
-                        icon: Icon(
-                          Icons.mic,
-                          color: Theme.of(context).accentColor,
-                        ),
-                        onPressed: () {},
-                      )
                     ],
                   ),
                 ),

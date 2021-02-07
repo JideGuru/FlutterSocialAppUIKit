@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
       title: appName,
       theme: themeData(ThemeConfig.lightTheme),
       // darkTheme: themeData(ThemeConfig.darkTheme),
-      home:  BasePage(),
+      home: BasePage(),
     );
   }
 

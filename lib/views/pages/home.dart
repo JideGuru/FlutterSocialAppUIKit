@@ -10,13 +10,14 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         title: Text("Home"),
         centerTitle: true,
       ),
       body: ListView.builder(
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.2),
         itemCount: posts.length,
         itemBuilder: (BuildContext context, int index) {
           Map post = posts[index];
