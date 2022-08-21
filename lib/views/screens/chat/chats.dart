@@ -37,8 +37,8 @@ class _ChatsState extends State<Chats>
         ],
         bottom: TabBar(
           controller: _tabController,
-          indicatorColor: Theme.of(context).accentColor,
-          labelColor: Theme.of(context).accentColor,
+          indicatorColor: Theme.of(context).colorScheme.secondary,
+          labelColor: Theme.of(context).colorScheme.secondary,
           unselectedLabelColor: Theme.of(context).textTheme.caption.color,
           isScrollable: false,
           tabs: <Widget>[

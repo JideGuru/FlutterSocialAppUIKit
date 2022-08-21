@@ -13,35 +13,49 @@ class ThemeConfig {
   static ThemeData lightTheme = ThemeData(
     backgroundColor: lightBG,
     primaryColor: lightPrimary,
-    accentColor: lightAccent,
     scaffoldBackgroundColor: lightBG,
     appBarTheme: AppBarTheme(
       elevation: 0,
-      textTheme: TextTheme(
+      toolbarTextStyle: TextTheme(
         headline6: TextStyle(
           color: darkBG,
           fontSize: 18.0,
           fontWeight: FontWeight.w800,
         ),
-      ),
+      ).bodyText2,
+      titleTextStyle: TextTheme(
+        headline6: TextStyle(
+          color: darkBG,
+          fontSize: 18.0,
+          fontWeight: FontWeight.w800,
+        ),
+      ).headline6,
     ),
+    colorScheme: ColorScheme.fromSwatch().copyWith(secondary: lightAccent),
   );
 
   static ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark,
     backgroundColor: darkBG,
     primaryColor: darkPrimary,
-    accentColor: darkAccent,
     scaffoldBackgroundColor: darkBG,
     appBarTheme: AppBarTheme(
       elevation: 0,
-      textTheme: TextTheme(
+      toolbarTextStyle: TextTheme(
         headline6: TextStyle(
           color: lightBG,
           fontSize: 18.0,
           fontWeight: FontWeight.w800,
         ),
-      ),
+      ).bodyText2,
+      titleTextStyle: TextTheme(
+        headline6: TextStyle(
+          color: lightBG,
+          fontSize: 18.0,
+          fontWeight: FontWeight.w800,
+        ),
+      ).headline6,
     ),
+    colorScheme: ColorScheme.fromSwatch().copyWith(secondary: darkAccent),
   );
 }

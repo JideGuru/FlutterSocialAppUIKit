@@ -28,7 +28,7 @@ class _ChatBubbleState extends State<ChatBubble> {
 
   Color chatBubbleColor() {
     if (widget.isMe) {
-      return Theme.of(context).accentColor;
+      return Theme.of(context).colorScheme.secondary;
     } else {
       if (Theme.of(context).brightness == Brightness.dark) {
         return Colors.grey[800];
@@ -123,7 +123,8 @@ class _ChatBubbleState extends State<ChatBubble> {
                               child: Text(
                                 widget.isMe ? "You" : widget.replyName,
                                 style: TextStyle(
-                                  color: Theme.of(context).accentColor,
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 12,
                                 ),
@@ -137,8 +138,10 @@ class _ChatBubbleState extends State<ChatBubble> {
                               child: Text(
                                 widget.replyText,
                                 style: TextStyle(
-                                  color:
-                                      Theme.of(context).textTheme.headline6.color,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .headline6
+                                      .color,
                                   fontSize: 10.0,
                                 ),
                                 maxLines: 2,
@@ -170,7 +173,10 @@ class _ChatBubbleState extends State<ChatBubble> {
                               style: TextStyle(
                                 color: widget.isMe
                                     ? Colors.white
-                                    : Theme.of(context).textTheme.headline6.color,
+                                    : Theme.of(context)
+                                        .textTheme
+                                        .headline6
+                                        .color,
                               ),
                             ),
                           )
