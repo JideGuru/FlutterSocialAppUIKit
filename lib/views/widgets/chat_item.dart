@@ -12,14 +12,14 @@ class ChatItem extends StatefulWidget {
   final int counter;
 
   ChatItem({
-    Key key,
-    @required this.dp,
-    @required this.name,
-    @required this.time,
-    @required this.msg,
-    @required this.isOnline,
-    @required this.counter,
-  }) : super(key: key);
+    super.key,
+    required this.dp,
+    required this.name,
+    required this.time,
+    required this.msg,
+    required this.isOnline,
+    required this.counter,
+  });
 
   @override
   _ChatItemState createState() => _ChatItemState();

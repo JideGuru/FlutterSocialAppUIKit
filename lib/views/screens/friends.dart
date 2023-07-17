@@ -53,24 +53,30 @@ class _FriendsState extends State<Friends> {
               title: Text(friend['name']),
               subtitle: Text(friend['status']),
               trailing: friend['isAccept']
-                  ? FlatButton(
+                  ? TextButton(
                       child: Text(
                         "Unfollow",
                         style: TextStyle(
                           color: Colors.white,
                         ),
                       ),
-                      color: Colors.grey,
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(Colors.grey),
+                      ),
                       onPressed: () {},
                     )
-                  : FlatButton(
+                  : TextButton(
                       child: Text(
                         "Follow",
                         style: TextStyle(
                           color: Colors.white,
                         ),
                       ),
-                      color: Theme.of(context).accentColor,
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(
+                          Theme.of(context).colorScheme.secondary,
+                        ),
+                      ),
                       onPressed: () {},
                     ),
               onTap: () {},

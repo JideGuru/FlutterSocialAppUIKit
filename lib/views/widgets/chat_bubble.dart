@@ -7,15 +7,15 @@ class ChatBubble extends StatefulWidget {
   final bool isMe, isGroup, isReply;
 
   ChatBubble(
-      {@required this.message,
-      @required this.time,
-      @required this.isMe,
-      @required this.isGroup,
-      @required this.username,
-      @required this.type,
-      @required this.replyText,
-      @required this.isReply,
-      @required this.replyName});
+      {required this.message,
+      required this.time,
+      required this.isMe,
+      required this.isGroup,
+      required this.username,
+      required this.type,
+      required this.replyText,
+      required this.isReply,
+      required this.replyName});
 
   @override
   _ChatBubbleState createState() => _ChatBubbleState();
@@ -28,21 +28,21 @@ class _ChatBubbleState extends State<ChatBubble> {
 
   Color chatBubbleColor() {
     if (widget.isMe) {
-      return Theme.of(context).accentColor;
+      return Theme.of(context).colorScheme.secondary;
     } else {
       if (Theme.of(context).brightness == Brightness.dark) {
-        return Colors.grey[800];
+        return Colors.grey[800]!;
       } else {
-        return Colors.grey[200];
+        return Colors.grey[200]!;
       }
     }
   }
 
   Color chatBubbleReplyColor() {
     if (Theme.of(context).brightness == Brightness.dark) {
-      return Colors.grey[600];
+      return Colors.grey[600]!;
     } else {
-      return Colors.grey[50];
+      return Colors.grey[50]!;
     }
   }
 
@@ -123,7 +123,7 @@ class _ChatBubbleState extends State<ChatBubble> {
                               child: Text(
                                 widget.isMe ? "You" : widget.replyName,
                                 style: TextStyle(
-                                  color: Theme.of(context).accentColor,
+                                  color: Theme.of(context).colorScheme.secondary,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 12,
                                 ),
@@ -138,7 +138,7 @@ class _ChatBubbleState extends State<ChatBubble> {
                                 widget.replyText,
                                 style: TextStyle(
                                   color:
-                                      Theme.of(context).textTheme.headline6.color,
+                                      Theme.of(context).textTheme.titleLarge?.color,
                                   fontSize: 10.0,
                                 ),
                                 maxLines: 2,
@@ -160,7 +160,7 @@ class _ChatBubbleState extends State<ChatBubble> {
                             style: TextStyle(
                               color: widget.isMe
                                   ? Colors.white
-                                  : Theme.of(context).textTheme.headline6.color,
+                                  : Theme.of(context).textTheme.titleLarge?.color,
                             ),
                           )
                         : Container(
@@ -170,7 +170,7 @@ class _ChatBubbleState extends State<ChatBubble> {
                               style: TextStyle(
                                 color: widget.isMe
                                     ? Colors.white
-                                    : Theme.of(context).textTheme.headline6.color,
+                                    : Theme.of(context).textTheme.titleLarge?.color,
                               ),
                             ),
                           )
@@ -191,7 +191,7 @@ class _ChatBubbleState extends State<ChatBubble> {
           child: Text(
             widget.time,
             style: TextStyle(
-              color: Theme.of(context).textTheme.headline6.color,
+              color: Theme.of(context).textTheme.titleLarge?.color,
               fontSize: 10.0,
             ),
           ),

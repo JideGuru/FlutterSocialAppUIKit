@@ -46,21 +46,29 @@ class _ProfileState extends State<Profile> {
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  FlatButton(
+                  TextButton(
                     child: Icon(
                       Icons.message,
                       color: Colors.white,
                     ),
-                    color: Colors.grey,
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                        Colors.grey,
+                      ),
+                    ),
                     onPressed: () {},
                   ),
                   SizedBox(width: 10),
-                  FlatButton(
+                  TextButton(
                     child: Icon(
                       Icons.add,
                       color: Colors.white,
                     ),
-                    color: Theme.of(context).accentColor,
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                        Theme.of(context).colorScheme.secondary,
+                      ),
+                    ),
                     onPressed: () {},
                   ),
                 ],

@@ -113,7 +113,7 @@ class _ConversationState extends State<Conversation> {
                       IconButton(
                         icon: Icon(
                           Icons.add,
-                          color: Theme.of(context).accentColor,
+                          color: Theme.of(context).colorScheme.secondary,
                         ),
                         onPressed: () {},
                       ),
@@ -121,7 +121,8 @@ class _ConversationState extends State<Conversation> {
                         child: TextField(
                           style: TextStyle(
                             fontSize: 15.0,
-                            color: Theme.of(context).textTheme.headline6.color,
+                            color:
+                                Theme.of(context).textTheme.titleLarge?.color,
                           ),
                           decoration: InputDecoration(
                             contentPadding: EdgeInsets.all(10.0),
@@ -130,7 +131,8 @@ class _ConversationState extends State<Conversation> {
                             hintText: "Write your message...",
                             hintStyle: TextStyle(
                               fontSize: 15.0,
-                              color: Theme.of(context).textTheme.headline6.color,
+                              color:
+                                  Theme.of(context).textTheme.titleLarge?.color,
                             ),
                           ),
                           maxLines: null,
@@ -139,7 +141,7 @@ class _ConversationState extends State<Conversation> {
                       IconButton(
                         icon: Icon(
                           Icons.mic,
-                          color: Theme.of(context).accentColor,
+                          color: Theme.of(context).colorScheme.secondary,
                         ),
                         onPressed: () {},
                       )

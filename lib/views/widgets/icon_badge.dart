@@ -3,11 +3,10 @@ import 'package:flutter/material.dart';
 class IconBadge extends StatefulWidget {
 
   final IconData icon;
-  final double size;
-  final Color color;
+  final double? size;
+  final Color? color;
 
-  IconBadge({Key key, @required this.icon, this.size, this.color})
-      : super(key: key);
+  IconBadge({super.key, required this.icon, this.size, this.color});
 
   @override
   _IconBadgeState createState() => _IconBadgeState();
@@ -29,7 +28,7 @@ class _IconBadgeState extends State<IconBadge> {
         Icon(
           widget.icon,
           size: widget.size,
-          color: widget.color ?? null,
+          color: widget.color,
         ),
         Positioned(
           right: 0.0,
@@ -45,7 +44,7 @@ class _IconBadgeState extends State<IconBadge> {
             ),
             child: Padding(
               padding: EdgeInsets.only(top: 1),
-              child:Text(
+              child: Text(
                 '16',
                 style: TextStyle(
                   color: Colors.white,

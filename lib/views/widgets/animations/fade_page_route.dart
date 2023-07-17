@@ -7,7 +7,7 @@ class FadePageRoute<T> extends PageRoute<T> {
   Color get barrierColor => Colors.white10;
 
   @override
-  String get barrierLabel => null;
+  String get barrierLabel => '';
 
   final Widget child;
 

@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {
-  final String initialValue;
-  final bool enabled;
-  final String hintText;
-  final TextInputType textInputType;
-  final TextEditingController controller;
-  final TextInputAction textInputAction;
-  final FocusNode focusNode, nextFocusNode;
-  final VoidCallback submitAction;
+  final String? initialValue;
+  final bool? enabled;
+  final String? hintText;
+  final TextInputType? textInputType;
+  final TextEditingController? controller;
+  final TextInputAction? textInputAction;
+  final FocusNode? focusNode, nextFocusNode;
+  final VoidCallback? submitAction;
   final bool obscureText;
-  final FormFieldValidator<String> validateFunction;
-  final void Function(String) onSaved, onChange;
-  final Key key;
-
+  final FormFieldValidator<String>? validateFunction;
+  final void Function(String?)? onSaved, onChange;
 
   CustomTextField({
     this.initialValue,
@@ -29,7 +27,8 @@ class CustomTextField extends StatelessWidget {
     this.validateFunction,
     this.onSaved,
     this.onChange,
-    this.key});
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -52,27 +51,26 @@ class CustomTextField extends StatelessWidget {
         focusNode: focusNode,
         onFieldSubmitted: (String term) {
           if (nextFocusNode != null) {
-            focusNode.unfocus();
+            focusNode!.unfocus();
             FocusScope.of(context).requestFocus(nextFocusNode);
           } else {
-            submitAction();
+            submitAction!();
           }
         },
         decoration: InputDecoration(
-          hintText: hintText,
-          hintStyle: TextStyle(
-            color: Colors.grey[400],
-          ),
-          contentPadding: EdgeInsets.symmetric(horizontal: 20.0),
-          border: border(),
-          focusedBorder: border(),
-          disabledBorder: border()
-        ),
+            hintText: hintText,
+            hintStyle: TextStyle(
+              color: Colors.grey[400],
+            ),
+            contentPadding: EdgeInsets.symmetric(horizontal: 20.0),
+            border: border(),
+            focusedBorder: border(),
+            disabledBorder: border()),
       ),
     );
   }
 
-  border(){
+  border() {
     return OutlineInputBorder(
       borderRadius: BorderRadius.all(
         Radius.circular(10.0),

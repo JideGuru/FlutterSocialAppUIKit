@@ -7,12 +7,13 @@ class PostItem extends StatefulWidget {
   final String img;
 
   PostItem({
-    Key key,
-    @required this.dp,
-    @required this.name,
-    @required this.time,
-    @required this.img
-  }) : super(key: key);
+    super.key,
+    required this.dp,
+    required this.name,
+    required this.time,
+    required this.img,
+  });
+
   @override
   _PostItemState createState() => _PostItemState();
 }
@@ -31,7 +32,6 @@ class _PostItemState extends State<PostItem> {
                   "${widget.dp}",
                 ),
               ),
-
               contentPadding: EdgeInsets.all(0),
               title: Text(
                 "${widget.name}",
@@ -47,17 +47,15 @@ class _PostItemState extends State<PostItem> {
                 ),
               ),
             ),
-
             Image.asset(
               "${widget.img}",
               height: 170,
               width: MediaQuery.of(context).size.width,
               fit: BoxFit.cover,
             ),
-
           ],
         ),
-        onTap: (){},
+        onTap: () {},
       ),
     );
   }

@@ -12,7 +12,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  PageController _pageController;
+  late PageController _pageController;
   int _page = 2;
 
   @override
@@ -35,9 +35,9 @@ class _MainScreenState extends State<MainScreen> {
           // sets the background color of the `BottomNavigationBar`
           canvasColor: Theme.of(context).primaryColor,
           // sets the active color of the `BottomNavigationBar` if `Brightness` is light
-          primaryColor: Theme.of(context).accentColor,
+          primaryColor: Theme.of(context).colorScheme.secondary,
           textTheme: Theme.of(context).textTheme.copyWith(
-                caption: TextStyle(color: Colors.grey[500]),
+                bodySmall: TextStyle(color: Colors.grey[500]),
               ),
         ),
         child: BottomNavigationBar(
