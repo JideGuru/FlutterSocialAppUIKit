@@ -31,6 +31,33 @@ class ThemeConfig {
         ),
       ).titleLarge,
     ),
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: ButtonStyle(
+        minimumSize: MaterialStateProperty.all(
+          Size(150.0, 60.0),
+        ),
+        side: MaterialStateProperty.resolveWith(
+          (Set<MaterialState> state) {
+            if (state.contains(MaterialState.disabled)) {
+              return BorderSide(
+                color: Colors.grey,
+              );
+            }
+            return BorderSide(
+              color: Colors.cyan,
+            );
+          },
+        ),
+        shape: MaterialStateProperty.all(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+        ),
+        textStyle: MaterialStatePropertyAll(
+          TextStyle(color: Colors.black),
+        ),
+      ),
+    ),
     colorScheme: ColorScheme.fromSwatch().copyWith(
       secondary: lightAccent,
       background: lightBG,
@@ -59,6 +86,42 @@ class ThemeConfig {
           fontWeight: FontWeight.w800,
         ),
       ).titleLarge,
+    ),
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: ButtonStyle(
+        minimumSize: MaterialStateProperty.all(
+          Size(150.0, 60.0),
+        ),
+        side: MaterialStateProperty.resolveWith(
+          (Set<MaterialState> state) {
+            if (state.contains(MaterialState.disabled)) {
+              return BorderSide(
+                color: Colors.grey,
+              );
+            }
+            return BorderSide(
+              color: Colors.cyan,
+            );
+          },
+        ),
+        shape: MaterialStateProperty.all(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+        ),
+        textStyle: MaterialStateProperty.resolveWith(
+          (Set<MaterialState> state) {
+            if (state.contains(MaterialState.disabled)) {
+              return TextStyle(
+                color: Colors.grey,
+              );
+            }
+            return TextStyle(
+              color: Colors.cyan,
+            );
+          },
+        ),
+      ),
     ),
     colorScheme: ColorScheme.fromSwatch().copyWith(
       secondary: darkAccent,

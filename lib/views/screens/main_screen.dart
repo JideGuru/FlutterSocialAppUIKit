@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:social_app_ui/views/widgets/icon_badge.dart';
 import 'package:social_app_ui/views/screens/chat/chats.dart';
-import 'package:social_app_ui/views/screens/friends.dart';
 import 'package:social_app_ui/views/screens/home.dart';
-import 'package:social_app_ui/views/screens/notifications.dart';
-import 'package:social_app_ui/views/screens/profile.dart';
+import 'package:social_app_ui/views/screens/settings.dart';
+import 'package:social_app_ui/views/screens/my_profile.dart';
 
 class MainScreen extends StatefulWidget {
+  late final String email;
+  MainScreen({
+    super.key,
+    required this.email,
+  });
   @override
   _MainScreenState createState() => _MainScreenState();
 }
 
 class _MainScreenState extends State<MainScreen> {
   late PageController _pageController;
-  int _page = 2;
+  int _page = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -23,11 +27,10 @@ class _MainScreenState extends State<MainScreen> {
         controller: _pageController,
         onPageChanged: onPageChanged,
         children: <Widget>[
+          Home(email: widget.email),
+          MyProfile(email: widget.email),
           Chats(),
-          Friends(),
-          Home(),
-          Notifications(),
-          Profile(),
+          Settings(),
         ],
       ),
       bottomNavigationBar: Theme(
@@ -45,29 +48,27 @@ class _MainScreenState extends State<MainScreen> {
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(
-                Icons.message,
-              ),
-              label: '',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.group,
-              ),
-              label: '',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
                 Icons.home,
               ),
-              label: '',
+              label: '홈',
             ),
             BottomNavigationBarItem(
-              icon: IconBadge(icon: Icons.notifications),
-              label: '',
+              icon: Icon(
+                Icons.person,
+              ),
+              label: '내 프로필',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: '',
+              icon: Icon(
+                Icons.message,
+              ),
+              label: '채팅',
+            ),
+            BottomNavigationBarItem(
+              icon: IconBadge(
+                icon: Icons.settings,
+              ),
+              label: '설정',
             ),
           ],
           onTap: navigationTapped,
@@ -84,7 +85,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     super.initState();
-    _pageController = PageController(initialPage: 2);
+    _pageController = PageController(initialPage: 0);
   }
 
   @override

@@ -1,4 +1,4 @@
-package dev.jideguru.FlutterSocialAppUIKit
+package com.example.roomie_v2
 
 import io.flutter.embedding.android.FlutterActivity
 

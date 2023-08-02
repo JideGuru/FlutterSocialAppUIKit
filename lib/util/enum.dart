@@ -1,1 +1,2 @@
 enum FormMode{LOGIN, REGISTER, FORGOT_PASSWORD}
+enum ProfileMode{MINE, OTHERS}

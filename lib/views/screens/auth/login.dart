@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:social_app_ui/util/animations.dart';
+import 'package:social_app_ui/util/auth.dart';
 import 'package:social_app_ui/util/const.dart';
 import 'package:social_app_ui/util/enum.dart';
 import 'package:social_app_ui/util/router.dart';
 import 'package:social_app_ui/util/validations.dart';
 import 'package:social_app_ui/views/screens/main_screen.dart';
+import 'package:social_app_ui/views/screens/survey.dart';
 import 'package:social_app_ui/views/widgets/custom_button.dart';
 import 'package:social_app_ui/views/widgets/custom_text_field.dart';
 import 'package:social_app_ui/util/extensions.dart';
@@ -20,23 +22,51 @@ class _LoginState extends State<Login> {
   bool validate = false;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  String email = '', password = '', name = '';
+  String email = '', password = '', nickname = '';
   FocusNode nameFN = FocusNode();
   FocusNode emailFN = FocusNode();
   FocusNode passFN = FocusNode();
   FormMode formMode = FormMode.LOGIN;
 
+  final auth = Auth();
+
   login() async {
     FormState form = formKey.currentState!;
     form.save();
-    Navigate.pushPageReplacement(context, MainScreen());
-    // if (!form.validate()) {
-    //   validate = true;
-    //   setState(() {});
-    //   showInSnackBar('Please fix the errors in red before submitting.');
-    // } else {
-    //   Navigate.pushPageReplacement(context, MainScreen());
-    // }
+    // Navigate.pushPageReplacement(context, MainScreen());
+    if (!form.validate()) {
+      validate = true;
+      setState(() {});
+      // showInSnackBar('Please fix the errors in red before submitting.');
+    } else {
+      var authMessage = '';
+      switch (formMode) {
+        case FormMode.REGISTER:
+          authMessage = await auth.createUser(email, password);
+          break;
+        case FormMode.LOGIN:
+          authMessage = await auth.signIn(email, password);
+          break;
+        case FormMode.FORGOT_PASSWORD:
+          authMessage = await auth.sendPasswordResetEmail(email);
+          break;
+      }
+      if (authMessage != 'verified')
+        auth.showAuthDialog(context, authMessage);
+      else
+        switch (formMode) {
+          case FormMode.REGISTER:
+            Navigate.pushPageReplacement(
+              context,
+              Survey(email: email),
+            );
+            break;
+          case FormMode.LOGIN:
+          case FormMode.FORGOT_PASSWORD:
+            Navigate.pushPageReplacement(context, MainScreen(email: email));
+            break;
+        }
+    }
   }
 
   void showInSnackBar(String value) {
@@ -118,7 +148,7 @@ class _LoginState extends State<Login> {
                     formMode = FormMode.FORGOT_PASSWORD;
                     setState(() {});
                   },
-                  child: Text('Forgot Password?'),
+                  child: Text('비밀번호를 잊으셨나요?'),
                 ),
               ),
             ],
@@ -131,13 +161,13 @@ class _LoginState extends State<Login> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Don\'t have an account?'),
+              Text('계정이 없으신가요?'),
               TextButton(
                 onPressed: () {
                   formMode = FormMode.REGISTER;
                   setState(() {});
                 },
-                child: Text('Register'),
+                child: Text('가입하기'),
               ),
             ],
           ),
@@ -147,13 +177,13 @@ class _LoginState extends State<Login> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Already have an account?'),
+              Text('이미 계정이 있으신가요?'),
               TextButton(
                 onPressed: () {
                   formMode = FormMode.LOGIN;
                   setState(() {});
                 },
-                child: Text('Login'),
+                child: Text('로그인하기'),
               ),
             ],
           ),
@@ -166,28 +196,9 @@ class _LoginState extends State<Login> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        Visibility(
-          visible: formMode == FormMode.REGISTER,
-          child: Column(
-            children: [
-              CustomTextField(
-                enabled: !loading,
-                hintText: "Name",
-                textInputAction: TextInputAction.next,
-                validateFunction: Validations.validateName,
-                onSaved: (String? val) {
-                  name = val ?? '';
-                },
-                focusNode: nameFN,
-                nextFocusNode: emailFN,
-              ),
-              SizedBox(height: 20.0),
-            ],
-          ),
-        ),
         CustomTextField(
           enabled: !loading,
-          hintText: "Email",
+          hintText: "학교 이메일",
           textInputAction: TextInputAction.next,
           validateFunction: Validations.validateEmail,
           onSaved: (String? val) {
@@ -203,7 +214,7 @@ class _LoginState extends State<Login> {
               SizedBox(height: 20.0),
               CustomTextField(
                 enabled: !loading,
-                hintText: "Password",
+                hintText: "비밀번호",
                 textInputAction: TextInputAction.done,
                 validateFunction: Validations.validatePassword,
                 submitAction: login,
@@ -224,7 +235,7 @@ class _LoginState extends State<Login> {
     return loading
         ? Center(child: CircularProgressIndicator())
         : CustomButton(
-            label: "Submit",
+            label: "제출",
             onPressed: () => login(),
           ).fadeInList(4, false);
   }

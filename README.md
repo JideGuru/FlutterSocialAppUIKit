@@ -1,44 +1,16 @@
-# 🔥🔥 Flutter Social App Concept [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)  [![Twitter Follow](https://img.shields.io/twitter/follow/iamjideguru.svg?style=social)](https://twitter.com/iamjideguru)
-Flutter representation of a Social App Concept i found on Uplabs.
+# roomie_v2
 
-Star⭐ the repo if you like what you see😉.
+A new Flutter project.
 
+## Getting Started
 
-Images are from [Unsplash](https://unsplash.com)
+This project is a starting point for a Flutter application.
 
-<a href="ss/app.apk"><img src="https://playerzon.com/asset/download.png" width="200"></img></a>
+A few resources to get you started if this is your first Flutter project:
 
-[Link to Mockup](https://www.ls.graphics/free/simple-iphone-x-mockups)
+- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-[![Twitter Follow](https://img.shields.io/twitter/follow/iamjideguru.svg?style=social)](https://twitter.com/iamjideguru)
-
-## ✨ Requirements
-* Any Operating System (ie. MacOS X, Linux, Windows)
-* Any IDE with Flutter SDK installed (ie. IntelliJ, Android Studio, VSCode etc)
-* A little knowledge of Dart and Flutter
-* A brain to think 🤓🤓
-
-
-## 📸 ScreenShots
-
-<img src="ss/1.png"/>
-<img src="ss/2.png"/>
-
-| Light| Dark|
-|------|-------|
-|<img src="ss/3.png" width="400">|<img src="ss/4.png" width="400">|
-|<img src="ss/5.png" width="400">|<img src="ss/6.png" width="400">|
-|<img src="ss/7.png" width="400">|<img src="ss/8.png" width="400">|
-|<img src="ss/9.png" width="400">|<img src="ss/10.png" width="400">|
-|<img src="ss/11.png" width="400">|<img src="ss/12.png" width="400">|
-|<img src="ss/13.png" width="400">|<img src="ss/14.png" width="400">|
-
-
-## 🌗 Dark theme
-Adapts to device theme
-
-## 🤓 Author(s)
-**Olusegun Festus Babajide** [![Twitter Follow](https://img.shields.io/twitter/follow/iamjideguru.svg?style=social)](https://twitter.com/iamjideguru)
-
-## 🔖 LICENCE
-[WTFPL](http://www.wtfpl.net/about/)
+For help getting started with Flutter development, view the
+[online documentation](https://docs.flutter.dev/), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.

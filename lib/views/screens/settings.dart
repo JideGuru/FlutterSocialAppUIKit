@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:social_app_ui/util/data.dart';
 
-class Notifications extends StatefulWidget {
+class Settings extends StatefulWidget {
   @override
-  _NotificationsState createState() => _NotificationsState();
+  _SettingsState createState() => _SettingsState();
 }
 
-class _NotificationsState extends State<Notifications> {
+class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
