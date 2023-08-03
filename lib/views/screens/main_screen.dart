@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:social_app_ui/views/widgets/icon_badge.dart';
 import 'package:social_app_ui/views/screens/chat/chats.dart';
 import 'package:social_app_ui/views/screens/home.dart';
-import 'package:social_app_ui/views/screens/settings.dart';
+
 import 'package:social_app_ui/views/screens/my_profile.dart';
+import 'package:social_app_ui/views/screens/settings.dart';
 
 class MainScreen extends StatefulWidget {
   late final String email;
@@ -65,8 +65,8 @@ class _MainScreenState extends State<MainScreen> {
               label: '채팅',
             ),
             BottomNavigationBarItem(
-              icon: IconBadge(
-                icon: Icons.settings,
+              icon: Icon(
+                Icons.settings,
               ),
               label: '설정',
             ),

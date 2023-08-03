@@ -6,10 +6,13 @@ import 'package:social_app_ui/views/widgets/inprofile_button.dart';
 class ProfileCard extends StatelessWidget {
   late final User user;
   late final ProfileMode profileMode;
+  late final List<String> highest, lowest;
   ProfileCard({
     super.key,
     required this.user,
     this.profileMode = ProfileMode.OTHERS,
+    this.highest = const [],
+    this.lowest = const [],
   });
 
   @override
@@ -62,7 +65,75 @@ class ProfileCard extends StatelessWidget {
             ),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 12),
-              // child: Commonalities(),
+              child: Visibility(
+                visible: profileMode == ProfileMode.OTHERS,
+                child: Container(
+                  height: 120,
+                  width: 250,
+                  decoration: BoxDecoration(
+                      color: const Color(0xff028a0f),
+                      borderRadius: BorderRadius.circular(12)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(6),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          "이런 점이 비슷해요",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Column(
+                          children: highest
+                              .map((comm) =>
+                                  Text(comm, style: TextStyle(fontSize: 18)))
+                              .toList(),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 6),
+              child: Visibility(
+                visible: profileMode == ProfileMode.OTHERS,
+                child: Container(
+                  height: 120,
+                  width: 250,
+                  decoration: BoxDecoration(
+                      color: const Color(0xfffa8128),
+                      borderRadius: BorderRadius.circular(12)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(6),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          "이런 점이 달라요",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Column(
+                          children: lowest
+                              .map((diff) =>
+                                  Text(diff, style: TextStyle(fontSize: 18)))
+                              .toList(),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
             ),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 6),
@@ -80,6 +151,9 @@ class ProfileCard extends StatelessWidget {
                       onPressed: () {
                         print('프로필 클릭됨');
                       },
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 5),
                     ),
                     InprofileButton(
                       icon: Icons.chat_bubble,

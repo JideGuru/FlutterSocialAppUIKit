@@ -43,7 +43,7 @@ class _SurveyState extends State<Survey> {
   nextStep() async {
     toFirestore.doc(user.email).set(user.toFirestore());
 
-    if (surveyIndex == surveyList.length - 1) {
+    if (surveyIndex == surveyList.length) {
       print(user.survey);
       Navigate.pushPageReplacement(context, MainScreen(email: widget.email));
     }

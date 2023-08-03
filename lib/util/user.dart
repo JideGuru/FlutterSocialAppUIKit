@@ -1,6 +1,9 @@
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/widgets.dart';
+import 'package:social_app_ui/util/sort/map_util.dart';
+import 'package:social_app_ui/views/widgets/profile_card.dart';
 
 List<String> dormitoryList = [
   '참빛관',
@@ -149,6 +152,21 @@ class User {
     survey['etc'] = '';
   }
 
+  Map<String, dynamic> getScore(User user, Map<String, dynamic> weight) {
+    Map<String, double> costs = {};
+    Map<String, dynamic> score = {};
+    for (var question in questionList) {
+      if (question == 'etc') break;
+      var diff = ((survey[question] - user.survey[question]) as double).abs();
+      diff = (1 - diff / (answerList[question]!.length - 1)); //normalize
+      costs[question] = weight[question]! * diff;
+    }
+    score['highest'] = getMaxValueKeys(costs, 3);
+    score['lowest'] = getMinValueKeys(costs, 3);
+    score['total'] = sumMapValues(costs);
+    return score;
+  }
+
   factory User.fromFirestore(DocumentSnapshot snapshot) {
     var fromFirestore = snapshot.data() as Map<String, dynamic>;
 
@@ -179,4 +197,25 @@ class User {
 
     return toFirestore;
   }
+}
+
+List<ProfileCard> getDeck(
+    AsyncSnapshot<QuerySnapshot<Object?>> snapshot, String exeptionEmail) {
+  List<ProfileCard> deck = [];
+  for (var doc in snapshot.data!.docs) {
+    if (doc.id == exeptionEmail) continue;
+    if (doc.id == 'weights') continue;
+    deck.add(ProfileCard(user: User.fromFirestore(doc)));
+  }
+  return deck;
+}
+
+User getUser(AsyncSnapshot<QuerySnapshot<Object?>> snapshot, String email) {
+  User user = User(email: email, essentials: {}, survey: {});
+  for (var doc in snapshot.data!.docs) {
+    if (doc.id != email) continue;
+    if (doc.id == 'weights') continue;
+    user = User.fromFirestore(doc);
+  }
+  return user;
 }

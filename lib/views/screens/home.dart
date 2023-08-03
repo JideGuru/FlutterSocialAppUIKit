@@ -2,8 +2,8 @@ import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:social_app_ui/util/sort/weight.dart';
 import 'package:social_app_ui/util/user.dart';
-import 'package:social_app_ui/views/widgets/profile_card.dart';
 import 'package:swiping_card_deck/swiping_card_deck.dart';
 
 class Home extends StatefulWidget {
@@ -30,6 +30,8 @@ class _HomeState extends State<Home> {
           if (snapshot.connectionState == ConnectionState.done) {
             var deck = getDeck(snapshot, widget.email);
             var me = getUser(snapshot, widget.email);
+            var weights = getWeights(snapshot, me.tag);
+            deck = sort(me, deck, weights);
             return Column(
               children: [
                 SizedBox(
@@ -49,11 +51,12 @@ class _HomeState extends State<Home> {
                           tabs: tagList
                               .map((title) => Tab(child: Text(title)))
                               .toList(),
-                          onTap: (tag) {
-                            FirebaseFirestore.instance
+                          onTap: (tag) async {
+                            await FirebaseFirestore.instance
                                 .collection('users')
                                 .doc(widget.email)
                                 .update({'tag': tag});
+                            setState(() {});
                           },
                         ),
                       ],
@@ -63,10 +66,14 @@ class _HomeState extends State<Home> {
                 SwipingDeck(
                   cardDeck: deck,
                   cardWidth: 300,
-                  onLeftSwipe: (p0) {},
-                  onRightSwipe: (p0) {},
+                  onLeftSwipe: (p0) {
+                    updateDomains(p0, getDomains(snapshot));
+                  },
+                  onRightSwipe: (p0) {
+                    updateDomains(p0, getDomains(snapshot));
+                  },
                   onDeckEmpty: () {
-                    print('deck is empty');
+                    setState(() {});
                   },
                 ),
               ],
@@ -80,22 +87,4 @@ class _HomeState extends State<Home> {
       ),
     );
   }
-}
-
-List<ProfileCard> getDeck(
-    AsyncSnapshot<QuerySnapshot<Object?>> snapshot, String exeptionEmail) {
-  List<ProfileCard> deck = [];
-  for (var doc in snapshot.data!.docs) {
-    if (doc.id == exeptionEmail) continue;
-    deck.add(ProfileCard(user: User.fromFirestore(doc)));
-  }
-  return deck;
-}
-
-User getUser(AsyncSnapshot<QuerySnapshot<Object?>> snapshot, String email) {
-  User user = User(email: email, essentials: {}, survey: {});
-  for (var doc in snapshot.data!.docs) {
-    if (doc.id == email) user = User.fromFirestore(doc);
-  }
-  return user;
 }
