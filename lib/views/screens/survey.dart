@@ -16,9 +16,13 @@ import 'main_screen.dart';
 
 class Survey extends StatefulWidget {
   late final String email;
+  late final bool isProfile;
+  late final _SurveyState survey;
   Survey({
     required this.email,
+    required this.isProfile,
   });
+
   @override
   _SurveyState createState() => _SurveyState();
 }
@@ -39,6 +43,10 @@ class _SurveyState extends State<Survey> {
   bool loading = false;
   bool validate = false;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  bool isOtherProfile(String mode) {
+    return surveyMode == mode;
+  }
 
   nextStep() async {
     toFirestore.doc(user.email).set(user.toFirestore());
@@ -74,10 +82,13 @@ class _SurveyState extends State<Survey> {
       body: Container(
         child: Row(
           children: [
-            buildLottieContainer(),
+            widget.isProfile
+                ? SizedBox(
+                    width: 1,
+                  )
+                : buildLottieContainer(),
             Expanded(
-              child: AnimatedContainer(
-                duration: Duration(milliseconds: 500),
+              child: SingleChildScrollView(
                 child: Center(
                   child: Padding(
                     padding:
@@ -116,7 +127,11 @@ class _SurveyState extends State<Survey> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Text(
-          '설문조사',
+          widget.isProfile
+              ? (user.essentials['nickname'] == null
+                  ? ''
+                  : user.essentials['nickname'])
+              : '설문조사',
           style: TextStyle(
             fontSize: 40.0,
             fontWeight: FontWeight.bold,
@@ -126,15 +141,22 @@ class _SurveyState extends State<Survey> {
         Form(
           autovalidateMode: AutovalidateMode.onUserInteraction,
           key: formKey,
-          child: buildForm(),
+          child: buildForm(widget.isProfile),
         ),
         SizedBox(height: 20.0),
-        buildButton(),
+        widget.isProfile
+            ? CustomButton(
+                label: '확인',
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ).fadeInList(4, false)
+            : buildButton(),
       ],
     );
   }
 
-  buildForm() {
+  buildForm(bool isProfile) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
@@ -145,7 +167,9 @@ class _SurveyState extends State<Survey> {
               SizedBox(height: 10.0),
               Align(
                 alignment: Alignment.center,
-                child: Text('룸메이트 후보들에게 나에 대해 알려주세요.'),
+                child: widget.isProfile
+                    ? Text('')
+                    : Text('룸메이트 후보들에게 나에 대해 알려주세요.'),
               ),
             ],
           ),
@@ -195,72 +219,93 @@ class _SurveyState extends State<Survey> {
           ),
         ).fadeInList(3, false),
         Visibility(
-          visible: surveyMode == 'dormitory',
+          visible: widget.isProfile ? true : isOtherProfile('dormitory'),
           child: Column(
             children: [
               Align(
                 alignment: Alignment.center,
-                child: Text('거주 예정 생활관을 알려주세요.'),
+                child: widget.isProfile
+                    ? Text(
+                        '생활관',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      )
+                    : Text('거주 예정 생활관을 알려주세요.'),
               ),
               SizedBox(height: 10.0),
-              DropdownButton(
-                value: user.essentials[surveyMode],
-                items: dormitoryList.map((String dorm) {
-                  return DropdownMenuItem<String>(
-                    child: Text('$dorm'),
-                    value: dorm,
-                  );
-                }).toList(),
-                onChanged: (dynamic value) {
-                  user.essentials[surveyMode] = value;
-                  setState(() {});
-                },
-              ),
+              widget.isProfile
+                  ? Text(user.essentials['dormitory'])
+                  : DropdownButton(
+                      value: user.essentials[surveyMode],
+                      items: dormitoryList.map((String dorm) {
+                        return DropdownMenuItem<String>(
+                          child: Text('$dorm'),
+                          value: dorm,
+                        );
+                      }).toList(),
+                      onChanged: (dynamic value) {
+                        user.essentials[surveyMode] = value;
+                        setState(() {});
+                      },
+                    ),
               SizedBox(height: 20.0),
             ],
           ),
         ).fadeInList(3, false),
         Visibility(
-          visible: surveyMode == 'studentNumber',
+          visible: widget.isProfile ? true : isOtherProfile('studentNumber'),
           child: Column(
             children: [
               Align(
                 alignment: Alignment.center,
-                child: Text('학번을 알려주세요.'),
+                child: widget.isProfile ? Text('학번') : Text('학번을 알려주세요.'),
               ),
               SizedBox(height: 10.0),
-              CustomTextField(
-                enabled: !loading,
-                hintText: "학번(연도 네 자리)",
-                textInputAction: TextInputAction.next,
-                validateFunction: Validations.validateStudentNumber,
-                onSaved: (String? val) {
-                  user.essentials[surveyMode] = val ?? '';
-                  print(user.essentials);
-                },
-              ),
+              widget.isProfile
+                  ? ((user.essentials['studentNumber'] == null)
+                      ? Text('입력 안함')
+                      : Text(user.essentials['studentNumber']))
+                  : CustomTextField(
+                      enabled: !loading,
+                      hintText: "학번(연도 네 자리)",
+                      textInputAction: TextInputAction.next,
+                      validateFunction: Validations.validateStudentNumber,
+                      onSaved: (String? val) {
+                        user.essentials[surveyMode] = val ?? '';
+                        print(user.essentials);
+                      },
+                    ),
               SizedBox(height: 20.0),
             ],
           ),
         ).fadeInList(3, false),
         Visibility(
-          visible: surveyMode == 'major',
+          visible: widget.isProfile ? true : isOtherProfile('major'),
           child: Column(
             children: [
               Align(
                 alignment: Alignment.center,
-                child: Text('단과대학을 알려주세요.'),
+                child: widget.isProfile ? Text('단과대학') : Text('단과대학을 알려주세요.'),
               ),
               SizedBox(height: 10.0),
-              CustomTextField(
-                enabled: !loading,
-                hintText: "단과대학",
-                textInputAction: TextInputAction.next,
-                // validateFunction: Validations.validateStudentNumber,
-                onSaved: (String? val) {
-                  user.essentials[surveyMode] = val ?? '';
-                },
-              ),
+              widget.isProfile
+                  ? ((user.essentials['major'] == null)
+                      ? Text('입력 안함')
+                      : Text(user.essentials['major']))
+                  : DropdownButton(
+                      value: user.essentials[surveyMode],
+                      items: majorList.map((String dorm) {
+                        return DropdownMenuItem<String>(
+                          child: Text('$dorm'),
+                          value: dorm,
+                        );
+                      }).toList(),
+                      onChanged: (dynamic value) {
+                        user.essentials[surveyMode] = value;
+                        setState(() {});
+                      },
+                    ),
               SizedBox(height: 20.0),
             ],
           ),
@@ -268,139 +313,348 @@ class _SurveyState extends State<Survey> {
 
         // questions
         Visibility(
-          visible: surveyMode == 'smoking',
-          child: CustomGroupButton(
-            hintText: '흡연 여부를 알려주세요.',
-            surveyMode: surveyMode,
-            user: user,
-          ),
-        ).fadeInList(3, false),
-        Visibility(
-          visible: surveyMode == 'sleepingHabits',
+          visible: widget.isProfile ? true : isOtherProfile('smoking'),
           child: Column(
             children: [
-              CustomSfSlider(
-                hintText: '잠버릇을 알려주세요.',
-                surveyMode: surveyMode,
-                user: user,
-              ),
+              if (widget.isProfile)
+                (Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.center,
+                      child: Text('흡연'),
+                    ),
+                    SizedBox(height: 10.0),
+                    ((user.survey['smoking'] == null)
+                        ? Text('입력 안함')
+                        : Text(answerList['smoking']![user.survey['smoking']])),
+                  ],
+                ))
+              else
+                CustomGroupButton(
+                  hintText: '흡연 여부를 알려주세요.',
+                  surveyMode: surveyMode,
+                  user: user,
+                ),
             ],
           ),
         ).fadeInList(3, false),
         Visibility(
-          visible: surveyMode == 'relationship',
+          visible: widget.isProfile ? true : isOtherProfile('sleepingHabits'),
           child: Column(
             children: [
-              CustomSfSlider(
-                hintText: '룸메이트와 맺고 싶은 관계를 알려주세요.',
-                surveyMode: surveyMode,
-                user: user,
-              ),
+              if (widget.isProfile)
+                (Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.center,
+                      child: Text('잠버릇'),
+                    ),
+                    SizedBox(height: 10.0),
+                    ((user.survey['sleepingHabits'] == null)
+                        ? Text('입력 안함')
+                        : Text(answerList['sleepingHabits']![
+                            user.survey['sleepingHabits']])),
+                  ],
+                ))
+              else
+                CustomSfSlider(
+                  hintText: '잠버릇을 알려주세요.',
+                  surveyMode: surveyMode,
+                  user: user,
+                ),
             ],
           ),
         ).fadeInList(3, false),
         Visibility(
-          visible: surveyMode == 'sleepAt',
+          visible: widget.isProfile ? true : isOtherProfile('relationship'),
           child: Column(
             children: [
-              CustomSfSlider(
-                hintText: '잠드는 시간을 알려주세요.',
-                surveyMode: surveyMode,
-                user: user,
-              ),
+              if (widget.isProfile)
+                (Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.center,
+                      child: Text('관계'),
+                    ),
+                    SizedBox(height: 10.0),
+                    ((user.survey['relationship'] == null)
+                        ? Text('입력 안함')
+                        : Text(answerList['relationship']![
+                            user.survey['relationship']])),
+                  ],
+                ))
+              else
+                CustomSfSlider(
+                  hintText: '룸메이트와 맺고 싶은 관계를 알려주세요.',
+                  surveyMode: surveyMode,
+                  user: user,
+                ),
             ],
           ),
         ).fadeInList(3, false),
         Visibility(
-          visible: surveyMode == 'roomCleaning',
+          visible: widget.isProfile ? true : isOtherProfile('sleepAt'),
           child: Column(
             children: [
-              CustomSfSlider(
-                hintText: '방 청소 주기를 알려주세요.',
-                surveyMode: surveyMode,
-                user: user,
-              ),
+              if (widget.isProfile)
+                (Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.center,
+                      child: Text('취침 시간'),
+                    ),
+                    SizedBox(height: 10.0),
+                    ((user.survey['sleepAt'] == null)
+                        ? Text('입력 안함')
+                        : Text(answerList['sleepAt']![user.survey['sleepAt']])),
+                  ],
+                ))
+              else
+                CustomSfSlider(
+                  hintText: '잠드는 시간을 알려주세요.',
+                  surveyMode: surveyMode,
+                  user: user,
+                ),
             ],
           ),
         ).fadeInList(3, false),
         Visibility(
-          visible: surveyMode == 'restroomCleaning',
+          visible: widget.isProfile ? true : isOtherProfile('roomCleaning'),
           child: Column(
             children: [
-              CustomSfSlider(
-                hintText: '화장실 청소 주기를 알려주세요.',
-                surveyMode: surveyMode,
-                user: user,
-              ),
+              if (widget.isProfile)
+                (Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.center,
+                      child: Text('방 청소 주기'),
+                    ),
+                    SizedBox(height: 10.0),
+                    ((user.survey['roomCleaning'] == null)
+                        ? Text('입력 안함')
+                        : Text(answerList['roomCleaning']![
+                            user.survey['roomCleaning']])),
+                  ],
+                ))
+              else
+                CustomSfSlider(
+                  hintText: '방 청소 주기를 알려주세요.',
+                  surveyMode: surveyMode,
+                  user: user,
+                ),
             ],
           ),
         ).fadeInList(3, false),
         Visibility(
-          visible: surveyMode == 'inviting',
-          child: CustomGroupButton(
-            hintText: '초대 선호도를 알려주세요.',
-            surveyMode: surveyMode,
-            user: user,
+          visible: widget.isProfile ? true : isOtherProfile('restroomCleaning'),
+          child: Column(
+            children: [
+              if (widget.isProfile)
+                (Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.center,
+                      child: Text('화장실 청소 주기'),
+                    ),
+                    SizedBox(height: 10.0),
+                    ((user.survey['restroomCleaning'] == null)
+                        ? Text('입력 안함')
+                        : Text(answerList['restroomCleaning']![
+                            user.survey['restroomCleaning']])),
+                  ],
+                ))
+              else
+                CustomSfSlider(
+                  hintText: '화장실 청소 주기를 알려주세요.',
+                  surveyMode: surveyMode,
+                  user: user,
+                ),
+            ],
           ),
         ).fadeInList(3, false),
         Visibility(
-          visible: surveyMode == 'sharing',
-          child: CustomGroupButton(
-            hintText: '물건공유 선호도를 알려주세요.',
-            surveyMode: surveyMode,
-            user: user,
+          visible: widget.isProfile ? true : isOtherProfile('inviting'),
+          child: Column(
+            children: [
+              if (widget.isProfile)
+                (Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.center,
+                      child: Text('친구 초대'),
+                    ),
+                    SizedBox(height: 10.0),
+                    ((user.survey['inviting'] == null)
+                        ? Text('입력 안함')
+                        : Text(
+                            answerList['inviting']![user.survey['inviting']])),
+                  ],
+                ))
+              else
+                CustomGroupButton(
+                  hintText: '초대 선호도를 알려주세요.',
+                  surveyMode: surveyMode,
+                  user: user,
+                ),
+            ],
           ),
         ).fadeInList(3, false),
         Visibility(
-          visible: surveyMode == 'calling',
-          child: CustomGroupButton(
-            hintText: '실내통화 선호도를 알려주세요.',
-            surveyMode: surveyMode,
-            user: user,
+          visible: widget.isProfile ? true : isOtherProfile('sharing'),
+          child: Column(
+            children: [
+              if (widget.isProfile)
+                (Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.center,
+                      child: Text('물건 공유'),
+                    ),
+                    SizedBox(height: 10.0),
+                    ((user.survey['sharing'] == null)
+                        ? Text('입력 안함')
+                        : Text(answerList['sharing']![user.survey['sharing']])),
+                  ],
+                ))
+              else
+                CustomGroupButton(
+                  hintText: '물건공유 선호도를 알려주세요.',
+                  surveyMode: surveyMode,
+                  user: user,
+                ),
+            ],
           ),
         ).fadeInList(3, false),
         Visibility(
-          visible: surveyMode == 'earphone',
-          child: CustomGroupButton(
-            hintText: '이어폰 사용 선호도를 알려주세요.',
-            surveyMode: surveyMode,
-            user: user,
+          visible: widget.isProfile ? true : isOtherProfile('calling'),
+          child: Column(
+            children: [
+              if (widget.isProfile)
+                (Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.center,
+                      child: Text('실내 통화'),
+                    ),
+                    SizedBox(height: 10.0),
+                    ((user.survey['calling'] == null)
+                        ? Text('입력 안함')
+                        : Text(answerList['calling']![user.survey['calling']])),
+                  ],
+                ))
+              else
+                CustomGroupButton(
+                  hintText: '실내통화 선호도를 알려주세요.',
+                  surveyMode: surveyMode,
+                  user: user,
+                ),
+            ],
           ),
         ).fadeInList(3, false),
         Visibility(
-          visible: surveyMode == 'eating',
-          child: CustomGroupButton(
-            hintText: '실내취식 선호도를 알려주세요.',
-            surveyMode: surveyMode,
-            user: user,
+          visible: widget.isProfile ? true : isOtherProfile('earphone'),
+          child: Column(
+            children: [
+              if (widget.isProfile)
+                (Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.center,
+                      child: Text('이어폰 사용'),
+                    ),
+                    SizedBox(height: 10.0),
+                    ((user.survey['earphone'] == null)
+                        ? Text('입력 안함')
+                        : Text(
+                            answerList['earphone']![user.survey['earphone']])),
+                  ],
+                ))
+              else
+                CustomGroupButton(
+                  hintText: '이어폰 사용 선호도를 알려주세요.',
+                  surveyMode: surveyMode,
+                  user: user,
+                ),
+            ],
           ),
         ).fadeInList(3, false),
         Visibility(
-          visible: surveyMode == 'lateStand',
-          child: CustomGroupButton(
-            hintText: '늦은 스탠드 사용 선호도를 알려주세요.',
-            surveyMode: surveyMode,
-            user: user,
+          visible: widget.isProfile ? true : isOtherProfile('eating'),
+          child: Column(
+            children: [
+              if (widget.isProfile)
+                (Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.center,
+                      child: Text('실내 취식'),
+                    ),
+                    SizedBox(height: 10.0),
+                    ((user.survey['eating'] == null)
+                        ? Text('입력 안함')
+                        : Text(answerList['eating']![user.survey['eating']])),
+                  ],
+                ))
+              else
+                CustomGroupButton(
+                  hintText: '실내취식 선호도를 알려주세요.',
+                  surveyMode: surveyMode,
+                  user: user,
+                ),
+            ],
           ),
         ).fadeInList(3, false),
         Visibility(
-          visible: surveyMode == 'etc',
+          visible: widget.isProfile ? true : isOtherProfile('lateStand'),
+          child: Column(
+            children: [
+              if (widget.isProfile)
+                (Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.center,
+                      child: Text('늦은 시간 스탠드'),
+                    ),
+                    SizedBox(height: 10.0),
+                    ((user.survey['lateStand'] == null)
+                        ? Text('입력 안함')
+                        : Text(answerList['lateStand']![
+                            user.survey['lateStand']])),
+                  ],
+                ))
+              else
+                CustomGroupButton(
+                  hintText: '늦은 스탠드 사용 선호도를 알려주세요.',
+                  surveyMode: surveyMode,
+                  user: user,
+                ),
+            ],
+          ),
+        ).fadeInList(3, false),
+        Visibility(
+          visible: widget.isProfile ? true : isOtherProfile('etc'),
           child: Column(
             children: [
               Align(
                 alignment: Alignment.center,
-                child: Text('룸메이트 후보들에게 추가로 전하고 싶은 말을 알려주세요.'),
+                child: widget.isProfile
+                    ? Text('룸메이트 후보에게 하고 싶은 말')
+                    : Text('룸메이트 후보들에게 추가로 전하고 싶은 말을 알려주세요.'),
               ),
               SizedBox(height: 10.0),
-              CustomTextField(
-                enabled: !loading,
-                hintText: '기타',
-                textInputAction: TextInputAction.next,
-                // validateFunction: Validations.validateStudentNumber,
-                onSaved: (String? val) {
-                  user.essentials[surveyMode] = val ?? '';
-                },
-              ),
+              widget.isProfile
+                  ? ((user.essentials['etc'] == null
+                      ? Text('없음')
+                      : Text(user.essentials['etc'])))
+                  : CustomTextField(
+                      enabled: !loading,
+                      hintText: '기타',
+                      textInputAction: TextInputAction.next,
+                      // validateFunction: Validations.validateStudentNumber,
+                      onSaved: (String? val) {
+                        user.essentials[surveyMode] = val ?? '';
+                      },
+                    ),
               SizedBox(height: 20.0),
             ],
           ),
