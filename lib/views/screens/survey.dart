@@ -289,23 +289,9 @@ class _SurveyState extends State<Survey> {
                 child: widget.isProfile ? Text('단과대학') : Text('단과대학을 알려주세요.'),
               ),
               SizedBox(height: 10.0),
-              widget.isProfile
-                  ? ((user.essentials['major'] == null)
-                      ? Text('입력 안함')
-                      : Text(user.essentials['major']))
-                  : DropdownButton(
-                      value: user.essentials[surveyMode],
-                      items: majorList.map((String dorm) {
-                        return DropdownMenuItem<String>(
-                          child: Text('$dorm'),
-                          value: dorm,
-                        );
-                      }).toList(),
-                      onChanged: (dynamic value) {
-                        user.essentials[surveyMode] = value;
-                        setState(() {});
-                      },
-                    ),
+              ((user.essentials['major'] == null)
+                  ? Text('입력 안함')
+                  : Text(user.essentials['major'])),
               SizedBox(height: 20.0),
             ],
           ),
@@ -317,23 +303,18 @@ class _SurveyState extends State<Survey> {
           child: Column(
             children: [
               if (widget.isProfile)
-                (Column(
-                  children: [
-                    Align(
-                      alignment: Alignment.center,
-                      child: Text('흡연'),
-                    ),
-                    SizedBox(height: 10.0),
-                    ((user.survey['smoking'] == null)
-                        ? Text('입력 안함')
-                        : Text(answerList['smoking']![user.survey['smoking']])),
-                  ],
+                (CustomGroupButton(
+                  hintText: '흡연',
+                  surveyMode: 'smoking',
+                  user: user,
+                  isOhterProfile: true,
                 ))
               else
                 CustomGroupButton(
                   hintText: '흡연 여부를 알려주세요.',
                   surveyMode: surveyMode,
                   user: user,
+                  isOhterProfile: false,
                 ),
             ],
           ),
@@ -343,19 +324,13 @@ class _SurveyState extends State<Survey> {
           child: Column(
             children: [
               if (widget.isProfile)
-                (Column(
-                  children: [
-                    Align(
-                      alignment: Alignment.center,
-                      child: Text('잠버릇'),
-                    ),
-                    SizedBox(height: 10.0),
-                    ((user.survey['sleepingHabits'] == null)
-                        ? Text('입력 안함')
-                        : Text(answerList['sleepingHabits']![
-                            user.survey['sleepingHabits']])),
-                  ],
-                ))
+                (user.survey['sleepingHabits'] == null
+                    ? Text('입력 없음')
+                    : CustomSfSlider(
+                        hintText: '잠버릇',
+                        surveyMode: 'sleepingHabits',
+                        user: user,
+                      ))
               else
                 CustomSfSlider(
                   hintText: '잠버릇을 알려주세요.',
@@ -370,19 +345,13 @@ class _SurveyState extends State<Survey> {
           child: Column(
             children: [
               if (widget.isProfile)
-                (Column(
-                  children: [
-                    Align(
-                      alignment: Alignment.center,
-                      child: Text('관계'),
-                    ),
-                    SizedBox(height: 10.0),
-                    ((user.survey['relationship'] == null)
-                        ? Text('입력 안함')
-                        : Text(answerList['relationship']![
-                            user.survey['relationship']])),
-                  ],
-                ))
+                (user.survey['relationship'] == null
+                    ? Text('입력 없음')
+                    : CustomSfSlider(
+                        hintText: '관계',
+                        surveyMode: 'relationship',
+                        user: user,
+                      ))
               else
                 CustomSfSlider(
                   hintText: '룸메이트와 맺고 싶은 관계를 알려주세요.',
@@ -397,18 +366,13 @@ class _SurveyState extends State<Survey> {
           child: Column(
             children: [
               if (widget.isProfile)
-                (Column(
-                  children: [
-                    Align(
-                      alignment: Alignment.center,
-                      child: Text('취침 시간'),
-                    ),
-                    SizedBox(height: 10.0),
-                    ((user.survey['sleepAt'] == null)
-                        ? Text('입력 안함')
-                        : Text(answerList['sleepAt']![user.survey['sleepAt']])),
-                  ],
-                ))
+                (user.survey['sleepAt'] == null
+                    ? Text('입력 없음')
+                    : CustomSfSlider(
+                        hintText: '취침 시간',
+                        surveyMode: 'sleepAt',
+                        user: user,
+                      ))
               else
                 CustomSfSlider(
                   hintText: '잠드는 시간을 알려주세요.',
@@ -423,19 +387,13 @@ class _SurveyState extends State<Survey> {
           child: Column(
             children: [
               if (widget.isProfile)
-                (Column(
-                  children: [
-                    Align(
-                      alignment: Alignment.center,
-                      child: Text('방 청소 주기'),
-                    ),
-                    SizedBox(height: 10.0),
-                    ((user.survey['roomCleaning'] == null)
-                        ? Text('입력 안함')
-                        : Text(answerList['roomCleaning']![
-                            user.survey['roomCleaning']])),
-                  ],
-                ))
+                (user.survey['roomCleaning'] == null
+                    ? Text('입력 없음')
+                    : CustomSfSlider(
+                        hintText: '방 청소 주기',
+                        surveyMode: 'roomCleaning',
+                        user: user,
+                      ))
               else
                 CustomSfSlider(
                   hintText: '방 청소 주기를 알려주세요.',
@@ -450,19 +408,13 @@ class _SurveyState extends State<Survey> {
           child: Column(
             children: [
               if (widget.isProfile)
-                (Column(
-                  children: [
-                    Align(
-                      alignment: Alignment.center,
-                      child: Text('화장실 청소 주기'),
-                    ),
-                    SizedBox(height: 10.0),
-                    ((user.survey['restroomCleaning'] == null)
-                        ? Text('입력 안함')
-                        : Text(answerList['restroomCleaning']![
-                            user.survey['restroomCleaning']])),
-                  ],
-                ))
+                (user.survey['restroomCleaning'] == null
+                    ? Text('입력 없음')
+                    : CustomSfSlider(
+                        hintText: '화장실 청소 주기',
+                        surveyMode: 'restroomCleaning',
+                        user: user,
+                      ))
               else
                 CustomSfSlider(
                   hintText: '화장실 청소 주기를 알려주세요.',
@@ -477,24 +429,18 @@ class _SurveyState extends State<Survey> {
           child: Column(
             children: [
               if (widget.isProfile)
-                (Column(
-                  children: [
-                    Align(
-                      alignment: Alignment.center,
-                      child: Text('친구 초대'),
-                    ),
-                    SizedBox(height: 10.0),
-                    ((user.survey['inviting'] == null)
-                        ? Text('입력 안함')
-                        : Text(
-                            answerList['inviting']![user.survey['inviting']])),
-                  ],
-                ))
+                ((CustomGroupButton(
+                  hintText: '친구 초대',
+                  surveyMode: 'inviting',
+                  user: user,
+                  isOhterProfile: true,
+                )))
               else
                 CustomGroupButton(
                   hintText: '초대 선호도를 알려주세요.',
                   surveyMode: surveyMode,
                   user: user,
+                  isOhterProfile: false,
                 ),
             ],
           ),
@@ -504,23 +450,18 @@ class _SurveyState extends State<Survey> {
           child: Column(
             children: [
               if (widget.isProfile)
-                (Column(
-                  children: [
-                    Align(
-                      alignment: Alignment.center,
-                      child: Text('물건 공유'),
-                    ),
-                    SizedBox(height: 10.0),
-                    ((user.survey['sharing'] == null)
-                        ? Text('입력 안함')
-                        : Text(answerList['sharing']![user.survey['sharing']])),
-                  ],
-                ))
+                ((CustomGroupButton(
+                  hintText: '물건 공유',
+                  surveyMode: 'sharing',
+                  user: user,
+                  isOhterProfile: true,
+                )))
               else
                 CustomGroupButton(
                   hintText: '물건공유 선호도를 알려주세요.',
                   surveyMode: surveyMode,
                   user: user,
+                  isOhterProfile: false,
                 ),
             ],
           ),
@@ -530,24 +471,18 @@ class _SurveyState extends State<Survey> {
           child: Column(
             children: [
               if (widget.isProfile)
-                (Column(
-                  children: [
-                    Align(
-                      alignment: Alignment.center,
-                      child: Text('실내 통화'),
-                    ),
-                    SizedBox(height: 10.0),
-                    ((user.survey['calling'] == null)
-                        ? Text('입력 안함')
-                        : Text(answerList['calling']![user.survey['calling']])),
-                  ],
-                ))
+                ((CustomGroupButton(
+                  hintText: '실내 통화',
+                  surveyMode: 'calling',
+                  user: user,
+                  isOhterProfile: true,
+                )))
               else
                 CustomGroupButton(
-                  hintText: '실내통화 선호도를 알려주세요.',
-                  surveyMode: surveyMode,
-                  user: user,
-                ),
+                    hintText: '실내통화 선호도를 알려주세요.',
+                    surveyMode: surveyMode,
+                    user: user,
+                    isOhterProfile: false),
             ],
           ),
         ).fadeInList(3, false),
@@ -556,24 +491,18 @@ class _SurveyState extends State<Survey> {
           child: Column(
             children: [
               if (widget.isProfile)
-                (Column(
-                  children: [
-                    Align(
-                      alignment: Alignment.center,
-                      child: Text('이어폰 사용'),
-                    ),
-                    SizedBox(height: 10.0),
-                    ((user.survey['earphone'] == null)
-                        ? Text('입력 안함')
-                        : Text(
-                            answerList['earphone']![user.survey['earphone']])),
-                  ],
-                ))
+                ((CustomGroupButton(
+                  hintText: '이어폰 사용',
+                  surveyMode: 'earphone',
+                  user: user,
+                  isOhterProfile: true,
+                )))
               else
                 CustomGroupButton(
                   hintText: '이어폰 사용 선호도를 알려주세요.',
                   surveyMode: surveyMode,
                   user: user,
+                  isOhterProfile: false,
                 ),
             ],
           ),
@@ -583,23 +512,18 @@ class _SurveyState extends State<Survey> {
           child: Column(
             children: [
               if (widget.isProfile)
-                (Column(
-                  children: [
-                    Align(
-                      alignment: Alignment.center,
-                      child: Text('실내 취식'),
-                    ),
-                    SizedBox(height: 10.0),
-                    ((user.survey['eating'] == null)
-                        ? Text('입력 안함')
-                        : Text(answerList['eating']![user.survey['eating']])),
-                  ],
-                ))
+                ((CustomGroupButton(
+                  hintText: '실내 취식',
+                  surveyMode: 'eating',
+                  user: user,
+                  isOhterProfile: true,
+                )))
               else
                 CustomGroupButton(
                   hintText: '실내취식 선호도를 알려주세요.',
                   surveyMode: surveyMode,
                   user: user,
+                  isOhterProfile: false,
                 ),
             ],
           ),
@@ -609,24 +533,20 @@ class _SurveyState extends State<Survey> {
           child: Column(
             children: [
               if (widget.isProfile)
-                (Column(
-                  children: [
-                    Align(
-                      alignment: Alignment.center,
-                      child: Text('늦은 시간 스탠드'),
-                    ),
-                    SizedBox(height: 10.0),
-                    ((user.survey['lateStand'] == null)
-                        ? Text('입력 안함')
-                        : Text(answerList['lateStand']![
-                            user.survey['lateStand']])),
-                  ],
-                ))
+                (user.survey['lateStand'] == null
+                    ? Text('입력 안함')
+                    : (CustomGroupButton(
+                        hintText: '늦은 스탠드 사용',
+                        surveyMode: 'lateStand',
+                        user: user,
+                        isOhterProfile: true,
+                      )))
               else
                 CustomGroupButton(
                   hintText: '늦은 스탠드 사용 선호도를 알려주세요.',
                   surveyMode: surveyMode,
                   user: user,
+                  isOhterProfile: false,
                 ),
             ],
           ),
