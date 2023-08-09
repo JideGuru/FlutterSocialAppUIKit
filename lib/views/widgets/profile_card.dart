@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:social_app_ui/util/enum.dart';
+import 'package:social_app_ui/util/router.dart';
 import 'package:social_app_ui/util/user.dart';
 import 'package:social_app_ui/views/widgets/inprofile_button.dart';
 
@@ -151,8 +152,10 @@ class ProfileCard extends StatelessWidget {
                       icon: Icons.description,
                       label: '프로필',
                       onPressed: () {
-                        Navigator.push(
-                            context, createOtherProfileScreenRoute());
+                        Navigate.pushPage(
+                          context,
+                          OtherProfileScreen(userData: user),
+                        );
                       },
                     ),
                     Padding(
@@ -172,28 +175,6 @@ class ProfileCard extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-
-  Route createOtherProfileScreenRoute() {
-    return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) =>
-          OtherProfileScreen(
-        userData: user,
-      ),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        var begin = const Offset(0.0, 1.0);
-        var end = Offset.zero;
-        var curve = Curves.ease;
-
-        var tween =
-            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-        return SlideTransition(
-          position: animation.drive(tween),
-          child: child,
-        );
-      },
     );
   }
 }
