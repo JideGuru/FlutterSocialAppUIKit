@@ -2,18 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:social_app_ui/util/enum.dart';
 import 'package:social_app_ui/util/router.dart';
 import 'package:social_app_ui/util/user.dart';
+import 'package:social_app_ui/views/screens/other_profile_screen.dart';
 import 'package:social_app_ui/views/widgets/inprofile_button.dart';
-
-import '../screens/other_profile_screen.dart';
 
 class ProfileCard extends StatelessWidget {
   late final User user;
-  late final ProfileMode profileMode;
+  late final Owner owner;
   late final List<String> highest, lowest;
   ProfileCard({
     super.key,
     required this.user,
-    this.profileMode = ProfileMode.OTHERS,
+    this.owner = Owner.OTHERS,
     this.highest = const [],
     this.lowest = const [],
   });
@@ -69,7 +68,7 @@ class ProfileCard extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(vertical: 12),
               child: Visibility(
-                visible: profileMode == ProfileMode.OTHERS,
+                visible: owner == Owner.OTHERS,
                 child: Container(
                   height: 120,
                   width: 250,
@@ -105,7 +104,7 @@ class ProfileCard extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(vertical: 0),
               child: Visibility(
-                visible: profileMode == ProfileMode.OTHERS,
+                visible: owner == Owner.OTHERS,
                 child: Container(
                   height: 120,
                   width: 250,
@@ -145,7 +144,7 @@ class ProfileCard extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 6),
               child: Visibility(
-                visible: profileMode == ProfileMode.OTHERS,
+                visible: owner == Owner.OTHERS,
                 child: Row(
                   children: [
                     InprofileButton(
@@ -154,7 +153,7 @@ class ProfileCard extends StatelessWidget {
                       onPressed: () {
                         Navigate.pushPage(
                           context,
-                          OtherProfileScreen(userData: user),
+                          OtherProfileScreen(user: user),
                         );
                       },
                     ),

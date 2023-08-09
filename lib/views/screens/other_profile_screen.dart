@@ -4,11 +4,11 @@ import 'package:social_app_ui/views/screens/survey.dart';
 import '../../util/user.dart';
 
 class OtherProfileScreen extends StatelessWidget {
-  late User userData;
+  late final User user;
 
   OtherProfileScreen({
     super.key,
-    required this.userData,
+    required this.user,
   });
 
   @override
@@ -30,9 +30,9 @@ class OtherProfileScreen extends StatelessWidget {
       ),
       backgroundColor: Colors.orange,
       body: Survey(
-        email: userData.email,
+        email: user.email,
         isProfile: true,
-        user: userData,
+        user: user,
       ),
     );
   }

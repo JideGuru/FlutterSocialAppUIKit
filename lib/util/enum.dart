@@ -1,2 +1,3 @@
-enum FormMode{LOGIN, REGISTER, FORGOT_PASSWORD}
-enum ProfileMode{MINE, OTHERS}
+enum FormMode { LOGIN, REGISTER, FORGOT_PASSWORD }
+
+enum Owner { MINE, OTHERS }

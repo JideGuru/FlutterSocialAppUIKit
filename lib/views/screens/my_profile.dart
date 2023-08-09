@@ -40,7 +40,7 @@ class _MyProfileState extends State<MyProfile> {
                   children: <Widget>[
                     SizedBox(height: 60),
                     ProfileCard(
-                      profileMode: ProfileMode.MINE,
+                      owner: Owner.MINE,
                       user: User.fromFirestore(snapshot.data!),
                     ),
                     SizedBox(height: 10),
