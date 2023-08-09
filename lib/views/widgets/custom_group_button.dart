@@ -4,13 +4,13 @@ import 'package:social_app_ui/util/user.dart';
 
 class CustomGroupButton extends StatefulWidget {
   late final String hintText, surveyMode;
-  late final User user;
+  late final User? user;
   late final bool isOhterProfile;
   CustomGroupButton({
     super.key,
     required this.hintText,
     required this.surveyMode,
-    required this.user,
+    this.user,
     required this.isOhterProfile,
   });
 
@@ -24,7 +24,7 @@ class _CustomGroupButtonState extends State<CustomGroupButton> {
   void initState() {
     if (widget.isOhterProfile) {
       _buttonController = GroupButtonController(
-        selectedIndex: widget.user.survey[widget.surveyMode],
+        selectedIndex: widget.user?.survey[widget.surveyMode],
       );
     } else {
       _buttonController = GroupButtonController(
@@ -48,7 +48,7 @@ class _CustomGroupButtonState extends State<CustomGroupButton> {
           buttons: answerList[widget.surveyMode]!,
           controller: _buttonController,
           onSelected: (value, index, isSelected) {
-            widget.user.survey[widget.surveyMode] = index;
+            widget.user?.survey[widget.surveyMode] = index;
             setState(() {});
           },
         ),

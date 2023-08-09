@@ -32,6 +32,7 @@ class OtherProfileScreen extends StatelessWidget {
       body: Survey(
         email: userData.email,
         isProfile: true,
+        users: userData,
       ),
     );
   }

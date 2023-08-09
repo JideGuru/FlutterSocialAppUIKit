@@ -102,7 +102,7 @@ class ProfileCard extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 6),
+              padding: EdgeInsets.symmetric(vertical: 0),
               child: Visibility(
                 visible: profileMode == ProfileMode.OTHERS,
                 child: Container(
@@ -137,10 +137,10 @@ class ProfileCard extends StatelessWidget {
                 ),
               ),
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 6),
-              // child: Difference(),
-            ),
+            // Padding(
+            //   padding: EdgeInsets.symmetric(vertical: 6),
+            //   // child: Difference(),
+            // ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 6),
               child: Visibility(
