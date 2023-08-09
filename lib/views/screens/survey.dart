@@ -18,9 +18,11 @@ class Survey extends StatefulWidget {
   late final String email;
   late final bool isProfile;
   late final _SurveyState survey;
+  late final User? users;
   Survey({
     required this.email,
     required this.isProfile,
+    this.users,
   });
 
   @override
@@ -128,9 +130,9 @@ class _SurveyState extends State<Survey> {
       children: <Widget>[
         Text(
           widget.isProfile
-              ? (user.essentials['nickname'] == null
+              ? (widget.users?.essentials['nickname'] == null
                   ? ''
-                  : user.essentials['nickname'])
+                  : widget.users?.essentials['nickname'])
               : '설문조사',
           style: TextStyle(
             fontSize: 40.0,
@@ -235,9 +237,9 @@ class _SurveyState extends State<Survey> {
               ),
               SizedBox(height: 10.0),
               widget.isProfile
-                  ? Text(user.essentials['dormitory'])
+                  ? Text(widget.users?.essentials['dormitory'])
                   : DropdownButton(
-                      value: user.essentials[surveyMode],
+                      value: user.essentials['dormitory'],
                       items: dormitoryList.map((String dorm) {
                         return DropdownMenuItem<String>(
                           child: Text('$dorm'),
@@ -263,9 +265,9 @@ class _SurveyState extends State<Survey> {
               ),
               SizedBox(height: 10.0),
               widget.isProfile
-                  ? ((user.essentials['studentNumber'] == null)
+                  ? ((widget.users?.essentials['studentNumber'] == null)
                       ? Text('입력 안함')
-                      : Text(user.essentials['studentNumber']))
+                      : Text(widget.users?.essentials['studentNumber']))
                   : CustomTextField(
                       enabled: !loading,
                       hintText: "학번(연도 네 자리)",
@@ -289,9 +291,23 @@ class _SurveyState extends State<Survey> {
                 child: widget.isProfile ? Text('단과대학') : Text('단과대학을 알려주세요.'),
               ),
               SizedBox(height: 10.0),
-              ((user.essentials['major'] == null)
-                  ? Text('입력 안함')
-                  : Text(user.essentials['major'])),
+              widget.isProfile
+                  ? ((widget.users?.essentials['major'] == null)
+                      ? Text('입력 안함')
+                      : Text(widget.users?.essentials['major']))
+                  : DropdownButton(
+                      value: user.essentials['major'],
+                      items: majorList.map((String dorm) {
+                        return DropdownMenuItem<String>(
+                          child: Text('$dorm'),
+                          value: dorm,
+                        );
+                      }).toList(),
+                      onChanged: (dynamic value) {
+                        user.essentials[surveyMode] = value;
+                        setState(() {});
+                      },
+                    ),
               SizedBox(height: 20.0),
             ],
           ),
@@ -306,7 +322,7 @@ class _SurveyState extends State<Survey> {
                 (CustomGroupButton(
                   hintText: '흡연',
                   surveyMode: 'smoking',
-                  user: user,
+                  user: widget.users,
                   isOhterProfile: true,
                 ))
               else
@@ -324,12 +340,12 @@ class _SurveyState extends State<Survey> {
           child: Column(
             children: [
               if (widget.isProfile)
-                (user.survey['sleepingHabits'] == null
+                (widget.users?.survey['sleepingHabits'] == null
                     ? Text('입력 없음')
                     : CustomSfSlider(
                         hintText: '잠버릇',
                         surveyMode: 'sleepingHabits',
-                        user: user,
+                        user: widget.users,
                       ))
               else
                 CustomSfSlider(
@@ -345,12 +361,12 @@ class _SurveyState extends State<Survey> {
           child: Column(
             children: [
               if (widget.isProfile)
-                (user.survey['relationship'] == null
+                (widget.users?.survey['relationship'] == null
                     ? Text('입력 없음')
                     : CustomSfSlider(
                         hintText: '관계',
                         surveyMode: 'relationship',
-                        user: user,
+                        user: widget.users,
                       ))
               else
                 CustomSfSlider(
@@ -366,12 +382,12 @@ class _SurveyState extends State<Survey> {
           child: Column(
             children: [
               if (widget.isProfile)
-                (user.survey['sleepAt'] == null
+                (widget.users?.survey['sleepAt'] == null
                     ? Text('입력 없음')
                     : CustomSfSlider(
                         hintText: '취침 시간',
                         surveyMode: 'sleepAt',
-                        user: user,
+                        user: widget.users,
                       ))
               else
                 CustomSfSlider(
@@ -387,12 +403,12 @@ class _SurveyState extends State<Survey> {
           child: Column(
             children: [
               if (widget.isProfile)
-                (user.survey['roomCleaning'] == null
+                (widget.users?.survey['roomCleaning'] == null
                     ? Text('입력 없음')
                     : CustomSfSlider(
                         hintText: '방 청소 주기',
                         surveyMode: 'roomCleaning',
-                        user: user,
+                        user: widget.users,
                       ))
               else
                 CustomSfSlider(
@@ -408,12 +424,12 @@ class _SurveyState extends State<Survey> {
           child: Column(
             children: [
               if (widget.isProfile)
-                (user.survey['restroomCleaning'] == null
+                (widget.users?.survey['restroomCleaning'] == null
                     ? Text('입력 없음')
                     : CustomSfSlider(
                         hintText: '화장실 청소 주기',
                         surveyMode: 'restroomCleaning',
-                        user: user,
+                        user: widget.users,
                       ))
               else
                 CustomSfSlider(
@@ -432,7 +448,7 @@ class _SurveyState extends State<Survey> {
                 ((CustomGroupButton(
                   hintText: '친구 초대',
                   surveyMode: 'inviting',
-                  user: user,
+                  user: widget.users,
                   isOhterProfile: true,
                 )))
               else
@@ -453,7 +469,7 @@ class _SurveyState extends State<Survey> {
                 ((CustomGroupButton(
                   hintText: '물건 공유',
                   surveyMode: 'sharing',
-                  user: user,
+                  user: widget.users,
                   isOhterProfile: true,
                 )))
               else
@@ -474,7 +490,7 @@ class _SurveyState extends State<Survey> {
                 ((CustomGroupButton(
                   hintText: '실내 통화',
                   surveyMode: 'calling',
-                  user: user,
+                  user: widget.users,
                   isOhterProfile: true,
                 )))
               else
@@ -494,7 +510,7 @@ class _SurveyState extends State<Survey> {
                 ((CustomGroupButton(
                   hintText: '이어폰 사용',
                   surveyMode: 'earphone',
-                  user: user,
+                  user: widget.users,
                   isOhterProfile: true,
                 )))
               else
@@ -515,7 +531,7 @@ class _SurveyState extends State<Survey> {
                 ((CustomGroupButton(
                   hintText: '실내 취식',
                   surveyMode: 'eating',
-                  user: user,
+                  user: widget.users,
                   isOhterProfile: true,
                 )))
               else
@@ -533,12 +549,12 @@ class _SurveyState extends State<Survey> {
           child: Column(
             children: [
               if (widget.isProfile)
-                (user.survey['lateStand'] == null
+                (widget.users?.survey['lateStand'] == null
                     ? Text('입력 안함')
                     : (CustomGroupButton(
                         hintText: '늦은 스탠드 사용',
                         surveyMode: 'lateStand',
-                        user: user,
+                        user: widget.users,
                         isOhterProfile: true,
                       )))
               else
@@ -563,9 +579,9 @@ class _SurveyState extends State<Survey> {
               ),
               SizedBox(height: 10.0),
               widget.isProfile
-                  ? ((user.essentials['etc'] == null
+                  ? ((widget.users?.essentials['etc'] == null
                       ? Text('없음')
-                      : Text(user.essentials['etc'])))
+                      : Text(widget.users?.essentials['etc'])))
                   : CustomTextField(
                       enabled: !loading,
                       hintText: '기타',

@@ -176,7 +176,7 @@ class User {
     Map<String, dynamic> score = {};
     for (var question in questionList) {
       if (question == 'etc') break;
-      var diff = ((survey[question] - user.survey[question]) as double).abs();
+      var diff = ((survey[question] - user.survey[question])).abs();
       diff = (1 - diff / (answerList[question]!.length - 1)); //normalize
       costs[question] = weight[question]! * diff;
     }
