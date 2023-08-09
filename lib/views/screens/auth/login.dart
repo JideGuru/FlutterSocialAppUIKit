@@ -58,7 +58,10 @@ class _LoginState extends State<Login> {
           case FormMode.REGISTER:
             Navigate.pushPageReplacement(
               context,
-              Survey(email: email),
+              Survey(
+                email: email,
+                isProfile: false,
+              ),
             );
             break;
           case FormMode.LOGIN:
@@ -155,7 +158,7 @@ class _LoginState extends State<Login> {
           ),
         ).fadeInList(3, false),
         SizedBox(height: 20.0),
-        buildButton(),
+        formMode == FormMode.LOGIN ? buildButton('로그인') : buildButton('가입하기'),
         Visibility(
           visible: formMode == FormMode.LOGIN,
           child: Row(
@@ -231,11 +234,11 @@ class _LoginState extends State<Login> {
     );
   }
 
-  buildButton() {
+  buildButton(String Label) {
     return loading
         ? Center(child: CircularProgressIndicator())
         : CustomButton(
-            label: "제출",
+            label: '$Label',
             onPressed: () => login(),
           ).fadeInList(4, false);
   }

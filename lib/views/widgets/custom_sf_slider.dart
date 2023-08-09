@@ -33,7 +33,7 @@ class _CustomSfSliderState extends State<CustomSfSlider> {
         SfSlider(
           value: widget.user.survey[widget.surveyMode],
           min: 0,
-          max: answerList[widget.surveyMode]!.length-1,
+          max: answerList[widget.surveyMode]!.length - 1,
           interval: 1,
           showTicks: true,
           onChanged: (value) {

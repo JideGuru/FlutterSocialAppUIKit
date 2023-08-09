@@ -21,13 +21,16 @@ List<ProfileCard> sort(
   List<Pair<double, ProfileCard>> weightedDeck = [];
 
   for (var card in deck) {
-    var score = user.getScore(card.user, weight);
-    var weightedCard = ProfileCard(
-      user: card.user,
-      highest: score['highest'],
-      lowest: score['lowest'],
-    );
-    weightedDeck.add(Pair(score['total'], weightedCard));
+    print(card.user.tag);
+    if (card.user.tag != 0) {
+      var score = user.getScore(card.user, weight);
+      var weightedCard = ProfileCard(
+        user: card.user,
+        highest: score['highest'],
+        lowest: score['lowest'],
+      );
+      weightedDeck.add(Pair(score['total'], weightedCard));
+    }
   }
   weightedDeck.sort((a, b) => b.first.compareTo(a.first));
 
