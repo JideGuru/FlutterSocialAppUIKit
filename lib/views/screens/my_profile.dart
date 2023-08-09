@@ -30,6 +30,7 @@ class _MyProfileState extends State<MyProfile> {
             .get(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
+            var me = User.fromFirestore(snapshot.data!);
             return SingleChildScrollView(
               padding: EdgeInsets.symmetric(horizontal: 10),
               child: Container(
@@ -41,11 +42,11 @@ class _MyProfileState extends State<MyProfile> {
                     SizedBox(height: 60),
                     ProfileCard(
                       owner: Owner.MINE,
-                      user: User.fromFirestore(snapshot.data!),
+                      user: me,
                     ),
                     SizedBox(height: 10),
                     Text(
-                      widget.email,
+                      me.email,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 22,

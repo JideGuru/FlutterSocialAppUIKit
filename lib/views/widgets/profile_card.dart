@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:social_app_ui/util/enum.dart';
 import 'package:social_app_ui/util/router.dart';
 import 'package:social_app_ui/util/user.dart';
-import 'package:social_app_ui/views/screens/other_profile_screen.dart';
+import 'package:social_app_ui/views/screens/detail.dart';
 import 'package:social_app_ui/views/widgets/inprofile_button.dart';
 
 class ProfileCard extends StatelessWidget {
@@ -153,7 +153,7 @@ class ProfileCard extends StatelessWidget {
                       onPressed: () {
                         Navigate.pushPage(
                           context,
-                          OtherProfileScreen(user: user),
+                          Detail(user: user),
                         );
                       },
                     ),

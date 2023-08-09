@@ -1,3 +1,3 @@
 enum FormMode { LOGIN, REGISTER, FORGOT_PASSWORD }
 
-enum Owner { MINE, OTHERS }
+enum Owner { MINE, MINE_INIT, OTHERS }

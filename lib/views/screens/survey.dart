@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
 import 'package:lottie/lottie.dart';
 import 'package:social_app_ui/util/animations.dart';
+import 'package:social_app_ui/util/enum.dart';
 import 'package:social_app_ui/util/router.dart';
 import 'package:social_app_ui/util/user.dart';
 import 'package:social_app_ui/util/validations.dart';
@@ -17,10 +18,12 @@ import 'main_screen.dart';
 class Survey extends StatefulWidget {
   late final String email;
   late final bool isProfile;
+  final Owner owner;
   late final User? user;
   Survey({
     required this.email,
     required this.isProfile,
+    this.owner = Owner.MINE_INIT,
     this.user,
   });
 
@@ -142,7 +145,7 @@ class _SurveyState extends State<Survey> {
         Form(
           autovalidateMode: AutovalidateMode.onUserInteraction,
           key: formKey,
-          child: buildForm(widget.isProfile),
+          child: buildForm(),
         ),
         SizedBox(height: 20.0),
         widget.isProfile
@@ -157,12 +160,13 @@ class _SurveyState extends State<Survey> {
     );
   }
 
-  buildForm(bool isProfile) {
+  buildForm() {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         Visibility(
-          visible: surveyMode == 'introduction',
+          visible:
+              surveyMode == 'introduction' && widget.owner == Owner.MINE_INIT,
           child: Column(
             children: [
               SizedBox(height: 10.0),
@@ -178,7 +182,7 @@ class _SurveyState extends State<Survey> {
 
         //essentials
         Visibility(
-          visible: surveyMode == 'nickname',
+          visible: surveyMode == 'nickname' && widget.owner == Owner.MINE_INIT,
           child: Column(
             children: [
               Align(
@@ -220,7 +224,7 @@ class _SurveyState extends State<Survey> {
           ),
         ).fadeInList(3, false),
         Visibility(
-          visible: widget.isProfile ? true : isOtherProfile('dormitory'),
+          visible: widget.owner == Owner.MINE_INIT,
           child: Column(
             children: [
               Align(
@@ -255,7 +259,7 @@ class _SurveyState extends State<Survey> {
           ),
         ).fadeInList(3, false),
         Visibility(
-          visible: widget.isProfile ? true : isOtherProfile('studentNumber'),
+          visible: widget.owner == Owner.MINE_INIT,
           child: Column(
             children: [
               Align(
@@ -282,7 +286,7 @@ class _SurveyState extends State<Survey> {
           ),
         ).fadeInList(3, false),
         Visibility(
-          visible: widget.isProfile ? true : isOtherProfile('major'),
+          visible: widget.owner == Owner.MINE_INIT,
           child: Column(
             children: [
               Align(
