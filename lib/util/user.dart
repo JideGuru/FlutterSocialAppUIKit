@@ -139,18 +139,43 @@ class User {
     required this.survey,
   });
 
-  void essentialInitialize() {
-    for (var key in essentialList) {
-      essentials[key] = key;
-    }
+  User.init(String email)
+      : this.email = email,
+        tag = 0,
+        essentials = essentialInitialize(),
+        survey = answerInitialize();
+
+  static Map<String, dynamic> essentialInitialize() {
+    Map<String, dynamic> init = {};
+    init['nickname'] = '';
+    init['sex'] = 0;
+    init['dormitory'] = '새빛관';
+    init['major'] = '공과대학';
+    init['studentNumber'] = '2019';
+    return init;
   }
 
-  void answerInitialize() {
+  static Map<String, dynamic> answerInitialize() {
+    Map<String, dynamic> init = {};
     for (var key in answerList.keys) {
-      survey[key] = max((answerList[key]!.length / 2).round() - 1, 0);
+      if (key == 'etc') continue;
+      init[key] = max((answerList[key]!.length / 2).round() - 1, 0);
     }
-    survey['etc'] = '';
+    init['etc'] = '';
+    return init;
   }
+  // void essentialInitialize() {
+  //   for (var key in essentialList) {
+  //     essentials[key] = key;
+  //   }
+  // }
+
+  // void answerInitialize() {
+  //   for (var key in answerList.keys) {
+  //     survey[key] = max((answerList[key]!.length / 2).round() - 1, 0);
+  //   }
+  //   survey['etc'] = '';
+  // }
 
   Map<String, dynamic> getScore(User user, Map<String, dynamic> weight) {
     Map<String, double> costs = {};

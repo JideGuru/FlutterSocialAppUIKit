@@ -30,6 +30,7 @@ class _CustomGroupButtonState extends State<CustomGroupButton> {
         ),
         SizedBox(height: 20.0),
         GroupButton(
+          controller: GroupButtonController(selectedIndex: widget.user.survey[widget.surveyMode]),
           isRadio: true,
           buttons: answerList[widget.surveyMode]!,
           onSelected: (value, index, isSelected) {

@@ -30,22 +30,16 @@ class _SurveyState extends State<Survey> {
   List<String> surveyList = List.from(essentialList)..addAll(questionList);
   String surveyMode = 'introduction';
   int surveyIndex = 0;
-  User user = User(
-    email: '',
-    essentials: {'dormitory': '창의관'},
-    survey: {},
-  );
+
+  late User user;
 
   bool loading = false;
   bool validate = false;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   nextStep() async {
-    toFirestore.doc(user.email).set(user.toFirestore());
-
     if (surveyIndex == surveyList.length) {
-      print(user.survey);
-      Navigate.pushPageReplacement(context, MainScreen(email: widget.email));
+      Navigate.pushPageReplacement(context, MainScreen(email: user.email));
     }
 
     FormState form = formKey.currentState!;
@@ -62,9 +56,8 @@ class _SurveyState extends State<Survey> {
   @override
   void initState() {
     super.initState();
-    user.email = widget.email;
-    // user.essentialInitialize();
-    user.answerInitialize();
+    user = User.init(widget.email);
+    toFirestore.doc(user.email).set(user.toFirestore());
   }
 
   @override
@@ -166,7 +159,7 @@ class _SurveyState extends State<Survey> {
                 hintText: "닉네임",
                 textInputAction: TextInputAction.next,
                 validateFunction: Validations.validateNickname,
-                onSaved: (String? val) {
+                onChange: (String? val) {
                   user.essentials[surveyMode] = val ?? '';
                 },
               ),
@@ -204,7 +197,7 @@ class _SurveyState extends State<Survey> {
               ),
               SizedBox(height: 10.0),
               DropdownButton(
-                value: user.essentials[surveyMode],
+                // value: user.essentials[surveyMode],
                 items: dormitoryList.map((String dorm) {
                   return DropdownMenuItem<String>(
                     child: Text('$dorm'),
@@ -213,7 +206,6 @@ class _SurveyState extends State<Survey> {
                 }).toList(),
                 onChanged: (dynamic value) {
                   user.essentials[surveyMode] = value;
-                  setState(() {});
                 },
               ),
               SizedBox(height: 20.0),
@@ -234,9 +226,8 @@ class _SurveyState extends State<Survey> {
                 hintText: "학번(연도 네 자리)",
                 textInputAction: TextInputAction.next,
                 validateFunction: Validations.validateStudentNumber,
-                onSaved: (String? val) {
-                  user.essentials[surveyMode] = val ?? '';
-                  print(user.essentials);
+                onChange: (String? val) {
+                  user.essentials[surveyMode] = val;
                 },
               ),
               SizedBox(height: 20.0),
@@ -256,8 +247,7 @@ class _SurveyState extends State<Survey> {
                 enabled: !loading,
                 hintText: "단과대학",
                 textInputAction: TextInputAction.next,
-                // validateFunction: Validations.validateStudentNumber,
-                onSaved: (String? val) {
+                onChange: (String? val) {
                   user.essentials[surveyMode] = val ?? '';
                 },
               ),
@@ -396,9 +386,8 @@ class _SurveyState extends State<Survey> {
                 enabled: !loading,
                 hintText: '기타',
                 textInputAction: TextInputAction.next,
-                // validateFunction: Validations.validateStudentNumber,
-                onSaved: (String? val) {
-                  user.essentials[surveyMode] = val ?? '';
+                onChange: (String? val) {
+                  user.survey[surveyMode] = val ?? '';
                 },
               ),
               SizedBox(height: 20.0),
@@ -414,7 +403,9 @@ class _SurveyState extends State<Survey> {
         ? Center(child: CircularProgressIndicator())
         : CustomButton(
             label: '다음',
-            onPressed: () => nextStep(),
-          ).fadeInList(4, false);
+            onPressed: () {
+              toFirestore.doc(user.email).update(user.toFirestore());
+              nextStep();
+            }).fadeInList(4, false);
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:social_app_ui/util/enum.dart';
+import 'package:social_app_ui/util/router.dart';
 import 'package:social_app_ui/util/user.dart';
+import 'package:social_app_ui/views/screens/detail.dart';
 import 'package:social_app_ui/views/widgets/inprofile_button.dart';
 
 class ProfileCard extends StatelessWidget {
@@ -149,7 +151,7 @@ class ProfileCard extends StatelessWidget {
                       icon: Icons.description,
                       label: '프로필',
                       onPressed: () {
-                        print('프로필 클릭됨');
+                        Navigate.pushPage(context, Detail(user: user));
                       },
                     ),
                     Padding(
