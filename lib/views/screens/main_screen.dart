@@ -33,47 +33,36 @@ class _MainScreenState extends State<MainScreen> {
           Settings(),
         ],
       ),
-      bottomNavigationBar: Theme(
-        data: Theme.of(context).copyWith(
-          // sets the background color of the `BottomNavigationBar`
-          canvasColor: Theme.of(context).primaryColor,
-          // sets the active color of the `BottomNavigationBar` if `Brightness` is light
-          primaryColor: Theme.of(context).colorScheme.secondary,
-          textTheme: Theme.of(context).textTheme.copyWith(
-                bodySmall: TextStyle(color: Colors.grey[500]),
-              ),
-        ),
-        child: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.home,
-              ),
-              label: '홈',
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.home,
             ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.person,
-              ),
-              label: '내 프로필',
+            label: '홈',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.person,
             ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.message,
-              ),
-              label: '채팅',
+            label: '내 프로필',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.message,
             ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.settings,
-              ),
-              label: '설정',
+            label: '채팅',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.settings,
             ),
-          ],
-          onTap: navigationTapped,
-          currentIndex: _page,
-        ),
+            label: '설정',
+          ),
+        ],
+        onTap: navigationTapped,
+        currentIndex: _page,
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:social_app_ui/util/animations.dart';
+import 'package:social_app_ui/util/const.dart';
 import 'package:social_app_ui/util/enum.dart';
 import 'package:social_app_ui/util/list_config.dart';
 import 'package:social_app_ui/util/user.dart';
@@ -86,11 +87,8 @@ class _DetailState extends State<Detail> {
           height: MediaQuery.of(context).size.height / 15,
         ),
         Text(
-          '설문조사',
-          style: TextStyle(
-            fontSize: 40.0,
-            fontWeight: FontWeight.bold,
-          ),
+          '${Constants.year}년도 ${Constants.semester}학기',
+          style: Theme.of(context).textTheme.headlineLarge
         ).fadeInList(0, false),
         SizedBox(height: 70.0),
         Form(
@@ -172,55 +170,35 @@ class _DetailState extends State<Detail> {
           surveyMode: 'smoking',
           user: widget.user,
         ).fadeInList(3, false),
-        Column(
-          children: [
-            CustomSfSlider(
-              disabled: widget.detailMode == Owner.OTHERS,
-              hintText: '잠버릇',
-              surveyMode: 'sleepingHabits',
-              user: widget.user,
-            ),
-          ],
+        CustomSfSlider(
+          disabled: widget.detailMode == Owner.OTHERS,
+          hintText: '잠버릇',
+          surveyMode: 'sleepingHabits',
+          user: widget.user,
         ).fadeInList(3, false),
-        Column(
-          children: [
-            CustomSfSlider(
-              disabled: widget.detailMode == Owner.OTHERS,
-              hintText: '룸메이트와 맺고 싶은 관계',
-              surveyMode: 'relationship',
-              user: widget.user,
-            ),
-          ],
+        CustomSfSlider(
+          disabled: widget.detailMode == Owner.OTHERS,
+          hintText: '룸메이트와 맺고 싶은 관계',
+          surveyMode: 'relationship',
+          user: widget.user,
         ).fadeInList(3, false),
-        Column(
-          children: [
-            CustomSfSlider(
-              disabled: widget.detailMode == Owner.OTHERS,
-              hintText: '잠드는 시간을 알려주세요.',
-              surveyMode: 'sleepAt',
-              user: widget.user,
-            ),
-          ],
+        CustomSfSlider(
+          disabled: widget.detailMode == Owner.OTHERS,
+          hintText: '잠드는 시간을 알려주세요.',
+          surveyMode: 'sleepAt',
+          user: widget.user,
         ).fadeInList(3, false),
-        Column(
-          children: [
-            CustomSfSlider(
-              disabled: widget.detailMode == Owner.OTHERS,
-              hintText: '방 청소 주기',
-              surveyMode: 'roomCleaning',
-              user: widget.user,
-            ),
-          ],
+        CustomSfSlider(
+          disabled: widget.detailMode == Owner.OTHERS,
+          hintText: '방 청소 주기',
+          surveyMode: 'roomCleaning',
+          user: widget.user,
         ).fadeInList(3, false),
-        Column(
-          children: [
-            CustomSfSlider(
-              disabled: widget.detailMode == Owner.OTHERS,
-              hintText: '화장실 청소 주기',
-              surveyMode: 'restroomCleaning',
-              user: widget.user,
-            ),
-          ],
+        CustomSfSlider(
+          disabled: widget.detailMode == Owner.OTHERS,
+          hintText: '화장실 청소 주기',
+          surveyMode: 'restroomCleaning',
+          user: widget.user,
         ).fadeInList(3, false),
         CustomGroupButton(
           disabled: widget.detailMode == Owner.OTHERS,

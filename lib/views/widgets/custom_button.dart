@@ -12,28 +12,19 @@ class CustomButton extends StatelessWidget {
   });
 
   bool isSmallScreen(BuildContext context) {
-    return MediaQuery
-        .of(context)
-        .size
-        .width < 800;
+    return MediaQuery.of(context).size.width < 800;
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 50.0,
-      width: MediaQuery
-          .of(context)
-          .size
-          .width,
+      width: MediaQuery.of(context).size.width,
       child: TextButton(
         onPressed: () => onPressed!(),
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all(
-              color ?? Theme
-                  .of(context)
-                  .colorScheme
-                  .secondary),
+              color ?? Theme.of(context).colorScheme.secondary),
           shape: MaterialStateProperty.all(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.all(

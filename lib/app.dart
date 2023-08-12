@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: Constants.appName,
-      theme: themeData(ThemeConfig.lightTheme),
+      theme: ThemeConfig.lightTheme,
       // darkTheme: themeData(ThemeConfig.darkTheme),
       home: Login(),
     );

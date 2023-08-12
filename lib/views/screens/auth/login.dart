@@ -161,7 +161,10 @@ class _LoginState extends State<Login> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('계정이 없으신가요?'),
+              Text(
+                '계정이 없으신가요?',
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
               TextButton(
                 onPressed: () {
                   formMode = FormMode.REGISTER;
@@ -177,7 +180,10 @@ class _LoginState extends State<Login> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('이미 계정이 있으신가요?'),
+              Text(
+                '이미 계정이 있으신가요?',
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
               TextButton(
                 onPressed: () {
                   formMode = FormMode.LOGIN;

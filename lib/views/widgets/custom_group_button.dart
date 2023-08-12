@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
 import 'package:social_app_ui/util/data.dart';
+import 'package:social_app_ui/util/extensions.dart';
 import 'package:social_app_ui/util/list_config.dart';
 import 'package:social_app_ui/util/user.dart';
 
@@ -48,6 +49,6 @@ class _CustomGroupButtonState extends State<CustomGroupButton> {
         ),
         SizedBox(height: 40.0),
       ],
-    );
+    ).fadeInList(3, false);
   }
 }

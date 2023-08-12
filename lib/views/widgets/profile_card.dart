@@ -37,15 +37,11 @@ class ProfileCard extends StatelessWidget {
               children: [
                 Text(
                   user.essentials['nickname'],
-                  style: TextStyle(
-                    fontSize: 30,
-                  ),
+                  style: Theme.of(context).textTheme.headlineMedium,
                 ),
                 Text(
                   user.essentials['studentNumber'],
-                  style: TextStyle(
-                    fontSize: 30,
-                  ),
+                  style: Theme.of(context).textTheme.headlineMedium,
                 ),
               ],
             ),
@@ -57,15 +53,11 @@ class ProfileCard extends StatelessWidget {
               children: [
                 Text(
                   user.essentials['major'],
-                  style: TextStyle(
-                    fontSize: 18,
-                  ),
+                  style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 Text(
                   ": ${user.survey['etc']}",
-                  style: TextStyle(
-                    fontSize: 24,
-                  ),
+                  style: Theme.of(context).textTheme.headlineSmall,
                 ),
                 SizedBox(
                   height: 12,
@@ -101,8 +93,12 @@ class ProfileCard extends StatelessWidget {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: highest
-                              .map((comm) =>
-                                  Text(comm, style: TextStyle(fontSize: 18)))
+                              .map(
+                                (comm) => Text(
+                                  comm,
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                ),
+                              )
                               .toList(),
                         )
                       ],
@@ -138,8 +134,12 @@ class ProfileCard extends StatelessWidget {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: lowest
-                              .map((diff) =>
-                                  Text(diff, style: TextStyle(fontSize: 18)))
+                              .map(
+                                (diff) => Text(
+                                  diff,
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                ),
+                              )
                               .toList(),
                         )
                       ],

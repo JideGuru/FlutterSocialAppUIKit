@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:social_app_ui/util/extensions.dart';
 
 class CustomTextField extends StatelessWidget {
   final String? initialValue;

@@ -45,13 +45,8 @@ class _MyProfileState extends State<MyProfile> {
                       user: me,
                     ),
                     SizedBox(height: 10),
-                    Text(
-                      widget.email,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 22,
-                      ),
-                    ),
+                    Text(widget.email,
+                        style: Theme.of(context).textTheme.bodyLarge),
                     SizedBox(height: 3),
                     Text(
                       "아래에서 설문을 수정할 수 있습니다.",

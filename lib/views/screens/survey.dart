@@ -147,8 +147,8 @@ class _SurveyState extends State<Survey> {
                 child: Text('룸메이트 후보들에게 나에 대해 알려주세요.'),
               ),
             ],
-          ),
-        ).fadeInList(3, false),
+          ).fadeInList(3, false),
+        ),
 
         //essentials
         Visibility(
@@ -171,8 +171,8 @@ class _SurveyState extends State<Survey> {
               ),
               SizedBox(height: 20.0),
             ],
-          ),
-        ).fadeInList(3, false),
+          ).fadeInList(3, false),
+        ),
         Visibility(
           visible: surveyMode == 'sex',
           child: Column(
@@ -183,16 +183,20 @@ class _SurveyState extends State<Survey> {
               ),
               SizedBox(height: 10.0),
               GroupButton(
+                controller: GroupButtonController(
+                  selectedIndex: 0,
+                ),
                 isRadio: true,
                 buttons: sexList,
                 onSelected: (value, index, isSelected) {
-                  user.survey[surveyMode] = index;
+                  user.essentials[surveyMode] = index;
+                  print(user.essentials[surveyMode]);
                 },
               ),
               SizedBox(height: 20.0),
             ],
-          ),
-        ).fadeInList(3, false),
+          ).fadeInList(3, false),
+        ),
         Visibility(
           visible: surveyMode == 'dormitory',
           child: Column(
@@ -209,8 +213,8 @@ class _SurveyState extends State<Survey> {
               ),
               SizedBox(height: 20.0),
             ],
-          ),
-        ).fadeInList(3, false),
+          ).fadeInList(3, false),
+        ),
         Visibility(
           visible: surveyMode == 'studentNumber',
           child: Column(
@@ -227,8 +231,8 @@ class _SurveyState extends State<Survey> {
               ),
               SizedBox(height: 20.0),
             ],
-          ),
-        ).fadeInList(3, false),
+          ).fadeInList(3, false),
+        ),
         Visibility(
           visible: surveyMode == 'major',
           child: Column(
@@ -245,8 +249,8 @@ class _SurveyState extends State<Survey> {
               ),
               SizedBox(height: 20.0),
             ],
-          ),
-        ).fadeInList(3, false),
+          ).fadeInList(3, false),
+        ),
 
         // questions
         Visibility(
@@ -256,7 +260,7 @@ class _SurveyState extends State<Survey> {
             surveyMode: surveyMode,
             user: user,
           ),
-        ).fadeInList(3, false),
+        ),
         Visibility(
           visible: surveyMode == 'sleepingHabits',
           child: Column(
@@ -268,7 +272,7 @@ class _SurveyState extends State<Survey> {
               ),
             ],
           ),
-        ).fadeInList(3, false),
+        ),
         Visibility(
           visible: surveyMode == 'relationship',
           child: Column(
@@ -280,7 +284,7 @@ class _SurveyState extends State<Survey> {
               ),
             ],
           ),
-        ).fadeInList(3, false),
+        ),
         Visibility(
           visible: surveyMode == 'sleepAt',
           child: Column(
@@ -292,7 +296,7 @@ class _SurveyState extends State<Survey> {
               ),
             ],
           ),
-        ).fadeInList(3, false),
+        ),
         Visibility(
           visible: surveyMode == 'roomCleaning',
           child: Column(
@@ -304,7 +308,7 @@ class _SurveyState extends State<Survey> {
               ),
             ],
           ),
-        ).fadeInList(3, false),
+        ),
         Visibility(
           visible: surveyMode == 'restroomCleaning',
           child: Column(
@@ -316,7 +320,7 @@ class _SurveyState extends State<Survey> {
               ),
             ],
           ),
-        ).fadeInList(3, false),
+        ),
         Visibility(
           visible: surveyMode == 'inviting',
           child: CustomGroupButton(
@@ -324,7 +328,7 @@ class _SurveyState extends State<Survey> {
             surveyMode: surveyMode,
             user: user,
           ),
-        ).fadeInList(3, false),
+        ),
         Visibility(
           visible: surveyMode == 'sharing',
           child: CustomGroupButton(
@@ -332,7 +336,7 @@ class _SurveyState extends State<Survey> {
             surveyMode: surveyMode,
             user: user,
           ),
-        ).fadeInList(3, false),
+        ),
         Visibility(
           visible: surveyMode == 'calling',
           child: CustomGroupButton(
@@ -340,7 +344,7 @@ class _SurveyState extends State<Survey> {
             surveyMode: surveyMode,
             user: user,
           ),
-        ).fadeInList(3, false),
+        ),
         Visibility(
           visible: surveyMode == 'earphone',
           child: CustomGroupButton(
@@ -348,7 +352,7 @@ class _SurveyState extends State<Survey> {
             surveyMode: surveyMode,
             user: user,
           ),
-        ).fadeInList(3, false),
+        ),
         Visibility(
           visible: surveyMode == 'eating',
           child: CustomGroupButton(
@@ -356,7 +360,7 @@ class _SurveyState extends State<Survey> {
             surveyMode: surveyMode,
             user: user,
           ),
-        ).fadeInList(3, false),
+        ),
         Visibility(
           visible: surveyMode == 'lateStand',
           child: CustomGroupButton(
@@ -364,7 +368,7 @@ class _SurveyState extends State<Survey> {
             surveyMode: surveyMode,
             user: user,
           ),
-        ).fadeInList(3, false),
+        ),
         Visibility(
           visible: surveyMode == 'etc',
           child: Column(
@@ -384,8 +388,8 @@ class _SurveyState extends State<Survey> {
               ),
               SizedBox(height: 20.0),
             ],
-          ),
-        ).fadeInList(3, false),
+          ).fadeInList(3, false),
+        ),
       ],
     );
   }
