@@ -86,10 +86,9 @@ class _DetailState extends State<Detail> {
         SizedBox(
           height: MediaQuery.of(context).size.height / 15,
         ),
-        Text(
-          '${Constants.year}년도 ${Constants.semester}학기',
-          style: Theme.of(context).textTheme.headlineLarge
-        ).fadeInList(0, false),
+        Text('${Constants.year}년도 ${Constants.semester}학기',
+                style: Theme.of(context).textTheme.headlineLarge)
+            .fadeInList(0, false),
         SizedBox(height: 70.0),
         Form(
           autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -184,7 +183,7 @@ class _DetailState extends State<Detail> {
         ).fadeInList(3, false),
         CustomSfSlider(
           disabled: widget.detailMode == Owner.OTHERS,
-          hintText: '잠드는 시간을 알려주세요.',
+          hintText: '잠드는 시간',
           surveyMode: 'sleepAt',
           user: widget.user,
         ).fadeInList(3, false),
