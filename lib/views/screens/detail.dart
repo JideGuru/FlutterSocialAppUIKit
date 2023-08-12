@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:social_app_ui/util/animations.dart';
 import 'package:social_app_ui/util/enum.dart';
+import 'package:social_app_ui/util/list_config.dart';
 import 'package:social_app_ui/util/user.dart';
 import 'package:social_app_ui/views/widgets/custom_button.dart';
 import 'package:social_app_ui/views/widgets/custom_group_button.dart';

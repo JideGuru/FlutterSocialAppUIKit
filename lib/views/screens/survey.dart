@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
 import 'package:lottie/lottie.dart';
 import 'package:social_app_ui/util/animations.dart';
+import 'package:social_app_ui/util/list_config.dart';
 import 'package:social_app_ui/util/router.dart';
 import 'package:social_app_ui/util/user.dart';
 import 'package:social_app_ui/util/validations.dart';
 import 'package:social_app_ui/views/widgets/custom_button.dart';
+import 'package:social_app_ui/views/widgets/custom_dropdown_button.dart';
 import 'package:social_app_ui/views/widgets/custom_group_button.dart';
 import 'package:social_app_ui/views/widgets/custom_sf_slider.dart';
 import 'package:social_app_ui/views/widgets/custom_text_field.dart';
@@ -32,6 +34,7 @@ class _SurveyState extends State<Survey> {
   int surveyIndex = 0;
 
   late User user;
+  late String dropdownDormValue, dropdownStuNumValue, dropdownMajorValue;
 
   bool loading = false;
   bool validate = false;
@@ -58,6 +61,9 @@ class _SurveyState extends State<Survey> {
     super.initState();
     user = User.init(widget.email);
     toFirestore.doc(user.email).set(user.toFirestore());
+    dropdownDormValue = user.essentials['dormitory'];
+    dropdownStuNumValue = user.essentials['studentNumber'];
+    dropdownMajorValue = user.essentials['major'];
   }
 
   @override
@@ -196,17 +202,10 @@ class _SurveyState extends State<Survey> {
                 child: Text('거주 예정 생활관을 알려주세요.'),
               ),
               SizedBox(height: 10.0),
-              DropdownButton(
-                // value: user.essentials[surveyMode],
-                items: dormitoryList.map((String dorm) {
-                  return DropdownMenuItem<String>(
-                    child: Text('$dorm'),
-                    value: dorm,
-                  );
-                }).toList(),
-                onChanged: (dynamic value) {
-                  user.essentials[surveyMode] = value;
-                },
+              CustomDropdownButton(
+                items: dormitoryList,
+                surveyMode: surveyMode,
+                user: user,
               ),
               SizedBox(height: 20.0),
             ],
@@ -221,14 +220,10 @@ class _SurveyState extends State<Survey> {
                 child: Text('학번을 알려주세요.'),
               ),
               SizedBox(height: 10.0),
-              CustomTextField(
-                enabled: !loading,
-                hintText: "학번(연도 네 자리)",
-                textInputAction: TextInputAction.next,
-                validateFunction: Validations.validateStudentNumber,
-                onChange: (String? val) {
-                  user.essentials[surveyMode] = val;
-                },
+              CustomDropdownButton(
+                items: studentNumberList,
+                surveyMode: surveyMode,
+                user: user,
               ),
               SizedBox(height: 20.0),
             ],
@@ -243,13 +238,10 @@ class _SurveyState extends State<Survey> {
                 child: Text('단과대학을 알려주세요.'),
               ),
               SizedBox(height: 10.0),
-              CustomTextField(
-                enabled: !loading,
-                hintText: "단과대학",
-                textInputAction: TextInputAction.next,
-                onChange: (String? val) {
-                  user.essentials[surveyMode] = val ?? '';
-                },
+              CustomDropdownButton(
+                items: majorList,
+                surveyMode: surveyMode,
+                user: user,
               ),
               SizedBox(height: 20.0),
             ],

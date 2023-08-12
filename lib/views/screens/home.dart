@@ -2,6 +2,7 @@ import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:social_app_ui/util/list_config.dart';
 import 'package:social_app_ui/util/sort/weight.dart';
 import 'package:social_app_ui/util/user.dart';
 import 'package:swiping_card_deck/swiping_card_deck.dart';

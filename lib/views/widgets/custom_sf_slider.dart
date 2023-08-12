@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:social_app_ui/util/extensions.dart';
+import 'package:social_app_ui/util/list_config.dart';
 import 'package:social_app_ui/util/user.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 

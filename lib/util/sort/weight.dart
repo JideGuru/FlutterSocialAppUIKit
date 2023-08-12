@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
+import 'package:social_app_ui/util/list_config.dart';
 import 'package:social_app_ui/util/user.dart';
 import 'package:social_app_ui/views/widgets/profile_card.dart';
 
