@@ -44,8 +44,8 @@ class _HomeState extends State<Home> {
                     child: Column(
                       children: <Widget>[
                         ButtonsTabBar(
-                          labelStyle: TextStyle(
-                            fontSize: 18,
+                          decoration: BoxDecoration(
+                            color: ThemeConfig.lightTabBackground,
                           ),
                           contentPadding:
                               EdgeInsets.symmetric(horizontal: 8, vertical: 4),

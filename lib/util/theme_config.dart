@@ -7,12 +7,14 @@ class ThemeConfig {
   static Color lightBackground = Color(0xfffcfcff);
   static Color lightSurface = Color(0xff121212);
   static Color lightText = Color(0xff121212);
+  static Color lightTabBackground = Color(0xff86a2bc);
 
   // static Color darkPrimary = Color(0xff1f1f1f);
   // static Color darkSecondary = Color(0xfffcfcff);
   // static Color darkError = Color(0xffbf1932);
   // static Color darkBackground = Color(0xff121212);
   // static Color darkSurface = Color(0xfffcfcff);
+  static Color darkText = Color(0xfffcfcff);
 
   static double cardWidth = 53.98;
   static double cardHeight = 85.60;
@@ -80,6 +82,11 @@ class ThemeConfig {
       bodySmall: TextStyle(
         color: lightText,
         fontSize: 14,
+      ),
+      labelMedium: TextStyle(
+        color: lightText,
+        fontSize: 18,
+        fontWeight: FontWeight.bold,
       ),
     ),
   );

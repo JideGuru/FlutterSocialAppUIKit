@@ -110,7 +110,10 @@ class _DetailState extends State<Detail> {
           children: [
             Align(
               alignment: Alignment.center,
-              child: Text('닉네임'),
+              child: Text(
+                '닉네임',
+                style: Theme.of(context).textTheme.labelMedium,
+              ),
             ),
             SizedBox(height: 10.0),
             Text(widget.user.essentials['nickname']),
@@ -121,7 +124,10 @@ class _DetailState extends State<Detail> {
           children: [
             Align(
               alignment: Alignment.center,
-              child: Text('성별'),
+              child: Text(
+                '성별',
+                style: Theme.of(context).textTheme.labelMedium,
+              ),
             ),
             SizedBox(height: 10.0),
             Text(sexList[widget.user.essentials['sex']]),
@@ -132,7 +138,10 @@ class _DetailState extends State<Detail> {
           children: [
             Align(
               alignment: Alignment.center,
-              child: Text('거주 예정 생활관'),
+              child: Text(
+                '거주 예정 생활관',
+                style: Theme.of(context).textTheme.labelMedium,
+              ),
             ),
             SizedBox(height: 10.0),
             Text(widget.user.essentials['dormitory']),
@@ -143,7 +152,10 @@ class _DetailState extends State<Detail> {
           children: [
             Align(
               alignment: Alignment.center,
-              child: Text('학번'),
+              child: Text(
+                '학번',
+                style: Theme.of(context).textTheme.labelMedium,
+              ),
             ),
             SizedBox(height: 10.0),
             Text(widget.user.essentials['studentNumber']),
@@ -154,13 +166,19 @@ class _DetailState extends State<Detail> {
           children: [
             Align(
               alignment: Alignment.center,
-              child: Text('단과대학'),
+              child: Text(
+                '단과대학',
+                style: Theme.of(context).textTheme.labelMedium,
+              ),
             ),
             SizedBox(height: 10.0),
             Text(widget.user.essentials['major']),
             SizedBox(height: 20.0),
           ],
         ).fadeInList(3, false),
+        SizedBox(
+          height: 40,
+        ),
 
         // questions
         CustomGroupButton(
