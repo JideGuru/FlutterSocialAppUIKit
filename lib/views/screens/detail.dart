@@ -82,6 +82,9 @@ class _DetailState extends State<Detail> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
+        SizedBox(
+          height: MediaQuery.of(context).size.height / 15,
+        ),
         Text(
           '설문조사',
           style: TextStyle(

@@ -12,6 +12,10 @@ class OtherProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("자세한 프로필"),
+        centerTitle: true,
+      ),
       body: SingleChildScrollView(
         child: Detail(user: user),
       ),

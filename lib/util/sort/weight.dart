@@ -20,18 +20,25 @@ double getWeight(double domain) {
 List<ProfileCard> sort(
     User user, List<ProfileCard> deck, Map<String, dynamic> weight) {
   List<Pair<double, ProfileCard>> weightedDeck = [];
-
   for (var card in deck) {
     var score = user.getScore(card.user, weight);
+    List<String> highest = [], lowest = [];
+    for (var h in score['highest']) {
+      var tagIndex = questionList.indexOf(h) + 1;
+      highest.add(tagList[tagIndex]);
+    }
+    for (var h in score['lowest']) {
+      var tagIndex = questionList.indexOf(h) + 1;
+      lowest.add(tagList[tagIndex]);
+    }
     var weightedCard = ProfileCard(
       user: card.user,
-      highest: score['highest'],
-      lowest: score['lowest'],
+      highest: highest,
+      lowest: lowest,
     );
     weightedDeck.add(Pair(score['total'], weightedCard));
   }
   weightedDeck.sort((a, b) => b.first.compareTo(a.first));
-
   List<ProfileCard> sortedDeck = [];
   for (var profile in weightedDeck) {
     sortedDeck.add(profile.second);
@@ -52,10 +59,14 @@ Map<String, dynamic> getWeights(
     AsyncSnapshot<QuerySnapshot<Object?>> snapshot, int tag) {
   Map<String, dynamic> domains = getDomains(snapshot), weights = {};
   for (var key in domains.keys) {
+    double domain;
+    domains[key].runtimeType == int
+        ? domain = (domains[key] as int).toDouble()
+        : domain = domains[key] as double;
     if (tag == 0 || key != questionList[tag - 1])
-      weights[key] = getWeight(domains[key]!);
+      weights[key] = getWeight(domain);
     else
-      weights[key] = getWeight(domains[key]! * 2);
+      weights[key] = getWeight(domain * 2);
   }
   return weights;
 }

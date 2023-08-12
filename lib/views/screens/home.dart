@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:social_app_ui/util/list_config.dart';
 import 'package:social_app_ui/util/sort/weight.dart';
+import 'package:social_app_ui/util/theme_config.dart';
 import 'package:social_app_ui/util/user.dart';
 import 'package:swiping_card_deck/swiping_card_deck.dart';
 
@@ -64,9 +65,12 @@ class _HomeState extends State<Home> {
                     ),
                   ),
                 ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 15,
+                ),
                 SwipingDeck(
                   cardDeck: deck,
-                  cardWidth: 300,
+                  cardWidth: ThemeConfig.cardWidth * 5.5,
                   onLeftSwipe: (p0) {
                     updateDomains(p0, getDomains(snapshot));
                   },
@@ -74,6 +78,7 @@ class _HomeState extends State<Home> {
                     updateDomains(p0, getDomains(snapshot));
                   },
                   onDeckEmpty: () {
+                    print('empty');
                     setState(() {});
                   },
                 ),

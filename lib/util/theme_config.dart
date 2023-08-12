@@ -10,6 +10,9 @@ class ThemeConfig {
   static Color darkBG = Color(0xff121212);
   static Color badgeColor = Colors.red;
 
+  static double cardWidth = 53.98;
+  static double cardHeight = 85.60;
+
   static ThemeData lightTheme = ThemeData(
     primaryColor: lightPrimary,
     scaffoldBackgroundColor: lightBG,

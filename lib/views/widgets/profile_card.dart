@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:social_app_ui/util/enum.dart';
 import 'package:social_app_ui/util/router.dart';
+import 'package:social_app_ui/util/theme_config.dart';
 import 'package:social_app_ui/util/user.dart';
 import 'package:social_app_ui/views/screens/other_profile.dart';
 import 'package:social_app_ui/views/widgets/inprofile_button.dart';
@@ -24,8 +25,8 @@ class ProfileCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         color: Colors.red,
       ),
-      width: 300,
-      height: 450,
+      width: ThemeConfig.cardWidth * 5.5,
+      height: ThemeConfig.cardHeight * 5.5,
       margin: EdgeInsets.all(8),
       child: Padding(
         padding: EdgeInsets.all(18),
@@ -35,7 +36,7 @@ class ProfileCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  user.essentials['major'],
+                  user.essentials['nickname'],
                   style: TextStyle(
                     fontSize: 30,
                   ),
@@ -48,11 +49,14 @@ class ProfileCard extends StatelessWidget {
                 ),
               ],
             ),
+            SizedBox(
+              height: 3,
+            ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text(
-                  user.essentials['nickname'],
+                  user.essentials['major'],
                   style: TextStyle(
                     fontSize: 18,
                   ),
@@ -63,10 +67,15 @@ class ProfileCard extends StatelessWidget {
                     fontSize: 24,
                   ),
                 ),
+                SizedBox(
+                  height: 12,
+                )
               ],
             ),
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 12),
+              padding: EdgeInsets.only(
+                top: 12,
+              ),
               child: Visibility(
                 visible: profileMode == Owner.OTHERS,
                 child: Container(
@@ -90,6 +99,7 @@ class ProfileCard extends StatelessWidget {
                           ),
                         ),
                         Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: highest
                               .map((comm) =>
                                   Text(comm, style: TextStyle(fontSize: 18)))
@@ -102,7 +112,7 @@ class ProfileCard extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 6),
+              padding: EdgeInsets.symmetric(vertical: 12),
               child: Visibility(
                 visible: profileMode == Owner.OTHERS,
                 child: Container(
@@ -126,6 +136,7 @@ class ProfileCard extends StatelessWidget {
                           ),
                         ),
                         Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: lowest
                               .map((diff) =>
                                   Text(diff, style: TextStyle(fontSize: 18)))
@@ -136,10 +147,6 @@ class ProfileCard extends StatelessWidget {
                   ),
                 ),
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 6),
-              // child: Difference(),
             ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 6),
@@ -158,7 +165,7 @@ class ProfileCard extends StatelessWidget {
                       },
                     ),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 5),
+                      padding: EdgeInsets.symmetric(horizontal: 9),
                     ),
                     InprofileButton(
                       icon: Icons.chat_bubble,

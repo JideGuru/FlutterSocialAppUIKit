@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -19,11 +17,12 @@ class MyProfile extends StatefulWidget {
 }
 
 class _MyProfileState extends State<MyProfile> {
-  static Random random = Random();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+      ),
       body: FutureBuilder<DocumentSnapshot>(
         future: FirebaseFirestore.instance
             .collection('users')
@@ -63,39 +62,6 @@ class _MyProfileState extends State<MyProfile> {
                       user: me,
                       detailMode: Owner.MINE,
                     ),
-                    // SizedBox(height: 40),
-                    // Padding(
-                    //   padding: EdgeInsets.symmetric(horizontal: 50),
-                    //   child: Row(
-                    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //     children: <Widget>[
-                    //       _buildCategory("Posts"),
-                    //       _buildCategory("Friends"),
-                    //       _buildCategory("Groups"),
-                    //     ],
-                    //   ),
-                    // ),
-                    // SizedBox(height: 20),
-                    // GridView.builder(
-                    //   shrinkWrap: true,
-                    //   physics: NeverScrollableScrollPhysics(),
-                    //   primary: false,
-                    //   padding: EdgeInsets.all(5),
-                    //   itemCount: 15,
-                    //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    //     crossAxisCount: 3,
-                    //     childAspectRatio: 200 / 200,
-                    //   ),
-                    //   itemBuilder: (BuildContext context, int index) {
-                    //     return Padding(
-                    //       padding: EdgeInsets.all(5.0),
-                    //       child: Image.asset(
-                    //         "assets/images/cm${random.nextInt(10)}.jpeg",
-                    //         fit: BoxFit.cover,
-                    //       ),
-                    //     );
-                    //   },
-                    // ),
                   ],
                 ),
               ),
@@ -107,25 +73,6 @@ class _MyProfileState extends State<MyProfile> {
           );
         },
       ),
-    );
-  }
-
-  Widget _buildCategory(String title) {
-    return Column(
-      children: <Widget>[
-        Text(
-          random.nextInt(10000).toString(),
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 22,
-          ),
-        ),
-        SizedBox(height: 4),
-        Text(
-          title,
-          style: TextStyle(),
-        ),
-      ],
     );
   }
 }
