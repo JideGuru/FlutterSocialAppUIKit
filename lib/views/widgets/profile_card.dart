@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:social_app_ui/util/enum.dart';
 import 'package:social_app_ui/util/router.dart';
 import 'package:social_app_ui/util/user.dart';
-import 'package:social_app_ui/views/screens/detail.dart';
+import 'package:social_app_ui/views/screens/other_profile.dart';
 import 'package:social_app_ui/views/widgets/inprofile_button.dart';
 
 class ProfileCard extends StatelessWidget {
   late final User user;
-  late final ProfileMode profileMode;
+  late final Owner profileMode;
   late final List<String> highest, lowest;
   ProfileCard({
     super.key,
     required this.user,
-    this.profileMode = ProfileMode.OTHERS,
+    this.profileMode = Owner.OTHERS,
     this.highest = const [],
     this.lowest = const [],
   });
@@ -68,7 +68,7 @@ class ProfileCard extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(vertical: 12),
               child: Visibility(
-                visible: profileMode == ProfileMode.OTHERS,
+                visible: profileMode == Owner.OTHERS,
                 child: Container(
                   height: 120,
                   width: 250,
@@ -104,7 +104,7 @@ class ProfileCard extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(vertical: 6),
               child: Visibility(
-                visible: profileMode == ProfileMode.OTHERS,
+                visible: profileMode == Owner.OTHERS,
                 child: Container(
                   height: 120,
                   width: 250,
@@ -144,14 +144,17 @@ class ProfileCard extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 6),
               child: Visibility(
-                visible: profileMode == ProfileMode.OTHERS,
+                visible: profileMode == Owner.OTHERS,
                 child: Row(
                   children: [
                     InprofileButton(
                       icon: Icons.description,
                       label: '프로필',
                       onPressed: () {
-                        Navigate.pushPage(context, Detail(user: user));
+                        Navigate.pushPage(
+                          context,
+                          OtherProfile(user: user),
+                        );
                       },
                     ),
                     Padding(

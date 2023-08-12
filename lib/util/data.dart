@@ -104,3 +104,7 @@ List friends = List.generate(
           "status": "Anything could be here",
           "isAccept": random.nextBool(),
         });
+
+int toggle(int num) {
+  return (num + 1) % 2;
+}

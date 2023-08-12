@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:group_button/group_button.dart';
 import 'package:lottie/lottie.dart';
 import 'package:social_app_ui/util/animations.dart';
+import 'package:social_app_ui/util/enum.dart';
 import 'package:social_app_ui/util/user.dart';
 import 'package:social_app_ui/views/widgets/custom_button.dart';
 import 'package:social_app_ui/views/widgets/custom_group_button.dart';
@@ -12,8 +12,10 @@ import 'package:social_app_ui/util/extensions.dart';
 
 class Detail extends StatefulWidget {
   late final User user;
+  final Owner detailMode;
   Detail({
     required this.user,
+    this.detailMode = Owner.OTHERS,
   });
   @override
   _DetailState createState() => _DetailState();
@@ -37,27 +39,22 @@ class _DetailState extends State<Detail> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          child: Row(
-            children: [
-              buildLottieContainer(),
-              Expanded(
-                child: AnimatedContainer(
-                  duration: Duration(milliseconds: 500),
-                  child: Center(
-                    child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: screenWidth * 0.1),
-                      child: buildFormContainer(),
-                    ),
-                  ),
+    return Container(
+      child: Row(
+        children: [
+          buildLottieContainer(),
+          Expanded(
+            child: AnimatedContainer(
+              duration: Duration(milliseconds: 500),
+              child: Center(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.1),
+                  child: buildFormContainer(),
                 ),
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -98,7 +95,7 @@ class _DetailState extends State<Detail> {
           child: buildForm(),
         ),
         SizedBox(height: 20.0),
-        buildButton(),
+        if (widget.detailMode != Owner.OTHERS) buildButton(),
       ],
     );
   }
@@ -126,12 +123,7 @@ class _DetailState extends State<Detail> {
               child: Text('성별'),
             ),
             SizedBox(height: 10.0),
-            GroupButton(
-              controller: GroupButtonController(
-                  selectedIndex: widget.user.essentials['sex']),
-              isRadio: true,
-              buttons: ['남성', '여성'],
-            ),
+            Text(sexList[widget.user.essentials['sex']]),
             SizedBox(height: 20.0),
           ],
         ).fadeInList(3, false),
@@ -171,6 +163,7 @@ class _DetailState extends State<Detail> {
 
         // questions
         CustomGroupButton(
+          disabled: widget.detailMode == Owner.OTHERS,
           hintText: '흡연 여부',
           surveyMode: 'smoking',
           user: widget.user,
@@ -178,6 +171,7 @@ class _DetailState extends State<Detail> {
         Column(
           children: [
             CustomSfSlider(
+              disabled: widget.detailMode == Owner.OTHERS,
               hintText: '잠버릇',
               surveyMode: 'sleepingHabits',
               user: widget.user,
@@ -187,6 +181,7 @@ class _DetailState extends State<Detail> {
         Column(
           children: [
             CustomSfSlider(
+              disabled: widget.detailMode == Owner.OTHERS,
               hintText: '룸메이트와 맺고 싶은 관계',
               surveyMode: 'relationship',
               user: widget.user,
@@ -196,6 +191,7 @@ class _DetailState extends State<Detail> {
         Column(
           children: [
             CustomSfSlider(
+              disabled: widget.detailMode == Owner.OTHERS,
               hintText: '잠드는 시간을 알려주세요.',
               surveyMode: 'sleepAt',
               user: widget.user,
@@ -205,6 +201,7 @@ class _DetailState extends State<Detail> {
         Column(
           children: [
             CustomSfSlider(
+              disabled: widget.detailMode == Owner.OTHERS,
               hintText: '방 청소 주기',
               surveyMode: 'roomCleaning',
               user: widget.user,
@@ -214,6 +211,7 @@ class _DetailState extends State<Detail> {
         Column(
           children: [
             CustomSfSlider(
+              disabled: widget.detailMode == Owner.OTHERS,
               hintText: '화장실 청소 주기',
               surveyMode: 'restroomCleaning',
               user: widget.user,
@@ -221,31 +219,37 @@ class _DetailState extends State<Detail> {
           ],
         ).fadeInList(3, false),
         CustomGroupButton(
+          disabled: widget.detailMode == Owner.OTHERS,
           hintText: '초대 선호도',
           surveyMode: 'inviting',
           user: widget.user,
         ).fadeInList(3, false),
         CustomGroupButton(
+          disabled: widget.detailMode == Owner.OTHERS,
           hintText: '물건공유 선호도',
           surveyMode: 'sharing',
           user: widget.user,
         ).fadeInList(3, false),
         CustomGroupButton(
+          disabled: widget.detailMode == Owner.OTHERS,
           hintText: '실내통화 선호도',
           surveyMode: 'calling',
           user: widget.user,
         ).fadeInList(3, false),
         CustomGroupButton(
+          disabled: widget.detailMode == Owner.OTHERS,
           hintText: '이어폰 사용 선호도',
           surveyMode: 'earphone',
           user: widget.user,
         ).fadeInList(3, false),
         CustomGroupButton(
+          disabled: widget.detailMode == Owner.OTHERS,
           hintText: '실내취식 선호도',
           surveyMode: 'eating',
           user: widget.user,
         ).fadeInList(3, false),
         CustomGroupButton(
+          disabled: widget.detailMode == Owner.OTHERS,
           hintText: '늦은 스탠드 사용 선호도',
           surveyMode: 'lateStand',
           user: widget.user,
@@ -258,7 +262,7 @@ class _DetailState extends State<Detail> {
             ),
             SizedBox(height: 10.0),
             CustomTextField(
-              enabled: !loading,
+              enabled: widget.detailMode == Owner.OTHERS ? false : !loading,
               initialValue: widget.user.survey['etc'],
               hintText: '기타',
               textInputAction: TextInputAction.next,

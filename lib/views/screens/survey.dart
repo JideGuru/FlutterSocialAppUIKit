@@ -178,7 +178,7 @@ class _SurveyState extends State<Survey> {
               SizedBox(height: 10.0),
               GroupButton(
                 isRadio: true,
-                buttons: ['남성', '여성'],
+                buttons: sexList,
                 onSelected: (value, index, isSelected) {
                   user.survey[surveyMode] = index;
                 },

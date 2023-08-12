@@ -6,11 +6,13 @@ import 'package:syncfusion_flutter_sliders/sliders.dart';
 class CustomSfSlider extends StatefulWidget {
   late final String hintText, surveyMode;
   late final User user;
+  final disabled;
   CustomSfSlider({
     super.key,
     required this.hintText,
     required this.surveyMode,
     required this.user,
+    this.disabled = false,
   });
 
   @override
@@ -33,13 +35,15 @@ class _CustomSfSliderState extends State<CustomSfSlider> {
         SfSlider(
           value: widget.user.survey[widget.surveyMode],
           min: 0,
-          max: answerList[widget.surveyMode]!.length-1,
+          max: answerList[widget.surveyMode]!.length - 1,
           interval: 1,
           showTicks: true,
-          onChanged: (value) {
-            widget.user.survey[widget.surveyMode] = value.round();
-            setState(() {});
-          },
+          onChanged: widget.disabled
+              ? null
+              : (value) {
+                  widget.user.survey[widget.surveyMode] = value.round();
+                  setState(() {});
+                },
         ),
         SizedBox(height: 40.0),
       ],

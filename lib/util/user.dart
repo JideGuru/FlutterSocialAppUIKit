@@ -5,6 +5,11 @@ import 'package:flutter/widgets.dart';
 import 'package:social_app_ui/util/sort/map_util.dart';
 import 'package:social_app_ui/views/widgets/profile_card.dart';
 
+List<String> sexList = [
+  '남성',
+  '여성',
+];
+
 List<String> dormitoryList = [
   '참빛관',
   '대동관',

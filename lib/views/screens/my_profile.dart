@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:social_app_ui/util/enum.dart';
 import 'package:social_app_ui/util/user.dart';
+import 'package:social_app_ui/views/screens/detail.dart';
 import 'package:social_app_ui/views/widgets/profile_card.dart';
 
 class MyProfile extends StatefulWidget {
@@ -30,6 +31,7 @@ class _MyProfileState extends State<MyProfile> {
             .get(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
+            var me = User.fromFirestore(snapshot.data!);
             return SingleChildScrollView(
               padding: EdgeInsets.symmetric(horizontal: 10),
               child: Container(
@@ -40,8 +42,8 @@ class _MyProfileState extends State<MyProfile> {
                   children: <Widget>[
                     SizedBox(height: 60),
                     ProfileCard(
-                      profileMode: ProfileMode.MINE,
-                      user: User.fromFirestore(snapshot.data!),
+                      profileMode: Owner.MINE,
+                      user: me,
                     ),
                     SizedBox(height: 10),
                     Text(
@@ -56,40 +58,44 @@ class _MyProfileState extends State<MyProfile> {
                       "아래에서 설문을 수정할 수 있습니다.",
                       style: TextStyle(),
                     ),
-                    SizedBox(height: 20),
-                    SizedBox(height: 40),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 50),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          _buildCategory("Posts"),
-                          _buildCategory("Friends"),
-                          _buildCategory("Groups"),
-                        ],
-                      ),
+                    SizedBox(height: 60),
+                    Detail(
+                      user: me,
+                      detailMode: Owner.MINE,
                     ),
-                    SizedBox(height: 20),
-                    GridView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      primary: false,
-                      padding: EdgeInsets.all(5),
-                      itemCount: 15,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        childAspectRatio: 200 / 200,
-                      ),
-                      itemBuilder: (BuildContext context, int index) {
-                        return Padding(
-                          padding: EdgeInsets.all(5.0),
-                          child: Image.asset(
-                            "assets/images/cm${random.nextInt(10)}.jpeg",
-                            fit: BoxFit.cover,
-                          ),
-                        );
-                      },
-                    ),
+                    // SizedBox(height: 40),
+                    // Padding(
+                    //   padding: EdgeInsets.symmetric(horizontal: 50),
+                    //   child: Row(
+                    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //     children: <Widget>[
+                    //       _buildCategory("Posts"),
+                    //       _buildCategory("Friends"),
+                    //       _buildCategory("Groups"),
+                    //     ],
+                    //   ),
+                    // ),
+                    // SizedBox(height: 20),
+                    // GridView.builder(
+                    //   shrinkWrap: true,
+                    //   physics: NeverScrollableScrollPhysics(),
+                    //   primary: false,
+                    //   padding: EdgeInsets.all(5),
+                    //   itemCount: 15,
+                    //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    //     crossAxisCount: 3,
+                    //     childAspectRatio: 200 / 200,
+                    //   ),
+                    //   itemBuilder: (BuildContext context, int index) {
+                    //     return Padding(
+                    //       padding: EdgeInsets.all(5.0),
+                    //       child: Image.asset(
+                    //         "assets/images/cm${random.nextInt(10)}.jpeg",
+                    //         fit: BoxFit.cover,
+                    //       ),
+                    //     );
+                    //   },
+                    // ),
                   ],
                 ),
               ),
