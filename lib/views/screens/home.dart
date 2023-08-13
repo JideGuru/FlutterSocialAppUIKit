@@ -58,7 +58,7 @@ class _HomeState extends State<Home> {
                                 .collection('users')
                                 .doc(widget.email)
                                 .update({'tag': tag});
-                            setState(() {});
+                            mounted ? setState(() {}) : dispose();
                           },
                         ),
                       ],
