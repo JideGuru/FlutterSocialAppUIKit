@@ -4,7 +4,7 @@ import 'package:lottie/lottie.dart';
 import 'package:social_app_ui/util/animations.dart';
 import 'package:social_app_ui/util/const.dart';
 import 'package:social_app_ui/util/enum.dart';
-import 'package:social_app_ui/util/list_config.dart';
+import 'package:social_app_ui/util/configs/list_config.dart';
 import 'package:social_app_ui/util/user.dart';
 import 'package:social_app_ui/views/widgets/custom_button.dart';
 import 'package:social_app_ui/views/widgets/custom_group_button.dart';
@@ -285,8 +285,8 @@ class _DetailState extends State<Detail> {
               toFirestore
                   .doc(widget.user.email)
                   .update(widget.user.toFirestore());
-              print('saved');
             },
+            //pop up need
           ).fadeInList(4, false);
   }
 }

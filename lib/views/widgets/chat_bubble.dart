@@ -123,7 +123,8 @@ class _ChatBubbleState extends State<ChatBubble> {
                               child: Text(
                                 widget.isMe ? "You" : widget.replyName,
                                 style: TextStyle(
-                                  color: Theme.of(context).colorScheme.secondary,
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 12,
                                 ),
@@ -137,8 +138,10 @@ class _ChatBubbleState extends State<ChatBubble> {
                               child: Text(
                                 widget.replyText,
                                 style: TextStyle(
-                                  color:
-                                      Theme.of(context).textTheme.titleLarge?.color,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .titleLarge
+                                      ?.color,
                                   fontSize: 10.0,
                                 ),
                                 maxLines: 2,
@@ -160,7 +163,10 @@ class _ChatBubbleState extends State<ChatBubble> {
                             style: TextStyle(
                               color: widget.isMe
                                   ? Colors.white
-                                  : Theme.of(context).textTheme.titleLarge?.color,
+                                  : Theme.of(context)
+                                      .textTheme
+                                      .titleLarge
+                                      ?.color,
                             ),
                           )
                         : Container(
@@ -170,7 +176,10 @@ class _ChatBubbleState extends State<ChatBubble> {
                               style: TextStyle(
                                 color: widget.isMe
                                     ? Colors.white
-                                    : Theme.of(context).textTheme.titleLarge?.color,
+                                    : Theme.of(context)
+                                        .textTheme
+                                        .titleLarge
+                                        ?.color,
                               ),
                             ),
                           )

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
 import 'package:lottie/lottie.dart';
 import 'package:social_app_ui/util/animations.dart';
-import 'package:social_app_ui/util/list_config.dart';
+import 'package:social_app_ui/util/configs/list_config.dart';
 import 'package:social_app_ui/util/router.dart';
 import 'package:social_app_ui/util/user.dart';
 import 'package:social_app_ui/util/validations.dart';
@@ -44,7 +44,6 @@ class _SurveyState extends State<Survey> {
     if (surveyIndex == surveyList.length) {
       Navigate.pushPageReplacement(context, MainScreen(email: user.email));
     }
-
     FormState form = formKey.currentState!;
     form.save();
     if (!form.validate()) {
@@ -190,7 +189,6 @@ class _SurveyState extends State<Survey> {
                 buttons: sexList,
                 onSelected: (value, index, isSelected) {
                   user.essentials[surveyMode] = index;
-                  print(user.essentials[surveyMode]);
                 },
               ),
               SizedBox(height: 20.0),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:social_app_ui/util/enum.dart';
 import 'package:social_app_ui/util/router.dart';
-import 'package:social_app_ui/util/theme_config.dart';
+import 'package:social_app_ui/util/configs/theme_config.dart';
 import 'package:social_app_ui/util/user.dart';
 import 'package:social_app_ui/views/screens/other_profile.dart';
 import 'package:social_app_ui/views/widgets/inprofile_button.dart';

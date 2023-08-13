@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:social_app_ui/util/extensions.dart';
 import 'package:social_app_ui/util/user.dart';
 
 class CustomDropdownButton extends StatefulWidget {

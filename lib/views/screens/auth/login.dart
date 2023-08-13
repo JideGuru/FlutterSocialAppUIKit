@@ -33,11 +33,9 @@ class _LoginState extends State<Login> {
   login() async {
     FormState form = formKey.currentState!;
     form.save();
-    // Navigate.pushPageReplacement(context, MainScreen());
     if (!form.validate()) {
       validate = true;
       setState(() {});
-      // showInSnackBar('Please fix the errors in red before submitting.');
     } else {
       var authMessage = '';
       switch (formMode) {

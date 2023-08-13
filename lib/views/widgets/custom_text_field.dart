@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:social_app_ui/util/extensions.dart';
 
 class CustomTextField extends StatelessWidget {
   final String? initialValue;
@@ -55,7 +54,7 @@ class CustomTextField extends StatelessWidget {
             focusNode!.unfocus();
             FocusScope.of(context).requestFocus(nextFocusNode);
           } else {
-            submitAction!();
+            submitAction ?? print('submitAction not exist');
           }
         },
         decoration: InputDecoration(
