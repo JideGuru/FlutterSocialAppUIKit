@@ -17,6 +17,7 @@ class MyProfile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Text("내 프로필"),
         centerTitle: true,
       ),
       body: FutureBuilder<DocumentSnapshot>(
