@@ -5,6 +5,11 @@ import 'package:social_app_ui/util/chat_util.dart';
 import 'package:social_app_ui/views/widgets/chat_item.dart';
 
 class Chats extends StatefulWidget {
+  final String email;
+  Chats({
+    super.key,
+    required this.email,
+  });
   @override
   _ChatsState createState() => _ChatsState();
 }
@@ -31,6 +36,14 @@ class _ChatsState extends State<Chats>
             .get(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
+            FirebaseFirestore.instance
+                .collection('chats')
+                .doc('myEmail.jbnu.ac.kr')
+                .snapshots()
+                .listen((event) {
+              print('evented');
+              // setState(() {});
+            });
             var chatList = getChatsFromSnapshot(snapshot);
             return ListView.separated(
               padding: EdgeInsets.all(10),
@@ -48,6 +61,7 @@ class _ChatsState extends State<Chats>
               itemBuilder: (BuildContext context, int index) {
                 Chat chat = chatList[index];
                 return ChatItem(
+                  email: widget.email,
                   chat: chat,
                 );
               },

@@ -8,8 +8,9 @@ class ThemeConfig {
   static Color lightError = Color(0xffbf1932);
   static Color lightOnError = Color(0xfffcfcff);
   static Color lightBackground = Color(0xfffcfcff);
-  static Color lightOnBackground = Color(0xffd5d5d5);
-  static Color lightSurface = Color(0xff121212);
+  static Color lightOnBackground = Color(0xff86a2bc);
+  static Color lightSurface = Color(0xff86a2bc);
+  static Color lightOnSurface = Color(0xff121212);
   static Color lightText = Color(0xff121212);
   static Color lightTabBackground = Color(0xff86a2bc);
 
@@ -35,7 +36,7 @@ class ThemeConfig {
       background: lightBackground,
       onBackground: lightOnBackground,
       surface: lightSurface,
-      onSurface: lightSurface,
+      onSurface: lightOnSurface,
     ),
     appBarTheme: AppBarTheme(
       backgroundColor: lightBackground,

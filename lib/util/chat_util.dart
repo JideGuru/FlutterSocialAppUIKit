@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
 
+import 'enum.dart';
+
 class Chat {
   String email, nickname;
   List<dynamic> conversations;
@@ -10,6 +12,20 @@ class Chat {
     required this.nickname,
     required this.conversations,
   });
+
+  List<dynamic> typedToFirestore(
+      String email, String typed, Owner updateTo) {
+    List<dynamic> typedToFirestore = [];
+    Map<String, dynamic> conversation = {};
+    conversation['message'] = typed;
+    conversation['nickname'] = nickname;
+    conversation['read'] = updateTo == Owner.MINE ? true : false;
+    conversation['sender'] = email;
+    conversation['time'] = Timestamp.now();
+    typedToFirestore.add(conversation);
+
+    return typedToFirestore;
+  }
 }
 
 List<Chat> getChatsFromSnapshot(

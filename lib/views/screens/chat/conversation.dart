@@ -1,15 +1,15 @@
-import 'dart:math';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:social_app_ui/util/chat_util.dart';
 import 'package:social_app_ui/util/enum.dart';
 import 'package:social_app_ui/views/widgets/chat_bubble.dart';
-import 'package:social_app_ui/util/data.dart';
 
 class Conversation extends StatefulWidget {
+  final String email;
   final Chat chat;
   Conversation({
     super.key,
+    required this.email,
     required this.chat,
   });
   @override
@@ -17,14 +17,30 @@ class Conversation extends StatefulWidget {
 }
 
 class _ConversationState extends State<Conversation> {
-  static Random random = Random();
-  String name = names[random.nextInt(10)];
-
+  String _typed = "";
   @override
   Widget build(BuildContext context) {
+    var convDoc = FirebaseFirestore.instance
+        .collection('chats')
+        .doc('myEmail.jbnu.ac.kr');
+    // convDoc.snapshots().listen(
+    //   (event) {
+    //     var eventedConv = event.data()![widget.chat.email];
+    //     var eventedChat = Chat(
+    //       email: widget.chat.email,
+    //       nickname: widget.chat.nickname,
+    //       conversations: eventedConv,
+    //     );
+    //     if (widget.chat.conversations.length !=
+    //         eventedChat.conversations.length) {
+    //       print(widget.chat.conversations.length);
+    //       print(eventedChat.conversations.length);
+    //       print('event occured');
+    //     }
+    //   },
+    // );
     return Scaffold(
       appBar: AppBar(
-        elevation: 3,
         leading: IconButton(
           icon: Icon(
             Icons.keyboard_backspace,
@@ -44,10 +60,11 @@ class _ConversationState extends State<Conversation> {
                   children: <Widget>[
                     Text(
                       widget.chat.nickname,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                      ),
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                    Text(
+                      widget.chat.email,
+                      style: Theme.of(context).textTheme.bodySmall,
                     ),
                     SizedBox(height: 5),
                   ],
@@ -76,7 +93,9 @@ class _ConversationState extends State<Conversation> {
                 itemCount: widget.chat.conversations.length,
                 reverse: true,
                 itemBuilder: (BuildContext context, int index) {
-                  var conversation = widget.chat.conversations[index];
+                  var lastIndex = widget.chat.conversations.length - 1;
+                  var conversation =
+                      widget.chat.conversations[lastIndex - index];
                   return ChatBubble(
                     conversation: conversation,
                     sender: conversation['sender'] == widget.chat.email
@@ -90,40 +109,74 @@ class _ConversationState extends State<Conversation> {
               alignment: Alignment.bottomCenter,
               child: BottomAppBar(
                 elevation: 10,
-                color: Theme.of(context).primaryColor,
-                child: Container(
-                  constraints: BoxConstraints(
-                    maxHeight: 100,
-                  ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: <Widget>[
-                      Flexible(
-                        child: TextField(
-                          style: Theme.of(context).textTheme.bodySmall,
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.all(10.0),
-                            border: InputBorder.none,
-                            enabledBorder: InputBorder.none,
-                            hintText: "메시지를 작성해주세요.",
-                            hintStyle: TextStyle(
-                              fontSize: 15.0,
-                              color:
-                                  Theme.of(context).textTheme.titleLarge?.color,
+                color: Theme.of(context).colorScheme.secondary,
+                child: Column(
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      height: 10,
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.onSecondary,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      width: MediaQuery.of(context).size.width - 25,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 10,
+                      ),
+                      constraints: BoxConstraints(
+                        maxHeight: 100,
+                      ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Flexible(
+                            child: TextField(
+                              onChanged: (value) {
+                                _typed = value;
+                                setState(() {});
+                              },
+                              style: Theme.of(context).textTheme.bodyMedium,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                enabledBorder: InputBorder.none,
+                                hintText: "메시지를 작성해주세요.",
+                                hintStyle:
+                                    Theme.of(context).textTheme.bodyMedium,
+                              ),
+                              cursorColor:
+                                  Theme.of(context).colorScheme.secondary,
+                              maxLines: null,
                             ),
                           ),
-                          maxLines: null,
-                        ),
+                          IconButton(
+                            icon: Icon(
+                              Icons.send,
+                            ),
+                            onPressed: _typed.isEmpty
+                                ? null
+                                : () {
+                                    var typedToFirestore =
+                                        widget.chat.typedToFirestore(
+                                      widget.email,
+                                      _typed,
+                                      Owner.MINE,
+                                    );
+                                    var path = FieldPath(
+                                      [widget.chat.email],
+                                    );
+                                    convDoc.update({
+                                      path: FieldValue.arrayUnion(
+                                          typedToFirestore)
+                                    });
+                                    setState(() {});
+                                  },
+                          )
+                        ],
                       ),
-                      IconButton(
-                        icon: Icon(
-                          Icons.send,
-                          color: Theme.of(context).colorScheme.secondary,
-                        ),
-                        onPressed: () {},
-                      )
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),

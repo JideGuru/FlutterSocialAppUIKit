@@ -29,7 +29,7 @@ class _MainScreenState extends State<MainScreen> {
         children: <Widget>[
           Home(email: widget.email),
           MyProfile(email: widget.email),
-          Chats(),
+          Chats(email: widget.email),
           Settings(),
         ],
       ),

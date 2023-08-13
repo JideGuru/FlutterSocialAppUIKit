@@ -3,10 +3,12 @@ import 'package:social_app_ui/util/chat_util.dart';
 import 'package:social_app_ui/views/screens/chat/conversation.dart';
 
 class ChatItem extends StatefulWidget {
+  final String email;
   final Chat chat;
 
   ChatItem({
     super.key,
+    required this.email,
     required this.chat,
   });
 
@@ -57,6 +59,7 @@ class _ChatItemState extends State<ChatItem> {
             MaterialPageRoute(
               builder: (BuildContext context) {
                 return Conversation(
+                  email: widget.email,
                   chat: widget.chat,
                 );
               },

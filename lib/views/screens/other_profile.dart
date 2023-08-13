@@ -15,6 +15,12 @@ class OtherProfile extends StatelessWidget {
       appBar: AppBar(
         title: Text("자세한 프로필"),
         centerTitle: true,
+        leading: IconButton(
+          icon: Icon(
+            Icons.keyboard_backspace,
+          ),
+          onPressed: () => Navigator.pop(context),
+        ),
       ),
       body: SingleChildScrollView(
         child: Detail(user: user),
