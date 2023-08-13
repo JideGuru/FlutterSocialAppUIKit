@@ -38,11 +38,9 @@ class _ChatsState extends State<Chats>
         itemBuilder: (BuildContext context, int index) {
           Map chat = chats[index];
           return ChatItem(
-            dp: chat['dp'],
-            name: chat['name'],
-            isOnline: chat['isOnline'],
-            counter: chat['counter'],
-            msg: chat['msg'],
+            senderEmail: chat['dp'],
+            senderNickname: chat['name'],
+            message: chat['msg'],
             time: chat['time'],
           );
         },
