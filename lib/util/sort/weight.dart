@@ -22,19 +22,10 @@ List<ProfileCard> sort(
   List<Pair<double, ProfileCard>> weightedDeck = [];
   for (var card in deck) {
     var score = user.getScore(card.user, weight);
-    List<String> highest = [], lowest = [];
-    for (var h in score['highest']) {
-      var tagIndex = questionList.indexOf(h) + 1;
-      highest.add(tagList[tagIndex]);
-    }
-    for (var h in score['lowest']) {
-      var tagIndex = questionList.indexOf(h) + 1;
-      lowest.add(tagList[tagIndex]);
-    }
     var weightedCard = ProfileCard(
       user: card.user,
-      highest: highest,
-      lowest: lowest,
+      highest: score['highest'],
+      lowest: score['lowest'],
     );
     weightedDeck.add(Pair(score['total'], weightedCard));
   }

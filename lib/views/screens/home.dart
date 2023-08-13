@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:social_app_ui/util/configs/list_config.dart';
 import 'package:social_app_ui/util/extensions.dart';
+import 'package:social_app_ui/util/sort/map_util.dart';
 import 'package:social_app_ui/util/sort/weight.dart';
 import 'package:social_app_ui/util/configs/theme_config.dart';
 import 'package:social_app_ui/util/user.dart';
@@ -32,7 +33,7 @@ class _HomeState extends State<Home> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             var deck = getDeck(snapshot, widget.email);
-            var me = getUser(snapshot, widget.email);
+            var me = getUserFromSnapshot(snapshot, widget.email);
             var weights = getWeights(snapshot, me.tag);
             deck = sort(me, deck, weights);
             return Column(
@@ -86,8 +87,10 @@ class _HomeState extends State<Home> {
             );
           } else
             return Center(
-              child:
-                  LoadingAnimationWidget.waveDots(color: Colors.grey, size: 50),
+              child: LoadingAnimationWidget.waveDots(
+                color: Colors.grey,
+                size: 50,
+              ),
             );
         },
       ),

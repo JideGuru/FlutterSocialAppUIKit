@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:social_app_ui/util/configs/list_config.dart';
 import 'package:social_app_ui/util/enum.dart';
 import 'package:social_app_ui/util/router.dart';
 import 'package:social_app_ui/util/configs/theme_config.dart';
@@ -20,6 +21,8 @@ class ProfileCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var highestVisualize = visualize(highest);
+    var lowestVisualize = visualize(lowest);
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
@@ -92,7 +95,7 @@ class ProfileCard extends StatelessWidget {
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: highest
+                          children: highestVisualize
                               .map(
                                 (comm) => Text(
                                   comm,
@@ -133,7 +136,7 @@ class ProfileCard extends StatelessWidget {
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: lowest
+                          children: lowestVisualize
                               .map(
                                 (diff) => Text(
                                   diff,
@@ -182,5 +185,14 @@ class ProfileCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  List<String> visualize(List<String> est) {
+    List<String> list = [];
+    for (var item in est) {
+      var tagIndex = questionList.indexOf(item) + 1;
+      list.add(tagList[tagIndex]);
+    }
+    return list;
   }
 }

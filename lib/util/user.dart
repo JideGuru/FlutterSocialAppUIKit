@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
 import 'package:social_app_ui/util/configs/list_config.dart';
 import 'package:social_app_ui/util/sort/map_util.dart';
-import 'package:social_app_ui/views/widgets/profile_card.dart';
 
 class User {
   String email;
@@ -21,10 +20,10 @@ class User {
   User.init(String email)
       : this.email = email,
         tag = 0,
-        essentials = essentialInitialize(),
-        survey = answerInitialize();
+        essentials = _essentialInitialize(),
+        survey = _answerInitialize();
 
-  static Map<String, dynamic> essentialInitialize() {
+  static Map<String, dynamic> _essentialInitialize() {
     Map<String, dynamic> init = {};
     init['nickname'] = '';
     init['sex'] = 0;
@@ -34,7 +33,7 @@ class User {
     return init;
   }
 
-  static Map<String, dynamic> answerInitialize() {
+  static Map<String, dynamic> _answerInitialize() {
     Map<String, dynamic> init = {};
     for (var key in answerList.keys) {
       if (key == 'etc') continue;
@@ -91,19 +90,11 @@ class User {
   }
 }
 
-List<ProfileCard> getDeck(
-    AsyncSnapshot<QuerySnapshot<Object?>> snapshot, String exeptionEmail) {
-  List<ProfileCard> deck = [];
-  for (var doc in snapshot.data!.docs) {
-    if (doc.id == exeptionEmail) continue;
-    if (doc.id == 'weights') continue;
-    deck.add(ProfileCard(user: User.fromFirestore(doc)));
-  }
-  return deck;
-}
-
-User getUser(AsyncSnapshot<QuerySnapshot<Object?>> snapshot, String email) {
-  User user = User(email: email, essentials: {}, survey: {});
+User getUserFromSnapshot(
+    AsyncSnapshot<QuerySnapshot<Object?>> snapshot, String email) {
+  User user = User.init(
+    email,
+  );
   for (var doc in snapshot.data!.docs) {
     if (doc.id != email) continue;
     if (doc.id == 'weights') continue;
