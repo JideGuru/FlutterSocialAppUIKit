@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:social_app_ui/views/screens/chat/conversation.dart';
 
 class ChatItem extends StatefulWidget {
-  final String senderEmail;
-  final String senderNickname;
+  final String email;
+  final String nickname;
   final String time;
   final String message;
 
   ChatItem({
     super.key,
-    required this.senderEmail,
-    required this.senderNickname,
+    required this.email,
+    required this.nickname,
     required this.time,
     required this.message,
   });
@@ -30,7 +30,7 @@ class _ChatItemState extends State<ChatItem> {
           children: <Widget>[
             CircleAvatar(
               backgroundImage: AssetImage(
-                "${widget.senderEmail}",
+                "${widget.email}",
               ),
               radius: 25,
             ),
@@ -49,7 +49,7 @@ class _ChatItemState extends State<ChatItem> {
           ],
         ),
         title: Text(
-          "${widget.senderNickname}",
+          "${widget.nickname}",
           maxLines: 1,
           style: TextStyle(
             fontWeight: FontWeight.bold,

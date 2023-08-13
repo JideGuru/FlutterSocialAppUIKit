@@ -95,10 +95,12 @@ User getUserFromSnapshot(
   User user = User.init(
     email,
   );
-  for (var doc in snapshot.data!.docs) {
-    if (doc.id != email) continue;
-    if (doc.id == 'weights') continue;
-    user = User.fromFirestore(doc);
+  if (snapshot.hasData) {
+    for (var doc in snapshot.data!.docs) {
+      if (doc.id != email) continue;
+      if (doc.id == 'weights') continue;
+      user = User.fromFirestore(doc);
+    }
   }
   return user;
 }

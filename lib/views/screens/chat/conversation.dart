@@ -48,13 +48,13 @@ class _ConversationState extends State<Conversation> {
                       ),
                     ),
                     SizedBox(height: 5),
-                    Text(
-                      "Online",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 11,
-                      ),
-                    ),
+                    // Text(
+                    //   "Online",
+                    //   style: TextStyle(
+                    //     fontWeight: FontWeight.w400,
+                    //     fontSize: 11,
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
@@ -110,25 +110,21 @@ class _ConversationState extends State<Conversation> {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: <Widget>[
-                      IconButton(
-                        icon: Icon(
-                          Icons.add,
-                          color: Theme.of(context).colorScheme.secondary,
-                        ),
-                        onPressed: () {},
-                      ),
+                      // IconButton(
+                      //   icon: Icon(
+                      //     Icons.add,
+                      //     color: Theme.of(context).colorScheme.secondary,
+                      //   ),
+                      //   onPressed: () {},
+                      // ),
                       Flexible(
                         child: TextField(
-                          style: TextStyle(
-                            fontSize: 15.0,
-                            color:
-                                Theme.of(context).textTheme.titleLarge?.color,
-                          ),
+                          style: Theme.of(context).textTheme.bodySmall,
                           decoration: InputDecoration(
                             contentPadding: EdgeInsets.all(10.0),
                             border: InputBorder.none,
                             enabledBorder: InputBorder.none,
-                            hintText: "Write your message...",
+                            hintText: "메시지를 작성해주세요.",
                             hintStyle: TextStyle(
                               fontSize: 15.0,
                               color:
@@ -140,7 +136,7 @@ class _ConversationState extends State<Conversation> {
                       ),
                       IconButton(
                         icon: Icon(
-                          Icons.mic,
+                          Icons.send,
                           color: Theme.of(context).colorScheme.secondary,
                         ),
                         onPressed: () {},
