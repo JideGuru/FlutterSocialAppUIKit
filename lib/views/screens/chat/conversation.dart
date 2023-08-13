@@ -23,22 +23,21 @@ class _ConversationState extends State<Conversation> {
     var convDoc = FirebaseFirestore.instance
         .collection('chats')
         .doc('myEmail.jbnu.ac.kr');
-    // convDoc.snapshots().listen(
-    //   (event) {
-    //     var eventedConv = event.data()![widget.chat.email];
-    //     var eventedChat = Chat(
-    //       email: widget.chat.email,
-    //       nickname: widget.chat.nickname,
-    //       conversations: eventedConv,
-    //     );
-    //     if (widget.chat.conversations.length !=
-    //         eventedChat.conversations.length) {
-    //       print(widget.chat.conversations.length);
-    //       print(eventedChat.conversations.length);
-    //       print('event occured');
-    //     }
-    //   },
-    // );
+    convDoc.snapshots().listen(
+      (event) {
+        var eventedConv = event.data()![widget.chat.email];
+        var eventedChat = Chat(
+          email: widget.chat.email,
+          nickname: widget.chat.nickname,
+          conversations: eventedConv,
+        );
+        if (widget.chat.conversations.length !=
+            eventedChat.conversations.length) {
+          widget.chat.conversations = eventedChat.conversations;
+          setState(() {});
+        }
+      },
+    );
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -166,10 +165,12 @@ class _ConversationState extends State<Conversation> {
                                     var path = FieldPath(
                                       [widget.chat.email],
                                     );
-                                    convDoc.update({
-                                      path: FieldValue.arrayUnion(
-                                          typedToFirestore)
-                                    });
+                                    convDoc.update(
+                                      {
+                                        path: FieldValue.arrayUnion(
+                                            typedToFirestore)
+                                      },
+                                    );
                                     setState(() {});
                                   },
                           )

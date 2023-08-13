@@ -36,14 +36,6 @@ class _ChatsState extends State<Chats>
             .get(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            FirebaseFirestore.instance
-                .collection('chats')
-                .doc('myEmail.jbnu.ac.kr')
-                .snapshots()
-                .listen((event) {
-              print('evented');
-              // setState(() {});
-            });
             var chatList = getChatsFromSnapshot(snapshot);
             return ListView.separated(
               padding: EdgeInsets.all(10),
