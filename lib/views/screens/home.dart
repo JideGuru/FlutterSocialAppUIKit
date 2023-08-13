@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:social_app_ui/util/configs/list_config.dart';
+import 'package:social_app_ui/util/extensions.dart';
 import 'package:social_app_ui/util/sort/weight.dart';
 import 'package:social_app_ui/util/configs/theme_config.dart';
 import 'package:social_app_ui/util/user.dart';
@@ -80,7 +81,7 @@ class _HomeState extends State<Home> {
                   onDeckEmpty: () {
                     setState(() {});
                   },
-                ),
+                ).fadeInList(1, false),
               ],
             );
           } else

@@ -22,8 +22,7 @@ class _LoginState extends State<Login> {
   bool validate = false;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  String email = '', password = '', nickname = '';
-  FocusNode nameFN = FocusNode();
+  String email = '', password = '';
   FocusNode emailFN = FocusNode();
   FocusNode passFN = FocusNode();
   FormMode formMode = FormMode.LOGIN;
@@ -65,11 +64,6 @@ class _LoginState extends State<Login> {
             break;
         }
     }
-  }
-
-  void showInSnackBar(String value) {
-    // _scaffoldKey.currentState?.removeCurrentSnackBar();
-    // _scaffoldKey.currentState?.showSnackBar(SnackBar(content: Text(value)));
   }
 
   @override

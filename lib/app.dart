@@ -4,13 +4,13 @@ import 'package:social_app_ui/util/const.dart';
 import 'package:social_app_ui/util/configs/theme_config.dart';
 import 'package:social_app_ui/views/screens/auth/login.dart';
 
-class MyApp extends StatelessWidget {
+class RoomieApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: Constants.appName,
-      theme: ThemeConfig.lightTheme,
+      theme: themeData(ThemeConfig.lightTheme),
       // darkTheme: themeData(ThemeConfig.darkTheme),
       home: Login(),
     );

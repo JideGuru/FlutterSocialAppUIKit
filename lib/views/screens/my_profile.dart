@@ -6,17 +6,12 @@ import 'package:social_app_ui/util/user.dart';
 import 'package:social_app_ui/views/screens/detail.dart';
 import 'package:social_app_ui/views/widgets/profile_card.dart';
 
-class MyProfile extends StatefulWidget {
+class MyProfile extends StatelessWidget {
   late final String email;
   MyProfile({
     super.key,
     required this.email,
   });
-  @override
-  _MyProfileState createState() => _MyProfileState();
-}
-
-class _MyProfileState extends State<MyProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,10 +19,7 @@ class _MyProfileState extends State<MyProfile> {
         centerTitle: true,
       ),
       body: FutureBuilder<DocumentSnapshot>(
-        future: FirebaseFirestore.instance
-            .collection('users')
-            .doc(widget.email)
-            .get(),
+        future: FirebaseFirestore.instance.collection('users').doc(email).get(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             var me = User.fromFirestore(snapshot.data!);
@@ -45,8 +37,7 @@ class _MyProfileState extends State<MyProfile> {
                       user: me,
                     ),
                     SizedBox(height: 10),
-                    Text(widget.email,
-                        style: Theme.of(context).textTheme.bodyLarge),
+                    Text(email, style: Theme.of(context).textTheme.bodyLarge),
                     SizedBox(height: 3),
                     Text(
                       "아래에서 설문을 수정할 수 있습니다.",
