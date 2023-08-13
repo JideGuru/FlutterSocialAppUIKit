@@ -1,10 +1,17 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:social_app_ui/util/chat_util.dart';
+import 'package:social_app_ui/util/enum.dart';
 import 'package:social_app_ui/views/widgets/chat_bubble.dart';
 import 'package:social_app_ui/util/data.dart';
 
 class Conversation extends StatefulWidget {
+  final Chat chat;
+  Conversation({
+    super.key,
+    required this.chat,
+  });
   @override
   _ConversationState createState() => _ConversationState();
 }
@@ -30,31 +37,19 @@ class _ConversationState extends State<Conversation> {
             children: <Widget>[
               Padding(
                 padding: EdgeInsets.only(left: 0.0, right: 10.0),
-                child: CircleAvatar(
-                  backgroundImage: AssetImage(
-                    "assets/cm${random.nextInt(10)}.jpeg",
-                  ),
-                ),
               ),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      name,
+                      widget.chat.nickname,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 14,
                       ),
                     ),
                     SizedBox(height: 5),
-                    // Text(
-                    //   "Online",
-                    //   style: TextStyle(
-                    //     fontWeight: FontWeight.w400,
-                    //     fontSize: 11,
-                    //   ),
-                    // ),
                   ],
                 ),
               ),
@@ -78,22 +73,15 @@ class _ConversationState extends State<Conversation> {
             Flexible(
               child: ListView.builder(
                 padding: EdgeInsets.symmetric(horizontal: 10),
-                itemCount: conversation.length,
+                itemCount: widget.chat.conversations.length,
                 reverse: true,
                 itemBuilder: (BuildContext context, int index) {
-                  Map msg = conversation[index];
+                  var conversation = widget.chat.conversations[index];
                   return ChatBubble(
-                    message: msg['type'] == "text"
-                        ? messages[random.nextInt(10)]
-                        : "assets/cm${random.nextInt(10)}.jpeg",
-                    username: msg["username"],
-                    time: msg["time"],
-                    type: msg['type'],
-                    replyText: msg["replyText"],
-                    isMe: msg['isMe'],
-                    isGroup: msg['isGroup'],
-                    isReply: msg['isReply'],
-                    replyName: name,
+                    conversation: conversation,
+                    sender: conversation['sender'] == widget.chat.email
+                        ? Owner.OTHERS
+                        : Owner.MINE,
                   );
                 },
               ),
@@ -110,13 +98,6 @@ class _ConversationState extends State<Conversation> {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: <Widget>[
-                      // IconButton(
-                      //   icon: Icon(
-                      //     Icons.add,
-                      //     color: Theme.of(context).colorScheme.secondary,
-                      //   ),
-                      //   onPressed: () {},
-                      // ),
                       Flexible(
                         child: TextField(
                           style: Theme.of(context).textTheme.bodySmall,

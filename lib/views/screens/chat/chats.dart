@@ -32,7 +32,6 @@ class _ChatsState extends State<Chats>
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             var chatList = getChatsFromSnapshot(snapshot);
-            print(chatList[0].nickname);
             return ListView.separated(
               padding: EdgeInsets.all(10),
               separatorBuilder: (BuildContext context, int index) {
@@ -48,12 +47,8 @@ class _ChatsState extends State<Chats>
               itemCount: chatList.length,
               itemBuilder: (BuildContext context, int index) {
                 Chat chat = chatList[index];
-                print('chat done');
                 return ChatItem(
-                  email: chat.email,
-                  nickname: chat.nickname,
-                  message: chat.conversations.last['message'],
-                  time: chat.conversations.last['time'].toString(),
+                  chat: chat,
                 );
               },
             );

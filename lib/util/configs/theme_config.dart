@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 
 class ThemeConfig {
   static Color lightPrimary = Color(0xff0f4c81);
+  static Color lightOnPrimary = Color(0xff0f4c81);
   static Color lightSecondary = Color(0xff0f4c81);
+  static Color lightOnSecondary = Color(0xfffcfcff);
   static Color lightError = Color(0xffbf1932);
+  static Color lightOnError = Color(0xfffcfcff);
   static Color lightBackground = Color(0xfffcfcff);
+  static Color lightOnBackground = Color(0xffd5d5d5);
   static Color lightSurface = Color(0xff121212);
   static Color lightText = Color(0xff121212);
   static Color lightTabBackground = Color(0xff86a2bc);
@@ -23,13 +27,13 @@ class ThemeConfig {
     colorScheme: ColorScheme(
       brightness: Brightness.light,
       primary: lightPrimary,
-      onPrimary: lightPrimary,
+      onPrimary: lightOnPrimary,
       secondary: lightSecondary,
-      onSecondary: lightSecondary,
+      onSecondary: lightOnSecondary,
       error: lightError,
-      onError: lightError,
+      onError: lightOnError,
       background: lightBackground,
-      onBackground: lightBackground,
+      onBackground: lightOnBackground,
       surface: lightSurface,
       onSurface: lightSurface,
     ),

@@ -11,7 +11,7 @@ import 'package:social_app_ui/util/user.dart';
 import 'package:swiping_card_deck/swiping_card_deck.dart';
 
 class Home extends StatefulWidget {
-  late final String email;
+  final String email;
   Home({
     super.key,
     required this.email,
