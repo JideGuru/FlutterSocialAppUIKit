@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:social_app_ui/util/user.dart';
 import 'package:social_app_ui/views/screens/chat/chats.dart';
 import 'package:social_app_ui/views/screens/home.dart';
 
@@ -6,10 +7,10 @@ import 'package:social_app_ui/views/screens/my_profile.dart';
 import 'package:social_app_ui/views/screens/settings.dart';
 
 class MainScreen extends StatefulWidget {
-  late final String email;
+  late final User user;
   MainScreen({
     super.key,
-    required this.email,
+    required this.user,
   });
   @override
   _MainScreenState createState() => _MainScreenState();
@@ -27,9 +28,9 @@ class _MainScreenState extends State<MainScreen> {
         controller: _pageController,
         onPageChanged: onPageChanged,
         children: <Widget>[
-          Home(email: widget.email),
-          MyProfile(email: widget.email),
-          Chats(email: widget.email),
+          Home(user: widget.user),
+          MyProfile(user: widget.user),
+          Chats(user: widget.user),
           Settings(),
         ],
       ),

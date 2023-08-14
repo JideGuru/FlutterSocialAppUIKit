@@ -1,14 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:social_app_ui/util/chat_util.dart';
 import 'package:social_app_ui/util/data.dart';
+import 'package:social_app_ui/util/user.dart';
 import 'package:social_app_ui/views/widgets/chat_item.dart';
 
 class Chats extends StatefulWidget {
-  final String email;
+  final User user;
   Chats({
     super.key,
-    required this.email,
+    required this.user,
   });
   @override
   _ChatsState createState() => _ChatsState();
@@ -33,10 +35,19 @@ class _ChatsState extends State<Chats>
         centerTitle: true,
       ),
       body: StreamBuilder(
-        stream: chatsColRef.doc(widget.email).snapshots(),
+        stream: chatsColRef.doc(widget.user.email).snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             var chatsFromSnapshot = getChatsFromSnapshot(snapshot);
+            chatsFromSnapshot.sort(
+              (a, b) {
+                var aTime =
+                    (a.conversations.last['time'] as Timestamp).toDate();
+                var bTime =
+                    (b.conversations.last['time'] as Timestamp).toDate();
+                return bTime.compareTo(aTime);
+              },
+            );
             return ListView.separated(
               padding: EdgeInsets.all(10),
               separatorBuilder: (BuildContext context, int index) {
@@ -53,7 +64,7 @@ class _ChatsState extends State<Chats>
               itemBuilder: (BuildContext context, int index) {
                 Chat chat = chatsFromSnapshot[index];
                 return ChatItem(
-                  email: widget.email,
+                  user: widget.user,
                   chat: chat,
                 );
               },

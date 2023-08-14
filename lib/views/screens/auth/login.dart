@@ -6,7 +6,7 @@ import 'package:social_app_ui/util/const.dart';
 import 'package:social_app_ui/util/enum.dart';
 import 'package:social_app_ui/util/router.dart';
 import 'package:social_app_ui/util/validations.dart';
-import 'package:social_app_ui/views/screens/main_screen.dart';
+import 'package:social_app_ui/views/screens/init_screen.dart';
 import 'package:social_app_ui/views/screens/survey.dart';
 import 'package:social_app_ui/views/widgets/custom_button.dart';
 import 'package:social_app_ui/views/widgets/custom_text_field.dart';
@@ -60,7 +60,7 @@ class _LoginState extends State<Login> {
             break;
           case FormMode.LOGIN:
           case FormMode.FORGOT_PASSWORD:
-            Navigate.pushPageReplacement(context, MainScreen(email: email));
+            Navigate.pushPageReplacement(context, InitScreen(email: email));
             break;
         }
     }

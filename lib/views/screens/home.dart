@@ -1,7 +1,6 @@
 import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:social_app_ui/util/configs/list_config.dart';
 import 'package:social_app_ui/util/data.dart';
 import 'package:social_app_ui/util/extensions.dart';
@@ -12,10 +11,10 @@ import 'package:social_app_ui/util/user.dart';
 import 'package:swiping_card_deck/swiping_card_deck.dart';
 
 class Home extends StatefulWidget {
-  final String email;
+  final User user;
   Home({
     super.key,
-    required this.email,
+    required this.user,
   });
   @override
   _HomeState createState() => _HomeState();
@@ -36,9 +35,12 @@ class _HomeState extends State<Home> {
         future: usersColRef.get(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            var deck = getDeck(snapshot, widget.email);
-            var me = getUserFromSnapshot(snapshot, widget.email);
-            var weights = getWeights(snapshot, me.tag);
+            var deck = getDeck(
+              snapshot,
+              widget.user,
+            );
+            var me = getUserFromSnapshot(snapshot, widget.user.email);
+            var weights = getWeights(snapshot, widget.user.tag);
             deck = sort(me, deck, weights);
             return Column(
               children: [
@@ -62,7 +64,7 @@ class _HomeState extends State<Home> {
                           onTap: (tag) async {
                             await FirebaseFirestore.instance
                                 .collection('users')
-                                .doc(widget.email)
+                                .doc(me.email)
                                 .update({'tag': tag});
                             mounted ? setState(() {}) : dispose();
                           },
@@ -90,12 +92,7 @@ class _HomeState extends State<Home> {
               ],
             );
           } else
-            return Center(
-              child: LoadingAnimationWidget.waveDots(
-                color: Colors.grey,
-                size: 50,
-              ),
-            );
+            return Container();
         },
       ),
     );

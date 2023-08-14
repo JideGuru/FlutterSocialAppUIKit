@@ -39,7 +39,7 @@ class _SurveyState extends State<Survey> {
 
   nextStep() async {
     if (surveyIndex == surveyList.length) {
-      Navigate.pushPageReplacement(context, MainScreen(email: user.email));
+      Navigate.pushPageReplacement(context, MainScreen(user: user));
     }
     FormState form = formKey.currentState!;
     form.save();

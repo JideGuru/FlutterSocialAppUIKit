@@ -4,14 +4,14 @@ import 'package:social_app_ui/util/user.dart';
 import 'package:social_app_ui/views/widgets/profile_card.dart';
 
 List<ProfileCard> getDeck(
-    AsyncSnapshot<QuerySnapshot<Object?>> snapshot, String myEmail) {
+    AsyncSnapshot<QuerySnapshot<Object?>> snapshot, User me) {
   List<ProfileCard> deck = [];
   for (var doc in snapshot.data!.docs) {
-    if (doc.id == myEmail) continue;
+    if (doc.id == me.email) continue;
     if (doc.id == 'weights') continue;
     deck.add(
       ProfileCard(
-        email: myEmail,
+        me: me,
         user: User.fromFirestore(doc),
       ),
     );

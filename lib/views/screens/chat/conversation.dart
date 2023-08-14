@@ -3,17 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:social_app_ui/util/chat_util.dart';
 import 'package:social_app_ui/util/data.dart';
 import 'package:social_app_ui/util/enum.dart';
+import 'package:social_app_ui/util/extensions.dart';
 import 'package:social_app_ui/util/router.dart';
 import 'package:social_app_ui/util/user.dart';
 import 'package:social_app_ui/views/screens/other_profile.dart';
 import 'package:social_app_ui/views/widgets/chat_bubble.dart';
 
 class Conversation extends StatefulWidget {
-  final String email;
+  final User user;
   final Chat chat;
   Conversation({
     super.key,
-    required this.email,
+    required this.user,
     required this.chat,
   });
   @override
@@ -24,7 +25,7 @@ class _ConversationState extends State<Conversation> {
   var controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    var chatDocRef = chatsColRef.doc(widget.email);
+    var chatDocRef = chatsColRef.doc(widget.user.email);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -35,43 +36,43 @@ class _ConversationState extends State<Conversation> {
         ),
         titleSpacing: 0,
         title: FutureBuilder(
-          future: usersColRef.doc(widget.email).get(),
+          future: usersColRef.doc(widget.chat.email).get(),
           builder: (context, snapshot) {
-            return InkWell(
-              child: Row(
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(left: 0.0, right: 10.0),
-                  ),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          widget.chat.nickname,
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                        Text(
-                          widget.chat.email,
-                          style: Theme.of(context).textTheme.bodySmall,
-                        ),
-                        SizedBox(height: 5),
-                      ],
+            if (snapshot.connectionState == ConnectionState.done) {
+              var other = User.fromFirestore(snapshot.data!);
+              return InkWell(
+                child: Row(
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(left: 0.0, right: 10.0),
                     ),
-                  ),
-                ],
-              ),
-              onTap: () {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  User user = User.fromFirestore(snapshot.data!);
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            other.essentials['nickname'],
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
+                          Text(
+                            other.email,
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                          SizedBox(height: 5),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                onTap: () {
                   Navigate.pushPage(
                     context,
-                    OtherProfile(user: user),
+                    OtherProfile(user: other),
                   );
-                } else
-                  null;
-              },
-            );
+                },
+              ).fadeInList(1, false);
+            } else
+              return SizedBox();
           },
         ),
         actions: <Widget>[
@@ -164,19 +165,23 @@ class _ConversationState extends State<Conversation> {
                                 ),
                                 onPressed: () {
                                   var typedToFirestore = chat.typedToFirestore(
-                                      widget.email,
-                                      controller.text,
-                                      Owner.MINE);
-                                  chatDocRef.update({
+                                    widget.user.email,
+                                    chat.nickname,
+                                    controller.text,
+                                    Owner.MINE,
+                                  );
+                                  chatsColRef.doc(widget.user.email).update({
                                     FieldPath([chat.email]):
                                         FieldValue.arrayUnion(typedToFirestore)
                                   });
                                   typedToFirestore = chat.typedToFirestore(
-                                      widget.email,
-                                      controller.text,
-                                      Owner.OTHERS);
+                                    widget.user.email,
+                                    widget.user.essentials['nickname'],
+                                    controller.text,
+                                    Owner.OTHERS,
+                                  );
                                   chatsColRef.doc(chat.email).update({
-                                    FieldPath([widget.email]):
+                                    FieldPath([widget.user.email]):
                                         FieldValue.arrayUnion(typedToFirestore)
                                   });
                                   controller.text = '';

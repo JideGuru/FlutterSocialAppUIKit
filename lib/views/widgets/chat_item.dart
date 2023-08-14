@@ -2,15 +2,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:social_app_ui/util/chat_util.dart';
 import 'package:social_app_ui/util/router.dart';
+import 'package:social_app_ui/util/user.dart';
 import 'package:social_app_ui/views/screens/chat/conversation.dart';
 
 class ChatItem extends StatefulWidget {
-  final String email;
+  final User user;
   final Chat chat;
 
   ChatItem({
     super.key,
-    required this.email,
+    required this.user,
     required this.chat,
   });
 
@@ -61,7 +62,7 @@ class _ChatItemState extends State<ChatItem> {
           Navigate.pushPage(
             context,
             Conversation(
-              email: widget.email,
+              user: widget.user,
               chat: widget.chat,
             ),
           );
