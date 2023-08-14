@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:social_app_ui/util/chat_util.dart';
 import 'package:social_app_ui/util/data.dart';
 import 'package:social_app_ui/util/enum.dart';
+import 'package:social_app_ui/util/router.dart';
+import 'package:social_app_ui/util/user.dart';
+import 'package:social_app_ui/views/screens/other_profile.dart';
 import 'package:social_app_ui/views/widgets/chat_bubble.dart';
 
 class Conversation extends StatefulWidget {
@@ -31,31 +34,45 @@ class _ConversationState extends State<Conversation> {
           onPressed: () => Navigator.pop(context),
         ),
         titleSpacing: 0,
-        title: InkWell(
-          child: Row(
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(left: 0.0, right: 10.0),
-              ),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      widget.chat.nickname,
-                      style: Theme.of(context).textTheme.bodyLarge,
+        title: FutureBuilder(
+          future: usersColRef.doc(widget.email).get(),
+          builder: (context, snapshot) {
+            return InkWell(
+              child: Row(
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(left: 0.0, right: 10.0),
+                  ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          widget.chat.nickname,
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                        Text(
+                          widget.chat.email,
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                        SizedBox(height: 5),
+                      ],
                     ),
-                    Text(
-                      widget.chat.email,
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                    SizedBox(height: 5),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
-          onTap: () {},
+              onTap: () {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  User user = User.fromFirestore(snapshot.data!);
+                  Navigate.pushPage(
+                    context,
+                    OtherProfile(user: user),
+                  );
+                } else
+                  null;
+              },
+            );
+          },
         ),
         actions: <Widget>[
           IconButton(
