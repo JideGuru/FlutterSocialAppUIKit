@@ -38,7 +38,7 @@ class _CustomDropdownButtonState extends State<CustomDropdownButton> {
       onChanged: (dynamic value) {
         widget.user.essentials[widget.surveyMode] = value;
         this.value = value;
-        setState(() {});
+        mounted ? setState(() {}) : dispose();
       },
     );
   }

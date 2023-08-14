@@ -45,10 +45,10 @@ class _SurveyState extends State<Survey> {
     form.save();
     if (!form.validate()) {
       validate = true;
-      setState(() {});
+      mounted ? setState(() {}) : dispose();
     } else {
       surveyMode = surveyList[surveyIndex++];
-      setState(() {});
+      mounted ? setState(() {}) : dispose();
     }
   }
 

@@ -18,6 +18,7 @@ class Conversation extends StatefulWidget {
 }
 
 class _ConversationState extends State<Conversation> {
+  var controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     var chatDocRef = chatsColRef.doc(widget.email);
@@ -68,7 +69,6 @@ class _ConversationState extends State<Conversation> {
       body: StreamBuilder(
         stream: chatDocRef.snapshots(),
         builder: (context, snapshot) {
-          var controller = TextEditingController();
           var chat = widget.chat;
           if (snapshot.hasData) {
             var conversations = snapshot.data!.data()![widget.chat.email] ?? [];
@@ -179,5 +179,11 @@ class _ConversationState extends State<Conversation> {
         },
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 }

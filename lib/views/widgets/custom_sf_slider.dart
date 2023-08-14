@@ -43,7 +43,7 @@ class _CustomSfSliderState extends State<CustomSfSlider> {
               ? null
               : (value) {
                   widget.user.survey[widget.surveyMode] = value.round();
-                  setState(() {});
+                  mounted ? setState(() {}) : dispose();
                 },
         ),
         SizedBox(height: 40.0),

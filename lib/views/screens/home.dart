@@ -84,7 +84,7 @@ class _HomeState extends State<Home> {
                     updateDomains(p0, getDomains(snapshot));
                   },
                   onDeckEmpty: () {
-                    setState(() {});
+                    mounted ? setState(() {}) : dispose();
                   },
                 ).fadeInList(1, false),
               ],

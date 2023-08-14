@@ -44,7 +44,7 @@ class _CustomGroupButtonState extends State<CustomGroupButton> {
           buttons: answerList[widget.surveyMode]!,
           onSelected: (value, index, isSelected) {
             widget.user.survey[widget.surveyMode] = index;
-            setState(() {});
+            mounted ? setState(() {}) : dispose();
           },
         ),
         SizedBox(height: 40.0),
