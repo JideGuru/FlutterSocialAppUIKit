@@ -36,6 +36,7 @@ class MyProfile extends StatelessWidget {
                     SizedBox(height: 60),
                     ProfileCard(
                       profileMode: Owner.MINE,
+                      email: email,
                       user: me,
                     ),
                     SizedBox(height: 10),

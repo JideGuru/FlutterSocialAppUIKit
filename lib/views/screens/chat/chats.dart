@@ -1,7 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:social_app_ui/util/chat_util.dart';
+import 'package:social_app_ui/util/data.dart';
 import 'package:social_app_ui/views/widgets/chat_item.dart';
 
 class Chats extends StatefulWidget {
@@ -30,10 +30,7 @@ class _ChatsState extends State<Chats>
         centerTitle: true,
       ),
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance
-            .collection('chats')
-            .doc('myEmail.jbnu.ac.kr')
-            .snapshots(),
+        stream: chatsColRef.doc(widget.email).snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             var chatList = getChatsFromSnapshot(snapshot);

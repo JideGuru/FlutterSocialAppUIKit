@@ -13,8 +13,7 @@ class Chat {
     required this.conversations,
   });
 
-  List<dynamic> typedToFirestore(
-      String email, String typed, Owner updateTo) {
+  List<dynamic> typedToFirestore(String email, String typed, Owner updateTo) {
     List<dynamic> typedToFirestore = [];
     Map<String, dynamic> conversation = {};
     conversation['message'] = typed;

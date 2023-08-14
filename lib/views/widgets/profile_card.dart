@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:social_app_ui/util/chat_util.dart';
 import 'package:social_app_ui/util/configs/list_config.dart';
 import 'package:social_app_ui/util/enum.dart';
 import 'package:social_app_ui/util/router.dart';
 import 'package:social_app_ui/util/configs/theme_config.dart';
 import 'package:social_app_ui/util/user.dart';
+import 'package:social_app_ui/views/screens/chat/conversation.dart';
 import 'package:social_app_ui/views/screens/other_profile.dart';
 import 'package:social_app_ui/views/widgets/inprofile_button.dart';
 
 class ProfileCard extends StatelessWidget {
-  late final User user;
-  late final Owner profileMode;
-  late final List<String> highest, lowest;
+  final String email;
+  final User user;
+  final Owner profileMode;
+  final List<String> highest, lowest;
   ProfileCard({
     super.key,
+    required this.email,
     required this.user,
     this.profileMode = Owner.OTHERS,
     this.highest = const [],
@@ -174,8 +178,17 @@ class ProfileCard extends StatelessWidget {
                       icon: Icons.chat_bubble,
                       label: '새 채팅',
                       onPressed: () {
-
-                        print('새 채팅 클릭됨');
+                        Navigate.pushPage(
+                          context,
+                          Conversation(
+                            email: email,
+                            chat: Chat(
+                              email: user.email,
+                              nickname: user.essentials['nickname'],
+                              conversations: List.empty(),
+                            ),
+                          ),
+                        );
                       },
                     )
                   ],

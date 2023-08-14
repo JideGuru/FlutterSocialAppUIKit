@@ -1,9 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
 import 'package:lottie/lottie.dart';
 import 'package:social_app_ui/util/animations.dart';
 import 'package:social_app_ui/util/configs/list_config.dart';
+import 'package:social_app_ui/util/data.dart';
 import 'package:social_app_ui/util/router.dart';
 import 'package:social_app_ui/util/user.dart';
 import 'package:social_app_ui/util/validations.dart';
@@ -26,9 +26,6 @@ class Survey extends StatefulWidget {
 }
 
 class _SurveyState extends State<Survey> {
-  CollectionReference toFirestore =
-      FirebaseFirestore.instance.collection('users');
-
   List<String> surveyList = List.from(essentialList)..addAll(questionList);
   String surveyMode = 'introduction';
   int surveyIndex = 0;
@@ -59,7 +56,8 @@ class _SurveyState extends State<Survey> {
   void initState() {
     super.initState();
     user = User.init(widget.email);
-    toFirestore.doc(user.email).set(user.toFirestore());
+    usersColRef.doc(user.email).set(user.toFirestore());
+    chatsColRef.doc(user.email).set({});
     dropdownDormValue = user.essentials['dormitory'];
     dropdownStuNumValue = user.essentials['studentNumber'];
     dropdownMajorValue = user.essentials['major'];
@@ -398,7 +396,7 @@ class _SurveyState extends State<Survey> {
         : CustomButton(
             label: '다음',
             onPressed: () {
-              toFirestore.doc(user.email).update(user.toFirestore());
+              usersColRef.doc(user.email).update(user.toFirestore());
               nextStep();
             }).fadeInList(4, false);
   }
