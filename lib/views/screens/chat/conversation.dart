@@ -108,7 +108,12 @@ class _ConversationState extends State<Conversation> {
                     itemBuilder: (BuildContext context, int index) {
                       var lastIndex = chat.conversations.length - 1;
                       var conversation = chat.conversations[lastIndex - index];
+                      var time = (conversation['time'] as Timestamp)
+                          .toDate()
+                          .toIso8601String()
+                          .split('T');
                       return ChatBubble(
+                        withDayBar: false,
                         conversation: conversation,
                         sender: conversation['sender'] == chat.email
                             ? Owner.OTHERS

@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:social_app_ui/util/enum.dart';
 
 class ChatBubble extends StatefulWidget {
+  final bool withDayBar;
   final Map<String, dynamic> conversation;
   final Owner sender;
   ChatBubble({
+    required this.withDayBar,
     required this.conversation,
     this.sender = Owner.MINE,
   });
@@ -37,6 +39,13 @@ class _ChatBubbleState extends State<ChatBubble> {
     return Column(
       crossAxisAlignment: align,
       children: <Widget>[
+        Visibility(
+          visible: widget.withDayBar,
+          child: Container(
+            height: 2,
+            color: Colors.amber,
+          ),
+        ),
         Container(
           margin: const EdgeInsets.all(3.0),
           padding: const EdgeInsets.all(5.0),
@@ -71,7 +80,7 @@ class _ChatBubbleState extends State<ChatBubble> {
               ? EdgeInsets.only(right: 10, bottom: 10.0)
               : EdgeInsets.only(left: 10, bottom: 10.0),
           child: Text(
-            "${time.hour}:${time.minute}",
+            "${time.toIso8601String().substring(11, 16)}",
             style: Theme.of(context).textTheme.bodySmall,
           ),
         ),
