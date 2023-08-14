@@ -174,6 +174,7 @@ class ProfileCard extends StatelessWidget {
                       icon: Icons.chat_bubble,
                       label: '새 채팅',
                       onPressed: () {
+
                         print('새 채팅 클릭됨');
                       },
                     )

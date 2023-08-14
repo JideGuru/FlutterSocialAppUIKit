@@ -34,7 +34,7 @@ class _ConversationState extends State<Conversation> {
         if (widget.chat.conversations.length !=
             eventedChat.conversations.length) {
           widget.chat.conversations = eventedChat.conversations;
-          setState(() {});
+          mounted ? setState(() {}) : dispose();
         }
       },
     );
@@ -134,7 +134,7 @@ class _ConversationState extends State<Conversation> {
                             child: TextField(
                               onChanged: (value) {
                                 _typed = value;
-                                setState(() {});
+                                mounted ? setState(() {}) : dispose();
                               },
                               style: Theme.of(context).textTheme.bodyMedium,
                               decoration: InputDecoration(
@@ -171,7 +171,7 @@ class _ConversationState extends State<Conversation> {
                                             typedToFirestore)
                                       },
                                     );
-                                    setState(() {});
+                                    mounted ? setState(() {}) : dispose();
                                   },
                           )
                         ],

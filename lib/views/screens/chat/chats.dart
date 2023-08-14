@@ -29,13 +29,13 @@ class _ChatsState extends State<Chats>
         title: Text("채팅"),
         centerTitle: true,
       ),
-      body: FutureBuilder(
-        future: FirebaseFirestore.instance
+      body: StreamBuilder(
+        stream: FirebaseFirestore.instance
             .collection('chats')
             .doc('myEmail.jbnu.ac.kr')
-            .get(),
+            .snapshots(),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasData) {
             var chatList = getChatsFromSnapshot(snapshot);
             return ListView.separated(
               padding: EdgeInsets.all(10),
