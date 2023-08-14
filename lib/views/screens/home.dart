@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:social_app_ui/util/configs/list_config.dart';
+import 'package:social_app_ui/util/data.dart';
 import 'package:social_app_ui/util/extensions.dart';
 import 'package:social_app_ui/util/sort/map_util.dart';
 import 'package:social_app_ui/util/sort/weight.dart';
@@ -25,11 +26,14 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("추천 프로필"),
+        title: Text(
+          "추천 프로필",
+          style: Theme.of(context).textTheme.bodyLarge,
+        ),
         centerTitle: true,
       ),
       body: FutureBuilder(
-        future: FirebaseFirestore.instance.collection('users').get(),
+        future: usersColRef.get(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             var deck = getDeck(snapshot, widget.email);

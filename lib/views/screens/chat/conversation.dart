@@ -113,7 +113,7 @@ class _ConversationState extends State<Conversation> {
                         Container(
                           decoration: BoxDecoration(
                             color: Theme.of(context).colorScheme.onSecondary,
-                            borderRadius: BorderRadius.circular(20),
+                            borderRadius: BorderRadius.circular(17),
                           ),
                           width: MediaQuery.of(context).size.width - 25,
                           padding: EdgeInsets.symmetric(
@@ -152,6 +152,14 @@ class _ConversationState extends State<Conversation> {
                                       Owner.MINE);
                                   chatDocRef.update({
                                     FieldPath([chat.email]):
+                                        FieldValue.arrayUnion(typedToFirestore)
+                                  });
+                                  typedToFirestore = chat.typedToFirestore(
+                                      widget.email,
+                                      controller.text,
+                                      Owner.OTHERS);
+                                  chatsColRef.doc(chat.email).update({
+                                    FieldPath([widget.email]):
                                         FieldValue.arrayUnion(typedToFirestore)
                                   });
                                   controller.text = '';

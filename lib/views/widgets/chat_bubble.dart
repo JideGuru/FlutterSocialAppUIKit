@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:social_app_ui/util/enum.dart';
 
@@ -32,7 +33,7 @@ class _ChatBubbleState extends State<ChatBubble> {
             bottomLeft: Radius.circular(10.0),
             bottomRight: Radius.circular(5.0),
           );
-
+    DateTime time = (widget.conversation['time'] as Timestamp).toDate();
     return Column(
       crossAxisAlignment: align,
       children: <Widget>[
@@ -70,7 +71,7 @@ class _ChatBubbleState extends State<ChatBubble> {
               ? EdgeInsets.only(right: 10, bottom: 10.0)
               : EdgeInsets.only(left: 10, bottom: 10.0),
           child: Text(
-            widget.conversation['time'].toString(),
+            "${time.hour}:${time.minute}",
             style: Theme.of(context).textTheme.bodySmall,
           ),
         ),

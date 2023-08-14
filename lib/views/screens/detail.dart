@@ -1,8 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:social_app_ui/util/animations.dart';
 import 'package:social_app_ui/util/const.dart';
+import 'package:social_app_ui/util/data.dart';
 import 'package:social_app_ui/util/enum.dart';
 import 'package:social_app_ui/util/configs/list_config.dart';
 import 'package:social_app_ui/util/user.dart';
@@ -24,9 +24,6 @@ class Detail extends StatefulWidget {
 }
 
 class _DetailState extends State<Detail> {
-  CollectionReference toFirestore =
-      FirebaseFirestore.instance.collection('users');
-
   List<String> surveyList = List.from(essentialList)..addAll(questionList);
 
   bool loading = false;
@@ -282,7 +279,7 @@ class _DetailState extends State<Detail> {
         : CustomButton(
             label: '저장',
             onPressed: () {
-              toFirestore
+              usersColRef
                   .doc(widget.user.email)
                   .update(widget.user.toFirestore());
             },

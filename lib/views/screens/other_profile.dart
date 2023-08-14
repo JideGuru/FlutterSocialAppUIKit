@@ -13,7 +13,10 @@ class OtherProfile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("자세한 프로필"),
+        title: Text(
+          "자세한 프로필",
+          style: Theme.of(context).textTheme.bodyLarge,
+        ),
         centerTitle: true,
         leading: IconButton(
           icon: Icon(

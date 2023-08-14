@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:social_app_ui/util/data.dart';
 import 'package:social_app_ui/util/enum.dart';
 import 'package:social_app_ui/util/extensions.dart';
 import 'package:social_app_ui/util/user.dart';
@@ -17,11 +18,14 @@ class MyProfile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("내 프로필"),
+        title: Text(
+          "내 프로필",
+          style: Theme.of(context).textTheme.bodyLarge,
+        ),
         centerTitle: true,
       ),
       body: FutureBuilder<DocumentSnapshot>(
-        future: FirebaseFirestore.instance.collection('users').doc(email).get(),
+        future: usersColRef.doc(email).get(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             var me = User.fromFirestore(snapshot.data!);

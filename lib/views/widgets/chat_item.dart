@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:social_app_ui/util/chat_util.dart';
 import 'package:social_app_ui/util/router.dart';
@@ -21,6 +22,7 @@ class _ChatItemState extends State<ChatItem> {
   @override
   Widget build(BuildContext context) {
     var recentConversation = widget.chat.conversations.last;
+    DateTime recentTime = (recentConversation['time'] as Timestamp).toDate();
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: ListTile(
@@ -32,10 +34,13 @@ class _ChatItemState extends State<ChatItem> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        subtitle: Text(
-          "${recentConversation['message']}",
-          overflow: TextOverflow.ellipsis,
-          maxLines: 2,
+        subtitle: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          child: Text(
+            "${recentConversation['message']}",
+            overflow: TextOverflow.ellipsis,
+            maxLines: 2,
+          ),
         ),
         trailing: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
@@ -44,11 +49,8 @@ class _ChatItemState extends State<ChatItem> {
               height: 10,
             ),
             Text(
-              "${recentConversation['time'].toString()}",
-              style: TextStyle(
-                fontWeight: FontWeight.w300,
-                fontSize: 11,
-              ),
+              "${recentTime.hour}:${recentTime.minute}",
+              style: Theme.of(context).textTheme.bodySmall,
             ),
             SizedBox(
               height: 5,

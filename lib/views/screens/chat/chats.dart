@@ -26,7 +26,10 @@ class _ChatsState extends State<Chats>
     super.build(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text("채팅"),
+        title: Text(
+          "채팅",
+          style: Theme.of(context).textTheme.bodyLarge,
+        ),
         centerTitle: true,
       ),
       body: StreamBuilder(
