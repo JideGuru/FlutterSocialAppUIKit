@@ -36,7 +36,7 @@ class _ChatsState extends State<Chats>
         stream: chatsColRef.doc(widget.email).snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            var chatList = getChatsFromSnapshot(snapshot);
+            var chatsFromSnapshot = getChatsFromSnapshot(snapshot);
             return ListView.separated(
               padding: EdgeInsets.all(10),
               separatorBuilder: (BuildContext context, int index) {
@@ -49,9 +49,9 @@ class _ChatsState extends State<Chats>
                   ),
                 );
               },
-              itemCount: chatList.length,
+              itemCount: chatsFromSnapshot.length,
               itemBuilder: (BuildContext context, int index) {
-                Chat chat = chatList[index];
+                Chat chat = chatsFromSnapshot[index];
                 return ChatItem(
                   email: widget.email,
                   chat: chat,
