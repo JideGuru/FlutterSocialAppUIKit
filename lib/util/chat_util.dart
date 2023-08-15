@@ -13,18 +13,16 @@ class Chat {
     required this.conversations,
   });
 
-  List<dynamic> typedToFirestore(String senderEmail, String otherNickname,
-      String message, Owner updateTo) {
-    List<dynamic> typedToFirestore = [];
+  Map<String, dynamic> toUpdateFirestore(String senderEmail,
+      String otherNickname, String message, Owner updateTo) {
     Map<String, dynamic> conversation = {};
     conversation['message'] = message;
     conversation['otherNickname'] = otherNickname;
     conversation['read'] = updateTo == Owner.MINE ? true : false;
     conversation['senderEmail'] = senderEmail;
     conversation['time'] = Timestamp.now();
-    typedToFirestore.add(conversation);
 
-    return typedToFirestore;
+    return conversation;
   }
 }
 
@@ -33,9 +31,11 @@ List<Chat> getChatsFromSnapshot(
   List<Chat> chats = [];
   if (snapshot.hasData) {
     var chatsFromFirestore = snapshot.data!.data() as Map<String, dynamic>;
+    print(chatsFromFirestore);
     chatsFromFirestore.forEach(
       (key, value) {
-        var conversations = value;
+        var conversations = value as List<dynamic>;
+        print(conversations.runtimeType);
         var nickname = conversations.last['otherNickname'];
         chats.add(
           Chat(

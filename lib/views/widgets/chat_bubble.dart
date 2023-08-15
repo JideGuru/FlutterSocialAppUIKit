@@ -22,8 +22,8 @@ class _ChatBubbleState extends State<ChatBubble> {
         ? Theme.of(context).colorScheme.secondary
         : Theme.of(context).colorScheme.onBackground;
     final align = widget.sender == Owner.MINE
-        ? CrossAxisAlignment.end
-        : CrossAxisAlignment.start;
+        ? MainAxisAlignment.end
+        : MainAxisAlignment.start;
     final radius = widget.sender == Owner.MINE
         ? BorderRadius.only(
             topLeft: Radius.circular(5.0),
@@ -36,14 +36,30 @@ class _ChatBubbleState extends State<ChatBubble> {
             bottomRight: Radius.circular(5.0),
           );
     DateTime time = (widget.conversation['time'] as Timestamp).toDate();
-    return Column(
-      crossAxisAlignment: align,
+    return Row(
+      mainAxisAlignment: align,
       children: <Widget>[
         Visibility(
           visible: widget.withDayBar,
           child: Container(
             height: 2,
             color: Colors.amber,
+          ),
+        ),
+        Visibility(
+          visible: widget.sender == Owner.MINE,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '',
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+              Text(
+                "${time.toIso8601String().substring(11, 16)}",
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+            ],
           ),
         ),
         Container(
@@ -75,13 +91,20 @@ class _ChatBubbleState extends State<ChatBubble> {
             ],
           ),
         ),
-        Padding(
-          padding: widget.sender == Owner.MINE
-              ? EdgeInsets.only(right: 10, bottom: 10.0)
-              : EdgeInsets.only(left: 10, bottom: 10.0),
-          child: Text(
-            "${time.toIso8601String().substring(11, 16)}",
-            style: Theme.of(context).textTheme.bodySmall,
+        Visibility(
+          visible: widget.sender == Owner.OTHERS,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '',
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+              Text(
+                "${time.toIso8601String().substring(11, 16)}",
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+            ],
           ),
         ),
       ],

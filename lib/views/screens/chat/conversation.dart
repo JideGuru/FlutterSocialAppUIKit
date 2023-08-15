@@ -95,6 +95,15 @@ class _ConversationState extends State<Conversation> {
               nickname: chat.nickname,
               conversations: conversations,
             );
+            for (var conversation in chat.conversations)
+              conversation['read'] = true;
+            chatsColRef.doc(widget.user.email).update(
+              {
+                FieldPath(
+                  [chat.email],
+                ): conversations,
+              },
+            );
           }
           return Container(
             height: MediaQuery.of(context).size.height,
@@ -107,7 +116,8 @@ class _ConversationState extends State<Conversation> {
                     reverse: true,
                     itemBuilder: (BuildContext context, int index) {
                       var lastIndex = chat.conversations.length - 1;
-                      var conversation = chat.conversations[lastIndex - index];
+                      var curIndex = lastIndex - index;
+                      var conversation = chat.conversations[curIndex];
                       var time = (conversation['time'] as Timestamp)
                           .toDate()
                           .toIso8601String()
@@ -115,7 +125,7 @@ class _ConversationState extends State<Conversation> {
                       return ChatBubble(
                         withDayBar: false,
                         conversation: conversation,
-                        sender: conversation['sender'] == chat.email
+                        sender: conversation['senderEmail'] == chat.email
                             ? Owner.OTHERS
                             : Owner.MINE,
                       );
@@ -169,7 +179,7 @@ class _ConversationState extends State<Conversation> {
                                   Icons.send,
                                 ),
                                 onPressed: () {
-                                  var typedToFirestore = chat.typedToFirestore(
+                                  var typedToFirestore = chat.toUpdateFirestore(
                                     widget.user.email,
                                     chat.nickname,
                                     controller.text,
@@ -177,9 +187,10 @@ class _ConversationState extends State<Conversation> {
                                   );
                                   chatsColRef.doc(widget.user.email).update({
                                     FieldPath([chat.email]):
-                                        FieldValue.arrayUnion(typedToFirestore)
+                                        FieldValue.arrayUnion(
+                                            [typedToFirestore])
                                   });
-                                  typedToFirestore = chat.typedToFirestore(
+                                  typedToFirestore = chat.toUpdateFirestore(
                                     widget.user.email,
                                     widget.user.essentials['nickname'],
                                     controller.text,
@@ -187,7 +198,8 @@ class _ConversationState extends State<Conversation> {
                                   );
                                   chatsColRef.doc(chat.email).update({
                                     FieldPath([widget.user.email]):
-                                        FieldValue.arrayUnion(typedToFirestore)
+                                        FieldValue.arrayUnion(
+                                            [typedToFirestore])
                                   });
                                   controller.text = '';
                                   mounted ? setState(() {}) : dispose();
