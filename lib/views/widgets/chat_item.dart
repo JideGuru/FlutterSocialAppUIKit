@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:social_app_ui/util/chat_util.dart';
+import 'package:social_app_ui/util/data.dart';
 import 'package:social_app_ui/util/router.dart';
 import 'package:social_app_ui/util/user.dart';
 import 'package:social_app_ui/views/screens/chat/conversation.dart';
@@ -69,6 +70,39 @@ class _ChatItemState extends State<ChatItem> {
               user: widget.user,
               chat: widget.chat,
             ),
+          );
+        },
+        onLongPress: () {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return Dialog(
+                child: SizedBox(
+                  height: MediaQuery.of(context).size.height / 8,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      PopupMenuItem(
+                        child: Text('즐겨찾기'),
+                        onTap: () => print('stared'),
+                      ),
+                      PopupMenuItem(
+                        child: Text('나가기'),
+                        onTap: () {
+                          chatsColRef.doc(widget.user.email).update(
+                            {
+                              FieldPath(
+                                [widget.chat.email],
+                              ): FieldValue.delete(),
+                            },
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
           );
         },
       ),

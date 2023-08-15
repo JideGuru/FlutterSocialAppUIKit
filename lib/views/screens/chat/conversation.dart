@@ -76,11 +76,28 @@ class _ConversationState extends State<Conversation> {
           },
         ),
         actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.more_horiz,
-            ),
-            onPressed: () {},
+          PopupMenuButton(
+            itemBuilder: (context) {
+              return [
+                PopupMenuItem(
+                  child: Text('즐겨찾기'),
+                  onTap: () => print('stared'),
+                ),
+                PopupMenuItem(
+                  child: Text('나가기'),
+                  onTap: () {
+                    chatDocRef.update(
+                      {
+                        FieldPath(
+                          [widget.chat.email],
+                        ): FieldValue.delete(),
+                      },
+                    );
+                    Navigator.pop(context);
+                  },
+                ),
+              ];
+            },
           ),
         ],
       ),
