@@ -139,13 +139,26 @@ class _ConversationState extends State<Conversation> {
                   email: widget.user.email,
                   conversations: conversations,
                 );
-                for (var conversation in otherChat.conversations)
-                  conversation['read'] = true;
+                for (var conversation in otherChat.conversations) {
+                  if (conversation['senderEmail'] != widget.user.email)
+                    conversation['read'] = true;
+                }
+                for (var converstaion in myChat.conversations) {
+                  if (converstaion['senderEmail'] != widget.user.email)
+                    converstaion['read'] = true;
+                }
                 chatsColRef.doc(widget.chat.email).update(
                   {
                     FieldPath(
                       [widget.user.email],
                     ): otherChat.conversations,
+                  },
+                );
+                chatsColRef.doc(widget.user.email).update(
+                  {
+                    FieldPath(
+                      [widget.chat.email],
+                    ): myChat.conversations,
                   },
                 );
                 var read = false, readFlag = false;
@@ -272,7 +285,6 @@ class _ConversationState extends State<Conversation> {
                                         });
                                         conversation['otherNickname'] =
                                             widget.user.essentials['nickname'];
-                                        conversation['read'] = read;
                                         conversation['marked'] =
                                             otherChat.conversations.length == 0
                                                 ? false
@@ -283,6 +295,7 @@ class _ConversationState extends State<Conversation> {
                                               FieldValue.arrayUnion(
                                                   [conversation])
                                         });
+                                        print(conversation);
                                         controller.text = '';
                                         // mounted ? setState(() {}) : dispose();
                                       },

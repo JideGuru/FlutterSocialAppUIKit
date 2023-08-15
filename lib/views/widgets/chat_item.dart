@@ -28,6 +28,11 @@ class _ChatItemState extends State<ChatItem> {
         .toDate()
         .toIso8601String()
         .split('T');
+    var notRead = widget.chat.conversations
+        .where((conversation) =>
+            !conversation['read'] &&
+            conversation['senderEmail'] != widget.user.email)
+        .length;
     var now = Timestamp.now().toDate().toIso8601String().split('T');
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -51,15 +56,33 @@ class _ChatItemState extends State<ChatItem> {
         trailing: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
-            SizedBox(
-              height: 10,
-            ),
             Text(
               now[0] == recentTime[0] ? recentTime[1].substring(0, 5) : now[0],
               style: Theme.of(context).textTheme.bodySmall,
             ),
             SizedBox(
-              height: 5,
+              height: 10,
+            ),
+            Visibility(
+              visible: notRead > 0,
+              child: Container(
+                height: 25,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.secondary,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(6),
+                  ),
+                ),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+                  child: Text(
+                    notRead.toString(),
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Theme.of(context).colorScheme.onSecondary),
+                  ),
+                ),
+              ),
             ),
           ],
         ),
