@@ -182,7 +182,6 @@ class ProfileCard extends StatelessWidget {
                             user: me,
                             chat: Chat(
                               email: user.email,
-                              nickname: user.essentials['nickname'],
                               conversations: [],
                             ),
                           ),

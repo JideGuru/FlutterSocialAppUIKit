@@ -34,7 +34,7 @@ class _ChatItemState extends State<ChatItem> {
       child: ListTile(
         contentPadding: EdgeInsets.all(0),
         title: Text(
-          "${widget.chat.nickname}",
+          "${widget.chat.conversations.last['otherNickname']}",
           maxLines: 1,
           style: TextStyle(
             fontWeight: FontWeight.bold,

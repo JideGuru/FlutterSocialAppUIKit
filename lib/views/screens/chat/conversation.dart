@@ -110,7 +110,6 @@ class _ConversationState extends State<Conversation> {
             var conversations = snapshot.data!.data()![widget.chat.email] ?? [];
             chat = Chat(
               email: chat.email,
-              nickname: chat.nickname,
               conversations: conversations,
             );
             // for (var conversation in chat.conversations)
@@ -208,27 +207,24 @@ class _ConversationState extends State<Conversation> {
                                   Icons.send,
                                 ),
                                 onPressed: () {
-                                  var typedToFirestore = chat.toUpdateFirestore(
-                                    widget.user.email,
-                                    chat.nickname,
-                                    controller.text,
-                                    Owner.MINE,
-                                  );
+                                  Map<String, dynamic> conversation = {};
+                                  conversation['message'] = controller.text;
+                                  conversation['otherNickname'] =
+                                      chat.conversations.last['otherNickname'];
+                                  conversation['read'] = true;
+                                  conversation['senderEmail'] =
+                                      widget.user.email;
+                                  conversation['time'] = Timestamp.now();
                                   chatsColRef.doc(widget.user.email).update({
                                     FieldPath([chat.email]):
-                                        FieldValue.arrayUnion(
-                                            [typedToFirestore])
+                                        FieldValue.arrayUnion([conversation])
                                   });
-                                  typedToFirestore = chat.toUpdateFirestore(
-                                    widget.user.email,
-                                    widget.user.essentials['nickname'],
-                                    controller.text,
-                                    Owner.OTHERS,
-                                  );
+                                  conversation['otherNickname'] =
+                                      widget.user.essentials['nickname'];
+                                  conversation['read'] = false;
                                   chatsColRef.doc(chat.email).update({
                                     FieldPath([widget.user.email]):
-                                        FieldValue.arrayUnion(
-                                            [typedToFirestore])
+                                        FieldValue.arrayUnion([conversation])
                                   });
                                   controller.text = '';
                                   mounted ? setState(() {}) : dispose();

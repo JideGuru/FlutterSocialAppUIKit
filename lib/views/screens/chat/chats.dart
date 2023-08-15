@@ -49,6 +49,16 @@ class _ChatsState extends State<Chats>
                 return bTime.compareTo(aTime);
               },
             );
+            var markedChats = List.from(
+              chatsFromSnapshot.where(
+                (chat) => chat.email == '',
+              ),
+            );
+            var chats = List.from(
+              chatsFromSnapshot.where(
+                (chat) => chat.email != '',
+              ),
+            );
             return ListView.separated(
               padding: EdgeInsets.all(10),
               separatorBuilder: (BuildContext context, int index) {
@@ -61,9 +71,9 @@ class _ChatsState extends State<Chats>
                   ),
                 );
               },
-              itemCount: chatsFromSnapshot.length,
+              itemCount: chats.length,
               itemBuilder: (BuildContext context, int index) {
-                Chat chat = chatsFromSnapshot[index];
+                Chat chat = chats[index];
                 return ChatItem(
                   user: widget.user,
                   chat: chat,
