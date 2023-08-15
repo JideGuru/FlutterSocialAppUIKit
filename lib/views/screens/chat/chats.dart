@@ -37,11 +37,9 @@ class _ChatsState extends State<Chats>
       body: StreamBuilder(
         stream: chatsColRef.doc(widget.user.email).snapshots(),
         builder: (context, snapshot) {
-          print('debug');
-          if (snapshot.hasData) {
-            print('ifffff');
+          if (snapshot.hasData &&
+              snapshot.connectionState == ConnectionState.active) {
             var chatsFromSnapshot = getChatsFromSnapshot(snapshot);
-            print(chatsFromSnapshot);
             chatsFromSnapshot.sort(
               (a, b) {
                 var aTime =

@@ -23,7 +23,11 @@ class _ChatItemState extends State<ChatItem> {
   @override
   Widget build(BuildContext context) {
     var recentConversation = widget.chat.conversations.last;
-    DateTime recentTime = (recentConversation['time'] as Timestamp).toDate();
+    var recentTime = (recentConversation['time'] as Timestamp)
+        .toDate()
+        .toIso8601String()
+        .split('T');
+    var now = Timestamp.now().toDate().toIso8601String().split('T');
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: ListTile(
@@ -50,7 +54,7 @@ class _ChatItemState extends State<ChatItem> {
               height: 10,
             ),
             Text(
-              "${recentTime.hour}:${recentTime.minute}",
+              now[0] == recentTime[0] ? recentTime[1].substring(0, 5) : now[0],
               style: Theme.of(context).textTheme.bodySmall,
             ),
             SizedBox(

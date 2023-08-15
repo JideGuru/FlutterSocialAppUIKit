@@ -31,11 +31,9 @@ List<Chat> getChatsFromSnapshot(
   List<Chat> chats = [];
   if (snapshot.hasData) {
     var chatsFromFirestore = snapshot.data!.data() as Map<String, dynamic>;
-    print(chatsFromFirestore);
     chatsFromFirestore.forEach(
       (key, value) {
         var conversations = value as List<dynamic>;
-        print(conversations.runtimeType);
         var nickname = conversations.last['otherNickname'];
         chats.add(
           Chat(

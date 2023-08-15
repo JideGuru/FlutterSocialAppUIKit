@@ -88,22 +88,23 @@ class _ConversationState extends State<Conversation> {
         stream: chatDocRef.snapshots(),
         builder: (context, snapshot) {
           var chat = widget.chat;
-          if (snapshot.hasData) {
+          if (snapshot.hasData &&
+              snapshot.connectionState == ConnectionState.active) {
             var conversations = snapshot.data!.data()![widget.chat.email] ?? [];
             chat = Chat(
               email: chat.email,
               nickname: chat.nickname,
               conversations: conversations,
             );
-            for (var conversation in chat.conversations)
-              conversation['read'] = true;
-            chatsColRef.doc(widget.user.email).update(
-              {
-                FieldPath(
-                  [chat.email],
-                ): conversations,
-              },
-            );
+            // for (var conversation in chat.conversations)
+            //   conversation['read'] = true;
+            // chatsColRef.doc(widget.user.email).update(
+            //   {
+            //     FieldPath(
+            //       [chat.email],
+            //     ): conversations,
+            //   },
+            // );
           }
           return Container(
             height: MediaQuery.of(context).size.height,
@@ -122,8 +123,19 @@ class _ConversationState extends State<Conversation> {
                           .toDate()
                           .toIso8601String()
                           .split('T');
+                      bool dayBar = false;
+                      if (curIndex == 0)
+                        dayBar = true;
+                      else {
+                        var befConv = chat.conversations[curIndex - 1];
+                        var befTime = (befConv['time'] as Timestamp)
+                            .toDate()
+                            .toIso8601String()
+                            .split('T');
+                        if (time[0] != befTime[0]) dayBar = true;
+                      }
                       return ChatBubble(
-                        withDayBar: false,
+                        withDayBar: dayBar,
                         conversation: conversation,
                         sender: conversation['senderEmail'] == chat.email
                             ? Owner.OTHERS

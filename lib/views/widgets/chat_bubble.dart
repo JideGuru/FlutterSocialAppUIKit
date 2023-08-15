@@ -35,77 +35,84 @@ class _ChatBubbleState extends State<ChatBubble> {
             bottomLeft: Radius.circular(10.0),
             bottomRight: Radius.circular(5.0),
           );
-    DateTime time = (widget.conversation['time'] as Timestamp).toDate();
-    return Row(
-      mainAxisAlignment: align,
-      children: <Widget>[
+    var time = (widget.conversation['time'] as Timestamp)
+        .toDate()
+        .toIso8601String()
+        .split('T');
+    return Column(
+      children: [
         Visibility(
           visible: widget.withDayBar,
-          child: Container(
-            height: 2,
-            color: Colors.amber,
+          child: Text(
+            time[0].toString(),
+            style: Theme.of(context).textTheme.bodySmall,
           ),
         ),
-        Visibility(
-          visible: widget.sender == Owner.MINE,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                '',
-                style: Theme.of(context).textTheme.bodySmall,
+        Row(
+          mainAxisAlignment: align,
+          children: <Widget>[
+            Visibility(
+              visible: widget.sender == Owner.MINE,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '',
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                  Text(
+                    "${time[1].substring(0, 5)}",
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ],
               ),
-              Text(
-                "${time.toIso8601String().substring(11, 16)}",
-                style: Theme.of(context).textTheme.bodySmall,
+            ),
+            Container(
+              margin: const EdgeInsets.all(3.0),
+              padding: const EdgeInsets.all(5.0),
+              decoration: BoxDecoration(
+                color: color,
+                borderRadius: radius,
               ),
-            ],
-          ),
-        ),
-        Container(
-          margin: const EdgeInsets.all(3.0),
-          padding: const EdgeInsets.all(5.0),
-          decoration: BoxDecoration(
-            color: color,
-            borderRadius: radius,
-          ),
-          constraints: BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width / 1.3,
-            minWidth: 20.0,
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.all(5),
-                child: Text(
-                  widget.conversation['message'],
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: widget.sender == Owner.MINE
-                            ? Theme.of(context).colorScheme.onSecondary
-                            : Theme.of(context).colorScheme.onSurface,
-                      ),
-                ),
+              constraints: BoxConstraints(
+                maxWidth: MediaQuery.of(context).size.width / 1.3,
+                minWidth: 20.0,
               ),
-            ],
-          ),
-        ),
-        Visibility(
-          visible: widget.sender == Owner.OTHERS,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                '',
-                style: Theme.of(context).textTheme.bodySmall,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.all(5),
+                    child: Text(
+                      widget.conversation['message'],
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: widget.sender == Owner.MINE
+                                ? Theme.of(context).colorScheme.onSecondary
+                                : Theme.of(context).colorScheme.onSurface,
+                          ),
+                    ),
+                  ),
+                ],
               ),
-              Text(
-                "${time.toIso8601String().substring(11, 16)}",
-                style: Theme.of(context).textTheme.bodySmall,
+            ),
+            Visibility(
+              visible: widget.sender == Owner.OTHERS,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '',
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                  Text(
+                    "${time[1].substring(0, 5)}",
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ],
     );
