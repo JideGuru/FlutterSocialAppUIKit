@@ -40,25 +40,30 @@ class _ChatsState extends State<Chats>
           if (snapshot.hasData &&
               snapshot.connectionState == ConnectionState.active) {
             var chatsFromSnapshot = getChatsFromSnapshot(snapshot);
-            chatsFromSnapshot.sort(
-              (a, b) {
-                var aTime =
-                    (a.conversations.last['time'] as Timestamp).toDate();
-                var bTime =
-                    (b.conversations.last['time'] as Timestamp).toDate();
-                return bTime.compareTo(aTime);
-              },
-            );
-            var markedChats = List.from(
-              chatsFromSnapshot.where(
-                (chat) => chat.email == '',
-              ),
-            );
-            var chats = List.from(
-              chatsFromSnapshot.where(
-                (chat) => chat.email != '',
-              ),
-            );
+            var markedChats = [], chats = [];
+            if (chatsFromSnapshot.length > 0) {
+              chatsFromSnapshot.sort(
+                (a, b) {
+                  var aTime =
+                      (a.conversations.last['time'] as Timestamp).toDate();
+                  var bTime =
+                      (b.conversations.last['time'] as Timestamp).toDate();
+                  return bTime.compareTo(aTime);
+                },
+              );
+              markedChats = List.from(
+                chatsFromSnapshot.where(
+                  (chat) => chat.conversations.last['marked'],
+                ),
+              );
+              chats = List.from(
+                chatsFromSnapshot.where(
+                  (chat) => !chat.conversations.last['marked'],
+                ),
+              );
+              markedChats.addAll(chats);
+              chats = markedChats;
+            }
             return ListView.separated(
               padding: EdgeInsets.all(10),
               separatorBuilder: (BuildContext context, int index) {
