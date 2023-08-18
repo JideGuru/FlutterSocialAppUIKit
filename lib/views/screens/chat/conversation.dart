@@ -70,39 +70,47 @@ class _ConversationState extends State<Conversation> {
         actions: <Widget>[
           Visibility(
             visible: widget.chat.conversations.length > 0,
-            child: PopupMenuButton(
-              itemBuilder: (context) {
-                return [
-                  PopupMenuItem(
-                    child: Text(widget.chat.conversations.last['marked']
-                        ? '즐겨찾기 해제'
-                        : '즐겨찾기'),
-                    onTap: () {
-                      // widget.chat.conversations.last['marked'] =
-                      //     !widget.chat.conversations.last['marked'];
+            child: StreamBuilder(
+              stream: chatDocRef.snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.active) {
+                  var chat = getChatFromSnapshot(widget.other.email, snapshot);
+                  return PopupMenuButton(
+                    itemBuilder: (context) {
+                      return [
+                        PopupMenuItem(
+                          child: Text(chat.conversations.last['marked']
+                              ? '즐겨찾기 해제'
+                              : '즐겨찾기'),
+                          onTap: () {
+                            chat.conversations.last['marked'] =
+                                !chat.conversations.last['marked'];
 
-                      // chatDocRef.update(
-                      //   {
-                      //     FieldPath([widget.chat.email]):
-                      //         widget.chat.conversations,
-                      //   },
-                      // );
+                            chatDocRef.update(
+                              {
+                                FieldPath([chat.email]): chat.conversations,
+                              },
+                            );
+                          },
+                        ),
+                        PopupMenuItem(
+                          child: Text('나가기'),
+                          onTap: () {
+                            chatDocRef.update(
+                              {
+                                FieldPath(
+                                  [widget.chat.email],
+                                ): FieldValue.delete(),
+                              },
+                            );
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ];
                     },
-                  ),
-                  PopupMenuItem(
-                    child: Text('나가기'),
-                    onTap: () {
-                      chatDocRef.update(
-                        {
-                          FieldPath(
-                            [widget.chat.email],
-                          ): FieldValue.delete(),
-                        },
-                      );
-                      Navigator.pop(context);
-                    },
-                  ),
-                ];
+                  );
+                } else
+                  return Container();
               },
             ),
           ),
@@ -125,34 +133,38 @@ class _ConversationState extends State<Conversation> {
             builder: (context, snapshot) {
               if (snapshot.hasData &&
                   snapshot.connectionState == ConnectionState.active) {
-                var conversations =
-                    snapshot.data!.data()![widget.user.email] ?? [];
+                var data = snapshot.data!.data()!;
+                var conversations = data.containsKey(widget.user.email)
+                    ? data[widget.user.email]
+                    : [];
                 var otherChat = Chat(
                   email: widget.user.email,
                   conversations: conversations,
                 );
-                for (var conversation in otherChat.conversations) {
-                  if (conversation['senderEmail'] != widget.user.email)
-                    conversation['read'] = true;
+                if (myChat.conversations.isNotEmpty) {
+                  for (var conversation in otherChat.conversations) {
+                    if (conversation['senderEmail'] != widget.user.email)
+                      conversation['read'] = true;
+                  }
+                  for (var converstaion in myChat.conversations) {
+                    if (converstaion['senderEmail'] != widget.user.email)
+                      converstaion['read'] = true;
+                  }
+                  chatsColRef.doc(widget.chat.email).update(
+                    {
+                      FieldPath(
+                        [widget.user.email],
+                      ): otherChat.conversations,
+                    },
+                  );
+                  chatsColRef.doc(widget.user.email).update(
+                    {
+                      FieldPath(
+                        [widget.chat.email],
+                      ): myChat.conversations,
+                    },
+                  );
                 }
-                for (var converstaion in myChat.conversations) {
-                  if (converstaion['senderEmail'] != widget.user.email)
-                    converstaion['read'] = true;
-                }
-                chatsColRef.doc(widget.chat.email).update(
-                  {
-                    FieldPath(
-                      [widget.user.email],
-                    ): otherChat.conversations,
-                  },
-                );
-                chatsColRef.doc(widget.user.email).update(
-                  {
-                    FieldPath(
-                      [widget.chat.email],
-                    ): myChat.conversations,
-                  },
-                );
                 var read = false, readFlag = false;
                 return Container(
                   height: MediaQuery.of(context).size.height,
@@ -254,11 +266,11 @@ class _ConversationState extends State<Conversation> {
                                       ),
                                       onPressed: () {
                                         Map<String, dynamic> conversation = {};
+                                        print(conversation);
                                         conversation['message'] =
                                             controller.text;
-                                        conversation['otherNickname'] = myChat
-                                            .conversations
-                                            .last['otherNickname'];
+                                        conversation['otherNickname'] =
+                                            widget.other.essentials['nickname'];
                                         conversation['read'] = false;
                                         conversation['senderEmail'] =
                                             widget.user.email;
@@ -268,6 +280,7 @@ class _ConversationState extends State<Conversation> {
                                                 : myChat.conversations
                                                     .last['marked'];
                                         conversation['time'] = Timestamp.now();
+                                        print(conversation);
                                         chatsColRef
                                             .doc(widget.user.email)
                                             .update({

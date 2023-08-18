@@ -34,3 +34,13 @@ List<Chat> getChatsFromSnapshot(
   }
   return chats;
 }
+
+Chat getChatFromSnapshot(String email,
+    AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
+  Chat chat = Chat(email: email, conversations: []);
+  if (snapshot.hasData) {
+    var data = snapshot.data!.data() as Map<String, dynamic>;
+    chat.conversations = data[email];
+  }
+  return chat;
+}

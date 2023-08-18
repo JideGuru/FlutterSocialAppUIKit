@@ -35,12 +35,13 @@ class _ChatItemState extends State<ChatItem> {
             conversation['senderEmail'] != widget.user.email)
         .length;
     var now = Timestamp.now().toDate().toIso8601String().split('T');
+    var mark = recentConversation['marked'] ? '✓' : '';
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: ListTile(
         contentPadding: EdgeInsets.all(0),
         title: Text(
-          "${widget.chat.conversations.last['otherNickname']}",
+          "${widget.chat.conversations.last['otherNickname']} ${mark}",
           maxLines: 1,
           style: TextStyle(
             fontWeight: FontWeight.bold,
@@ -108,8 +109,20 @@ class _ChatItemState extends State<ChatItem> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       PopupMenuItem(
-                        child: Text('즐겨찾기'),
-                        onTap: () => print('stared'),
+                        child: Text(widget.chat.conversations.last['marked']
+                            ? '즐겨찾기 해제'
+                            : '즐겨찾기'),
+                        onTap: () {
+                          widget.chat.conversations.last['marked'] =
+                              !widget.chat.conversations.last['marked'];
+
+                          chatsColRef.doc(widget.user.email).update(
+                            {
+                              FieldPath([widget.chat.email]):
+                                  widget.chat.conversations,
+                            },
+                          );
+                        },
                       ),
                       PopupMenuItem(
                         child: Text('나가기'),
