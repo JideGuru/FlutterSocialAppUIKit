@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:social_app_ui/util/chat_util.dart';
+import 'package:social_app_ui/util/chat.dart';
 import 'package:social_app_ui/util/data.dart';
 import 'package:social_app_ui/util/enum.dart';
 import 'package:social_app_ui/util/extensions.dart';
@@ -261,46 +261,9 @@ class _ConversationState extends State<Conversation> {
                                       ),
                                     ),
                                     IconButton(
-                                      icon: Icon(
-                                        Icons.send,
-                                      ),
+                                      icon: Icon(Icons.send),
                                       onPressed: () {
-                                        Map<String, dynamic> conversation = {};
-                                        print(conversation);
-                                        conversation['message'] =
-                                            controller.text;
-                                        conversation['otherNickname'] =
-                                            widget.other.essentials['nickname'];
-                                        conversation['read'] = false;
-                                        conversation['senderEmail'] =
-                                            widget.user.email;
-                                        conversation['marked'] =
-                                            myChat.conversations.length == 0
-                                                ? false
-                                                : myChat.conversations
-                                                    .last['marked'];
-                                        conversation['time'] = Timestamp.now();
-                                        print(conversation);
-                                        chatsColRef
-                                            .doc(widget.user.email)
-                                            .update({
-                                          FieldPath([myChat.email]):
-                                              FieldValue.arrayUnion(
-                                                  [conversation])
-                                        });
-                                        conversation['otherNickname'] =
-                                            widget.user.essentials['nickname'];
-                                        conversation['marked'] =
-                                            otherChat.conversations.length == 0
-                                                ? false
-                                                : otherChat.conversations
-                                                    .last['marked'];
-                                        chatsColRef.doc(myChat.email).update({
-                                          FieldPath([widget.user.email]):
-                                              FieldValue.arrayUnion(
-                                                  [conversation])
-                                        });
-                                        controller.text = '';
+                                        onSend(myChat, otherChat);
                                       },
                                     )
                                   ],
@@ -320,6 +283,33 @@ class _ConversationState extends State<Conversation> {
         },
       ),
     );
+  }
+
+  void onSend(Chat myChat, Chat otherChat) {
+    Map<String, dynamic> conversation = {};
+    print(conversation);
+    conversation['message'] = controller.text;
+    conversation['otherNickname'] = widget.other.essentials['nickname'];
+    conversation['read'] = false;
+    conversation['senderEmail'] = widget.user.email;
+    conversation['marked'] = myChat.conversations.length == 0
+        ? false
+        : myChat.conversations.last['marked'];
+    conversation['time'] = Timestamp.now();
+    print(conversation);
+    chatsColRef.doc(widget.user.email).update({
+      FieldPath([myChat.email]): FieldValue.arrayUnion([conversation])
+    });
+    conversation['otherNickname'] = widget.user.essentials['nickname'];
+    conversation['marked'] = otherChat.conversations.length == 0
+        ? false
+        : otherChat.conversations.last['marked'];
+    chatsColRef.doc(myChat.email).update(
+      {
+        FieldPath([widget.user.email]): FieldValue.arrayUnion([conversation])
+      },
+    );
+    controller.text = '';
   }
 
   @override

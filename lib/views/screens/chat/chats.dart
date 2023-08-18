@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:social_app_ui/util/chat_util.dart';
+import 'package:social_app_ui/util/chat.dart';
 import 'package:social_app_ui/util/data.dart';
 import 'package:social_app_ui/util/extensions.dart';
 import 'package:social_app_ui/util/user.dart';
