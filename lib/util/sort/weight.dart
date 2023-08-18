@@ -21,10 +21,10 @@ List<ProfileCard> sort(
     User user, List<ProfileCard> deck, Map<String, dynamic> weight) {
   List<Pair<double, ProfileCard>> weightedDeck = [];
   for (var card in deck) {
-    var score = user.getScore(card.user, weight);
+    var score = user.getScore(card.other, weight);
     var weightedCard = ProfileCard(
-      me: user,
-      user: card.user,
+      user: user,
+      other: card.other,
       highest: score['highest'],
       lowest: score['lowest'],
     );

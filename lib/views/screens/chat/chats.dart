@@ -79,9 +79,15 @@ class _ChatsState extends State<Chats>
               itemCount: chats.length,
               itemBuilder: (BuildContext context, int index) {
                 Chat chat = chats[index];
-                return ChatItem(
-                  user: widget.user,
-                  chat: chat,
+                return FutureBuilder(
+                  future: usersColRef.doc(chat.email).get(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      var other = User.fromFirestore(snapshot.data!);
+                      return ChatItem(user: widget.user, other: other, chat: chat);
+                    } else
+                      return Container();
+                  },
                 );
               },
             );

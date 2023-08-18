@@ -7,12 +7,13 @@ import 'package:social_app_ui/util/user.dart';
 import 'package:social_app_ui/views/screens/chat/conversation.dart';
 
 class ChatItem extends StatefulWidget {
-  final User user;
+  final User user, other;
   final Chat chat;
 
   ChatItem({
     super.key,
     required this.user,
+    required this.other,
     required this.chat,
   });
 
@@ -91,6 +92,7 @@ class _ChatItemState extends State<ChatItem> {
             context,
             Conversation(
               user: widget.user,
+              other: widget.other,
               chat: widget.chat,
             ),
           );

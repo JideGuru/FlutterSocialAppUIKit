@@ -10,11 +10,12 @@ import 'package:social_app_ui/views/screens/other_profile.dart';
 import 'package:social_app_ui/views/widgets/chat_bubble.dart';
 
 class Conversation extends StatefulWidget {
-  final User user;
+  final User user, other;
   final Chat chat;
   Conversation({
     super.key,
     required this.user,
+    required this.other,
     required this.chat,
   });
   @override
@@ -35,46 +36,37 @@ class _ConversationState extends State<Conversation> {
           onPressed: () => Navigator.pop(context),
         ),
         titleSpacing: 0,
-        title: FutureBuilder(
-          future: usersColRef.doc(widget.chat.email).get(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              var other = User.fromFirestore(snapshot.data!);
-              return InkWell(
-                child: Row(
+        title: InkWell(
+          child: Row(
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(left: 0.0, right: 10.0),
+              ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(left: 0.0, right: 10.0),
+                    Text(
+                      widget.other.essentials['nickname'],
+                      style: Theme.of(context).textTheme.bodyLarge,
                     ),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            other.essentials['nickname'],
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                          Text(
-                            other.email,
-                            style: Theme.of(context).textTheme.bodySmall,
-                          ),
-                          SizedBox(height: 5),
-                        ],
-                      ),
+                    Text(
+                      widget.other.email,
+                      style: Theme.of(context).textTheme.bodySmall,
                     ),
+                    SizedBox(height: 5),
                   ],
                 ),
-                onTap: () {
-                  Navigate.pushPage(
-                    context,
-                    OtherProfile(user: other),
-                  );
-                },
-              ).fadeInList(1, false);
-            } else
-              return SizedBox();
+              ),
+            ],
+          ),
+          onTap: () {
+            Navigate.pushPage(
+              context,
+              OtherProfile(user: widget.other),
+            );
           },
-        ),
+        ).fadeInList(1, false),
         actions: <Widget>[
           Visibility(
             visible: widget.chat.conversations.length > 0,
@@ -295,9 +287,7 @@ class _ConversationState extends State<Conversation> {
                                               FieldValue.arrayUnion(
                                                   [conversation])
                                         });
-                                        print(conversation);
                                         controller.text = '';
-                                        // mounted ? setState(() {}) : dispose();
                                       },
                                     )
                                   ],

@@ -10,19 +10,19 @@ import 'package:social_app_ui/views/screens/other_profile.dart';
 import 'package:social_app_ui/views/widgets/inprofile_button.dart';
 
 class ProfileCard extends StatelessWidget {
-  final User me, user;
+  final User user, other;
   final List<String> highest, lowest;
   ProfileCard({
     super.key,
-    required this.me,
     required this.user,
+    required this.other,
     this.highest = const [],
     this.lowest = const [],
   });
 
   @override
   Widget build(BuildContext context) {
-    Owner profileMode = (me.email == user.email ? Owner.MINE : Owner.OTHERS);
+    Owner profileMode = (user.email == other.email ? Owner.MINE : Owner.OTHERS);
     var highestVisualize = visualize(highest);
     var lowestVisualize = visualize(lowest);
     return Container(
@@ -41,11 +41,11 @@ class ProfileCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  user.essentials['nickname'],
+                  other.essentials['nickname'],
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
                 Text(
-                  user.essentials['studentNumber'],
+                  other.essentials['studentNumber'],
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
               ],
@@ -57,11 +57,11 @@ class ProfileCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text(
-                  user.essentials['major'],
+                  other.essentials['major'],
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 Text(
-                  ": ${user.survey['etc']}",
+                  ": ${other.survey['etc']}",
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
                 SizedBox(
@@ -165,7 +165,7 @@ class ProfileCard extends StatelessWidget {
                       onPressed: () {
                         Navigate.pushPage(
                           context,
-                          OtherProfile(user: user),
+                          OtherProfile(user: other),
                         );
                       },
                     ),
@@ -179,9 +179,10 @@ class ProfileCard extends StatelessWidget {
                         Navigate.pushPage(
                           context,
                           Conversation(
-                            user: me,
+                            user: user,
+                            other: other,
                             chat: Chat(
-                              email: user.email,
+                              email: other.email,
                               conversations: [],
                             ),
                           ),

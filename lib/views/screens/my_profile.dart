@@ -31,8 +31,8 @@ class MyProfile extends StatelessWidget {
             children: <Widget>[
               SizedBox(height: 60),
               ProfileCard(
-                me: user,
                 user: user,
+                other: user,
               ),
               SizedBox(height: 10),
               Text(user.email, style: Theme.of(context).textTheme.bodyLarge),
