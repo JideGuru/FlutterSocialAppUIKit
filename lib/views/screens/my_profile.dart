@@ -6,10 +6,10 @@ import 'package:social_app_ui/views/screens/detail.dart';
 import 'package:social_app_ui/views/widgets/profile_card.dart';
 
 class MyProfile extends StatelessWidget {
-  late final User user;
+  late final User me;
   MyProfile({
     super.key,
-    required this.user,
+    required this.me,
   });
   @override
   Widget build(BuildContext context) {
@@ -30,22 +30,16 @@ class MyProfile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               SizedBox(height: 60),
-              ProfileCard(
-                user: user,
-                other: user,
-              ),
+              ProfileCard(me: me, other: me),
               SizedBox(height: 10),
-              Text(user.email, style: Theme.of(context).textTheme.bodyLarge),
+              Text(me.email, style: Theme.of(context).textTheme.bodyLarge),
               SizedBox(height: 3),
               Text(
                 "아래에서 설문을 수정할 수 있습니다.",
                 style: TextStyle(),
               ),
               SizedBox(height: 60),
-              Detail(
-                user: user,
-                detailMode: Owner.MINE,
-              ),
+              Detail(user: me, detailMode: Owner.MINE),
             ],
           ).fadeInList(1, true),
         ),

@@ -10,11 +10,11 @@ import 'package:social_app_ui/views/screens/other_profile.dart';
 import 'package:social_app_ui/views/widgets/inprofile_button.dart';
 
 class ProfileCard extends StatelessWidget {
-  final User user, other;
+  final User me, other;
   final List<String> highest, lowest;
   ProfileCard({
     super.key,
-    required this.user,
+    required this.me,
     required this.other,
     this.highest = const [],
     this.lowest = const [],
@@ -22,7 +22,7 @@ class ProfileCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Owner profileMode = (user.email == other.email ? Owner.MINE : Owner.OTHERS);
+    Owner profileMode = (me.email == other.email ? Owner.MINE : Owner.OTHERS);
     var highestVisualize = visualize(highest);
     var lowestVisualize = visualize(lowest);
     return Container(
@@ -179,7 +179,7 @@ class ProfileCard extends StatelessWidget {
                         Navigate.pushPage(
                           context,
                           Conversation(
-                            user: user,
+                            user: me,
                             other: other,
                             chat: Chat(
                               email: other.email,

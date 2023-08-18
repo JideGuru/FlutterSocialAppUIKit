@@ -17,17 +17,13 @@ class InitScreen extends StatelessWidget {
       body: FutureBuilder(
         future: usersColRef.doc(email).get(),
         builder: (context, snapshot) {
-          User me = User.fromFirestore(snapshot.data!);
           if (snapshot.connectionState == ConnectionState.done) {
-            return MainScreen(
-              user: me,
-            );
+            User me = User.fromFirestore(snapshot.data!);
+            return MainScreen(me: me);
           } else
             return Center(
-              child: LoadingAnimationWidget.waveDots(
-                color: Colors.grey,
-                size: 50,
-              ),
+              child:
+                  LoadingAnimationWidget.waveDots(color: Colors.grey, size: 50),
             );
         },
       ),

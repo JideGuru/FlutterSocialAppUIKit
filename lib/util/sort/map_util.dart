@@ -11,7 +11,7 @@ List<ProfileCard> getDeck(
     if (doc.id == 'weights') continue;
     deck.add(
       ProfileCard(
-        user: me,
+        me: me,
         other: User.fromFirestore(doc),
       ),
     );

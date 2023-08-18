@@ -96,6 +96,7 @@ class _ConversationState extends State<Conversation> {
                         PopupMenuItem(
                           child: Text('나가기'),
                           onTap: () {
+                            Navigator.pop(context);
                             chatDocRef.update(
                               {
                                 FieldPath(
@@ -103,7 +104,6 @@ class _ConversationState extends State<Conversation> {
                                 ): FieldValue.delete(),
                               },
                             );
-                            Navigator.pop(context);
                           },
                         ),
                       ];

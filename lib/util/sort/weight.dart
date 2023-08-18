@@ -23,7 +23,7 @@ List<ProfileCard> sort(
   for (var card in deck) {
     var score = user.getScore(card.other, weight);
     var weightedCard = ProfileCard(
-      user: user,
+      me: user,
       other: card.other,
       highest: score['highest'],
       lowest: score['lowest'],

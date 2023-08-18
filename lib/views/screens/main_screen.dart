@@ -7,10 +7,10 @@ import 'package:social_app_ui/views/screens/my_profile.dart';
 import 'package:social_app_ui/views/screens/settings.dart';
 
 class MainScreen extends StatefulWidget {
-  late final User user;
+  late final User me;
   MainScreen({
     super.key,
-    required this.user,
+    required this.me,
   });
   @override
   _MainScreenState createState() => _MainScreenState();
@@ -28,9 +28,9 @@ class _MainScreenState extends State<MainScreen> {
         controller: _pageController,
         onPageChanged: onPageChanged,
         children: <Widget>[
-          Home(user: widget.user),
-          MyProfile(user: widget.user),
-          Chats(user: widget.user),
+          Home(me: widget.me),
+          MyProfile(me: widget.me),
+          Chats(user: widget.me),
           Settings(),
         ],
       ),
@@ -38,27 +38,19 @@ class _MainScreenState extends State<MainScreen> {
         type: BottomNavigationBarType.fixed,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(
-              Icons.home,
-            ),
+            icon: Icon(Icons.home),
             label: '홈',
           ),
           BottomNavigationBarItem(
-            icon: Icon(
-              Icons.person,
-            ),
+            icon: Icon(Icons.person),
             label: '내 프로필',
           ),
           BottomNavigationBarItem(
-            icon: Icon(
-              Icons.message,
-            ),
+            icon: Icon(Icons.message),
             label: '채팅',
           ),
           BottomNavigationBarItem(
-            icon: Icon(
-              Icons.settings,
-            ),
+            icon: Icon(Icons.settings),
             label: '설정',
           ),
         ],

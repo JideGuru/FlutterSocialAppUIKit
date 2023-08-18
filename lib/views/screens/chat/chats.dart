@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:social_app_ui/util/chat_util.dart';
 import 'package:social_app_ui/util/data.dart';
+import 'package:social_app_ui/util/extensions.dart';
 import 'package:social_app_ui/util/user.dart';
 import 'package:social_app_ui/views/widgets/chat_item.dart';
 
@@ -84,20 +84,16 @@ class _ChatsState extends State<Chats>
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.done) {
                       var other = User.fromFirestore(snapshot.data!);
-                      return ChatItem(user: widget.user, other: other, chat: chat);
+                      return ChatItem(
+                          user: widget.user, other: other, chat: chat);
                     } else
                       return Container();
                   },
                 );
               },
-            );
+            ).fadeInList(1, false);
           } else
-            return Center(
-              child: LoadingAnimationWidget.waveDots(
-                color: Colors.grey,
-                size: 50,
-              ),
-            );
+            return Container();
         },
       ),
     );

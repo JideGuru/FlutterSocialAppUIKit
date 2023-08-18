@@ -11,10 +11,10 @@ import 'package:social_app_ui/util/user.dart';
 import 'package:swiping_card_deck/swiping_card_deck.dart';
 
 class Home extends StatefulWidget {
-  final User user;
+  final User me;
   Home({
     super.key,
-    required this.user,
+    required this.me,
   });
   @override
   _HomeState createState() => _HomeState();
@@ -25,22 +25,16 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "추천 프로필",
-          style: Theme.of(context).textTheme.bodyLarge,
-        ),
+        title: Text("추천 프로필", style: Theme.of(context).textTheme.bodyLarge),
         centerTitle: true,
       ),
       body: FutureBuilder(
         future: usersColRef.get(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            var deck = getDeck(
-              snapshot,
-              widget.user,
-            );
-            var me = getUserFromSnapshot(snapshot, widget.user.email);
-            var weights = getWeights(snapshot, widget.user.tag);
+            var deck = getDeck(snapshot, widget.me);
+            var me = getUserFromSnapshot(snapshot, widget.me.email);
+            var weights = getWeights(snapshot, widget.me.tag);
             deck = sort(me, deck, weights);
             return Column(
               children: [
@@ -53,8 +47,7 @@ class _HomeState extends State<Home> {
                       children: <Widget>[
                         ButtonsTabBar(
                           decoration: BoxDecoration(
-                            color: ThemeConfig.lightTabBackground,
-                          ),
+                              color: ThemeConfig.lightTabBackground),
                           contentPadding:
                               EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                           height: 48,
@@ -79,11 +72,11 @@ class _HomeState extends State<Home> {
                 SwipingDeck(
                   cardDeck: deck,
                   cardWidth: ThemeConfig.cardWidth * 5.5,
-                  onLeftSwipe: (p0) {
-                    updateDomains(p0, getDomains(snapshot));
+                  onLeftSwipe: (card) {
+                    updateDomains(card, getDomains(snapshot));
                   },
-                  onRightSwipe: (p0) {
-                    updateDomains(p0, getDomains(snapshot));
+                  onRightSwipe: (card) {
+                    updateDomains(card, getDomains(snapshot));
                   },
                   onDeckEmpty: () {
                     mounted ? setState(() {}) : dispose();

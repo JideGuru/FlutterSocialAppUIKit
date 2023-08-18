@@ -53,10 +53,7 @@ class _LoginState extends State<Login> {
       else
         switch (formMode) {
           case FormMode.REGISTER:
-            Navigate.pushPageReplacement(
-              context,
-              Survey(email: email),
-            );
+            Navigate.pushPageReplacement(context, Survey(email: email));
             break;
           case FormMode.LOGIN:
           case FormMode.FORGOT_PASSWORD:
@@ -100,11 +97,8 @@ class _LoginState extends State<Login> {
       duration: Duration(milliseconds: 500),
       color: Theme.of(context).colorScheme.secondary.withOpacity(0.3),
       child: Center(
-        child: Lottie.asset(
-          AppAnimations.chatAnimation,
-          height: 400,
-          fit: BoxFit.cover,
-        ),
+        child: Lottie.asset(AppAnimations.chatAnimation,
+            height: 400, fit: BoxFit.cover),
       ),
     );
   }
@@ -117,10 +111,7 @@ class _LoginState extends State<Login> {
       children: <Widget>[
         Text(
           '${Constants.appName}',
-          style: TextStyle(
-            fontSize: 40.0,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(fontSize: 40.0, fontWeight: FontWeight.bold),
         ).fadeInList(0, false),
         SizedBox(height: 70.0),
         Form(
@@ -172,10 +163,8 @@ class _LoginState extends State<Login> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                '이미 계정이 있으신가요?',
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
+              Text('이미 계정이 있으신가요?',
+                  style: Theme.of(context).textTheme.bodySmall),
               TextButton(
                 onPressed: () {
                   formMode = FormMode.LOGIN;
@@ -232,9 +221,7 @@ class _LoginState extends State<Login> {
   buildButton() {
     return loading
         ? Center(child: CircularProgressIndicator())
-        : CustomButton(
-            label: "제출",
-            onPressed: () => login(),
-          ).fadeInList(4, false);
+        : CustomButton(label: "제출", onPressed: () => login())
+            .fadeInList(4, false);
   }
 }
