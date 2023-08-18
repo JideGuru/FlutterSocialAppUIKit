@@ -7,12 +7,12 @@ import 'package:social_app_ui/util/user.dart';
 import 'package:social_app_ui/views/screens/chat/conversation.dart';
 
 class ChatItem extends StatefulWidget {
-  final User user, other;
+  final User me, other;
   final Chat chat;
 
   ChatItem({
     super.key,
-    required this.user,
+    required this.me,
     required this.other,
     required this.chat,
   });
@@ -32,7 +32,7 @@ class _ChatItemState extends State<ChatItem> {
     var notRead = widget.chat.conversations
         .where((conversation) =>
             !conversation['read'] &&
-            conversation['senderEmail'] != widget.user.email)
+            conversation['senderEmail'] != widget.me.email)
         .length;
     var now = Timestamp.now().toDate().toIso8601String().split('T');
     var mark = recentConversation['marked'] ? '✓' : '';
@@ -92,7 +92,7 @@ class _ChatItemState extends State<ChatItem> {
           Navigate.pushPage(
             context,
             Conversation(
-              user: widget.user,
+              user: widget.me,
               other: widget.other,
               chat: widget.chat,
             ),
@@ -116,7 +116,7 @@ class _ChatItemState extends State<ChatItem> {
                           widget.chat.conversations.last['marked'] =
                               !widget.chat.conversations.last['marked'];
 
-                          chatsColRef.doc(widget.user.email).update(
+                          chatsColRef.doc(widget.me.email).update(
                             {
                               FieldPath([widget.chat.email]):
                                   widget.chat.conversations,
@@ -127,7 +127,7 @@ class _ChatItemState extends State<ChatItem> {
                       PopupMenuItem(
                         child: Text('나가기'),
                         onTap: () {
-                          chatsColRef.doc(widget.user.email).update(
+                          chatsColRef.doc(widget.me.email).update(
                             {
                               FieldPath(
                                 [widget.chat.email],

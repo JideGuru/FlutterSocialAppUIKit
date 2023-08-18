@@ -85,7 +85,7 @@ class _ChatsState extends State<Chats>
                     if (snapshot.connectionState == ConnectionState.done) {
                       var other = User.fromFirestore(snapshot.data!);
                       return ChatItem(
-                          user: widget.user, other: other, chat: chat);
+                          me: widget.user, other: other, chat: chat);
                     } else
                       return Container();
                   },
