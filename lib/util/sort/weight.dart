@@ -21,7 +21,7 @@ List<ProfileCard> sort(
     User user, List<ProfileCard> deck, Map<String, dynamic> weight) {
   List<Pair<double, ProfileCard>> weightedDeck = [];
   for (var card in deck) {
-    var score = user.getScore(card.other, weight);
+    var score = user.getScore(card.other, weight, false);
     var weightedCard = ProfileCard(
       me: user,
       other: card.other,
@@ -73,8 +73,8 @@ Map<String, dynamic> getDomains(
   return domains;
 }
 
-void updateDomains(ProfileCard card, Map<String, dynamic> domains) {
-  List<String> highest = card.highest, lowest = card.lowest;
+void updateDomains(
+    List<String> highest, List<String> lowest, Map<String, dynamic> domains) {
   for (var h in highest)
     FirebaseFirestore.instance
         .collection('users')

@@ -3,6 +3,7 @@ import 'package:group_button/group_button.dart';
 import 'package:lottie/lottie.dart';
 import 'package:social_app_ui/util/animations.dart';
 import 'package:social_app_ui/util/configs/list_config.dart';
+import 'package:social_app_ui/util/const.dart';
 import 'package:social_app_ui/util/data.dart';
 import 'package:social_app_ui/util/router.dart';
 import 'package:social_app_ui/util/user.dart';
@@ -17,7 +18,7 @@ import 'package:social_app_ui/util/extensions.dart';
 import 'main_screen.dart';
 
 class Survey extends StatefulWidget {
-  late final String email;
+  final String email;
   Survey({
     required this.email,
   });
@@ -56,7 +57,7 @@ class _SurveyState extends State<Survey> {
   void initState() {
     super.initState();
     user = User.init(widget.email);
-    usersColRef.doc(user.email).set(user.toFirestore());
+    usersColRef.doc(user.email).set({});
     chatsColRef.doc(user.email).set({});
     dropdownDormValue = user.essentials['dormitory'];
     dropdownStuNumValue = user.essentials['studentNumber'];
@@ -396,7 +397,12 @@ class _SurveyState extends State<Survey> {
         : CustomButton(
             label: '다음',
             onPressed: () {
-              usersColRef.doc(user.email).update(user.toFirestore());
+              usersColRef.doc(user.email).update(
+                {
+                  '${Constants.year}.${Constants.semester}.me':
+                      user.toFirestore(),
+                },
+              );
               nextStep();
             }).fadeInList(4, false);
   }

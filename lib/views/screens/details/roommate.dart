@@ -1,30 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:lottie/lottie.dart';
 import 'package:social_app_ui/util/animations.dart';
-import 'package:social_app_ui/util/const.dart';
-import 'package:social_app_ui/util/data.dart';
-import 'package:social_app_ui/util/enum.dart';
 import 'package:social_app_ui/util/configs/list_config.dart';
+import 'package:social_app_ui/util/data.dart';
+import 'package:social_app_ui/util/sort/weight.dart';
 import 'package:social_app_ui/util/user.dart';
 import 'package:social_app_ui/views/widgets/custom_button.dart';
 import 'package:social_app_ui/views/widgets/custom_group_button.dart';
 import 'package:social_app_ui/views/widgets/custom_sf_slider.dart';
-import 'package:social_app_ui/views/widgets/custom_text_field.dart';
 import 'package:social_app_ui/util/extensions.dart';
 
-class Detail extends StatefulWidget {
-  late final User user;
-  final Owner detailMode;
-  Detail({
-    required this.user,
-    this.detailMode = Owner.OTHERS,
+class Roommate extends StatefulWidget {
+  final String other;
+  Roommate({
+    required this.other,
   });
   @override
-  _DetailState createState() => _DetailState();
+  _RoommateState createState() => _RoommateState();
 }
 
-class _DetailState extends State<Detail> {
-  List<String> surveyList = List.from(essentialList)..addAll(questionList);
+class _RoommateState extends State<Roommate> {
+  List<String> surveyList = questionList.sublist(0, questionList.length - 1);
+  String surveyMode = 'introduction';
+  int surveyIndex = 0;
 
   bool loading = false;
   bool validate = false;
@@ -38,22 +37,35 @@ class _DetailState extends State<Detail> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    return Container(
-      child: Row(
-        children: [
-          buildLottieContainer(),
-          Expanded(
-            child: AnimatedContainer(
-              duration: Duration(milliseconds: 500),
-              child: Center(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.1),
-                  child: buildFormContainer(),
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(
+            Icons.keyboard_backspace,
+          ),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Container(
+          child: Row(
+            children: [
+              buildLottieContainer(),
+              Expanded(
+                child: AnimatedContainer(
+                  duration: Duration(milliseconds: 500),
+                  child: Center(
+                    child: Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: screenWidth * 0.1),
+                      child: buildFormContainer(),
+                    ),
+                  ),
                 ),
               ),
-            ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -75,30 +87,47 @@ class _DetailState extends State<Detail> {
   }
 
   buildFormContainer() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        SizedBox(
-          height: MediaQuery.of(context).size.height / 15,
-        ),
-        Text('${Constants.year}년도 ${Constants.semester}학기',
-                style: Theme.of(context).textTheme.headlineLarge)
-            .fadeInList(0, false),
-        SizedBox(height: 70.0),
-        Form(
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          key: formKey,
-          child: buildForm(),
-        ),
-        SizedBox(height: 20.0),
-        if (widget.detailMode != Owner.OTHERS) buildButton(),
-      ],
+    return FutureBuilder(
+      future: usersColRef.get(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          var other = getUserFromCollections(snapshot, widget.other);
+          var otherOriginal = getUserFromCollections(snapshot, widget.other);
+          var domain = getDomains(snapshot);
+          var weight = getWeights(snapshot, 0);
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                '룸메이트에 대해 알려주세요',
+                style: TextStyle(
+                  fontSize: 40.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ).fadeInList(0, false),
+              SizedBox(height: 70.0),
+              Form(
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                key: formKey,
+                child: buildForm(other),
+              ),
+              SizedBox(height: 20.0),
+              buildButton(context, otherOriginal, other, weight, domain),
+              SizedBox(height: 20.0),
+            ],
+          );
+        } else
+          return Center(
+            child:
+                LoadingAnimationWidget.waveDots(color: Colors.grey, size: 50),
+          );
+      },
     );
   }
 
-  buildForm() {
+  buildForm(User other) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
@@ -113,7 +142,7 @@ class _DetailState extends State<Detail> {
               ),
             ),
             SizedBox(height: 10.0),
-            Text(widget.user.essentials['nickname']),
+            Text(other.essentials['nickname']),
             SizedBox(height: 20.0),
           ],
         ).fadeInList(3, false),
@@ -127,7 +156,7 @@ class _DetailState extends State<Detail> {
               ),
             ),
             SizedBox(height: 10.0),
-            Text(sexList[widget.user.essentials['sex']]),
+            Text(sexList[other.essentials['sex']]),
             SizedBox(height: 20.0),
           ],
         ).fadeInList(3, false),
@@ -136,12 +165,12 @@ class _DetailState extends State<Detail> {
             Align(
               alignment: Alignment.center,
               child: Text(
-                '거주 예정 생활관',
+                '거주 생활관',
                 style: Theme.of(context).textTheme.labelMedium,
               ),
             ),
             SizedBox(height: 10.0),
-            Text(widget.user.essentials['dormitory']),
+            Text(other.essentials['dormitory']),
             SizedBox(height: 20.0),
           ],
         ).fadeInList(3, false),
@@ -155,7 +184,7 @@ class _DetailState extends State<Detail> {
               ),
             ),
             SizedBox(height: 10.0),
-            Text(widget.user.essentials['studentNumber']),
+            Text(other.essentials['studentNumber']),
             SizedBox(height: 20.0),
           ],
         ).fadeInList(3, false),
@@ -169,7 +198,7 @@ class _DetailState extends State<Detail> {
               ),
             ),
             SizedBox(height: 10.0),
-            Text(widget.user.essentials['major']),
+            Text(other.essentials['major']),
             SizedBox(height: 20.0),
           ],
         ).fadeInList(3, false),
@@ -179,109 +208,80 @@ class _DetailState extends State<Detail> {
 
         // questions
         CustomGroupButton(
-          disabled: widget.detailMode == Owner.OTHERS,
           hintText: '흡연 여부',
           surveyMode: 'smoking',
-          user: widget.user,
+          user: other,
         ).fadeInList(3, false),
         CustomSfSlider(
-          disabled: widget.detailMode == Owner.OTHERS,
           hintText: '잠버릇',
           surveyMode: 'sleepingHabits',
-          user: widget.user,
+          user: other,
         ).fadeInList(3, false),
         CustomSfSlider(
-          disabled: widget.detailMode == Owner.OTHERS,
           hintText: '룸메이트와 맺고 싶은 관계',
           surveyMode: 'relationship',
-          user: widget.user,
+          user: other,
         ).fadeInList(3, false),
         CustomSfSlider(
-          disabled: widget.detailMode == Owner.OTHERS,
           hintText: '잠드는 시간',
           surveyMode: 'sleepAt',
-          user: widget.user,
+          user: other,
         ).fadeInList(3, false),
         CustomSfSlider(
-          disabled: widget.detailMode == Owner.OTHERS,
           hintText: '방 청소 주기',
           surveyMode: 'roomCleaning',
-          user: widget.user,
+          user: other,
         ).fadeInList(3, false),
         CustomSfSlider(
-          disabled: widget.detailMode == Owner.OTHERS,
           hintText: '화장실 청소 주기',
           surveyMode: 'restroomCleaning',
-          user: widget.user,
+          user: other,
         ).fadeInList(3, false),
         CustomGroupButton(
-          disabled: widget.detailMode == Owner.OTHERS,
           hintText: '초대 선호도',
           surveyMode: 'inviting',
-          user: widget.user,
+          user: other,
         ).fadeInList(3, false),
         CustomGroupButton(
-          disabled: widget.detailMode == Owner.OTHERS,
           hintText: '물건공유 선호도',
           surveyMode: 'sharing',
-          user: widget.user,
+          user: other,
         ).fadeInList(3, false),
         CustomGroupButton(
-          disabled: widget.detailMode == Owner.OTHERS,
           hintText: '실내통화 선호도',
           surveyMode: 'calling',
-          user: widget.user,
+          user: other,
         ).fadeInList(3, false),
         CustomGroupButton(
-          disabled: widget.detailMode == Owner.OTHERS,
           hintText: '이어폰 사용 선호도',
           surveyMode: 'earphone',
-          user: widget.user,
+          user: other,
         ).fadeInList(3, false),
         CustomGroupButton(
-          disabled: widget.detailMode == Owner.OTHERS,
           hintText: '실내취식 선호도',
           surveyMode: 'eating',
-          user: widget.user,
+          user: other,
         ).fadeInList(3, false),
         CustomGroupButton(
-          disabled: widget.detailMode == Owner.OTHERS,
           hintText: '늦은 스탠드 사용 선호도',
           surveyMode: 'lateStand',
-          user: widget.user,
-        ).fadeInList(3, false),
-        Column(
-          children: [
-            Align(
-              alignment: Alignment.center,
-              child: Text('룸메이트 후보들에게 추가로 전하고 싶은 말'),
-            ),
-            SizedBox(height: 10.0),
-            CustomTextField(
-              enabled: widget.detailMode == Owner.OTHERS ? false : !loading,
-              initialValue: widget.user.survey['etc'],
-              hintText: '기타',
-              textInputAction: TextInputAction.next,
-              onChange: (String? val) {
-                widget.user.survey['etc'] = val;
-              },
-            ),
-            SizedBox(height: 20.0),
-          ],
+          user: other,
         ).fadeInList(3, false),
       ],
     );
   }
 
-  buildButton() {
+  buildButton(BuildContext context, User otherOriginal, User other,
+      Map<String, dynamic> weight, Map<String, dynamic> domain) {
     return loading
         ? Center(child: CircularProgressIndicator())
         : CustomButton(
-            label: '저장',
+            label: '제출',
             onPressed: () {
-              usersColRef
-                  .doc(widget.user.email)
-                  .update(widget.user.toFirestore());
+              var score = otherOriginal.getScore(other, weight, true);
+              print(score['percentage']);
+              // updateDomains(score['highest'], [], domain);
+              Navigator.pop(context);
             },
             //pop up need
           ).fadeInList(4, false);

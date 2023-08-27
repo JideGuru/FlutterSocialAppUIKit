@@ -33,9 +33,11 @@ class _HomeState extends State<Home> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             var deck = getDeck(snapshot, widget.me);
-            var me = getUserFromSnapshot(snapshot, widget.me.email);
-            var weights = getWeights(snapshot, widget.me.tag);
-            deck = sort(me, deck, weights);
+            print("deck: $deck");
+            var me = getUserFromCollections(snapshot, widget.me.email);
+            print("me: $me");
+            // var weights = getWeights(snapshot, widget.me.tag);
+            // deck = sort(me, deck, weights);
             return Column(
               children: [
                 SizedBox(
@@ -73,10 +75,12 @@ class _HomeState extends State<Home> {
                   cardDeck: deck,
                   cardWidth: ThemeConfig.cardWidth * 5.5,
                   onLeftSwipe: (card) {
-                    updateDomains(card, getDomains(snapshot));
+                    updateDomains(
+                        card.highest, card.lowest, getDomains(snapshot));
                   },
                   onRightSwipe: (card) {
-                    updateDomains(card, getDomains(snapshot));
+                    updateDomains(
+                        card.highest, card.lowest, getDomains(snapshot));
                   },
                   onDeckEmpty: () {
                     mounted ? setState(() {}) : dispose();

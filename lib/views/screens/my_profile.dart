@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:social_app_ui/util/enum.dart';
 import 'package:social_app_ui/util/extensions.dart';
 import 'package:social_app_ui/util/user.dart';
-import 'package:social_app_ui/views/screens/detail.dart';
+import 'package:social_app_ui/views/screens/details/detail.dart';
 import 'package:social_app_ui/views/widgets/profile_card.dart';
 
 class MyProfile extends StatelessWidget {

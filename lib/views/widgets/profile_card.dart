@@ -7,6 +7,7 @@ import 'package:social_app_ui/util/configs/theme_config.dart';
 import 'package:social_app_ui/util/user.dart';
 import 'package:social_app_ui/views/screens/chat/conversation.dart';
 import 'package:social_app_ui/views/screens/other_profile.dart';
+import 'package:social_app_ui/views/screens/details/roommate.dart';
 import 'package:social_app_ui/views/widgets/inprofile_button.dart';
 
 class ProfileCard extends StatelessWidget {
@@ -36,6 +37,7 @@ class ProfileCard extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.all(18),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -155,42 +157,66 @@ class ProfileCard extends StatelessWidget {
             ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 6),
-              child: Visibility(
-                visible: profileMode == Owner.OTHERS,
-                child: Row(
-                  children: [
-                    InprofileButton(
-                      icon: Icons.description,
-                      label: '프로필',
-                      onPressed: () {
-                        Navigate.pushPage(
-                          context,
-                          OtherProfile(user: other),
-                        );
-                      },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Visibility(
+                    visible: profileMode == Owner.OTHERS,
+                    child: Row(
+                      children: [
+                        InprofileButton(
+                          icon: Icons.description,
+                          label: '프로필',
+                          onPressed: () {
+                            Navigate.pushPage(
+                              context,
+                              OtherProfile(user: other),
+                            );
+                          },
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 9),
+                        ),
+                        InprofileButton(
+                          icon: Icons.chat_bubble,
+                          label: '새 채팅',
+                          onPressed: () {
+                            Navigate.pushPage(
+                              context,
+                              Conversation(
+                                user: me,
+                                other: other,
+                                chat: Chat(
+                                  email: other.email,
+                                  conversations: [],
+                                ),
+                              ),
+                            );
+                          },
+                        )
+                      ],
                     ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 9),
+                  ),
+                  Visibility(
+                    visible: profileMode == Owner.MINE,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        SizedBox(height: 200),
+                        InprofileButton(
+                          icon: Icons.description,
+                          label: '룸메이트',
+                          onPressed: () {
+                            Navigate.pushPage(
+                              context,
+                              Roommate(other: 'rkdbg@jbnu.ac.kr'),
+                            );
+                          },
+                        ),
+                      ],
                     ),
-                    InprofileButton(
-                      icon: Icons.chat_bubble,
-                      label: '새 채팅',
-                      onPressed: () {
-                        Navigate.pushPage(
-                          context,
-                          Conversation(
-                            user: me,
-                            other: other,
-                            chat: Chat(
-                              email: other.email,
-                              conversations: [],
-                            ),
-                          ),
-                        );
-                      },
-                    )
-                  ],
-                ),
+                  ),
+                ],
               ),
             )
           ],
