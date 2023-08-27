@@ -1,4 +1,3 @@
-import 'package:circular_chart_flutter/circular_chart_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:social_app_ui/util/chat.dart';
 import 'package:social_app_ui/util/configs/list_config.dart';
@@ -48,33 +47,11 @@ class ProfileCard extends StatelessWidget {
                   other.essentials['nickname'],
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
-                AnimatedCircularChart(
-                  size: Size(40, 40),
-                  initialChartData: [
-                    other.essentials.containsKey('confidence')
-                        ? CircularStackEntry(
-                            [
-                              CircularSegmentEntry(
-                                  (other.essentials['confidence'] as num)
-                                      .toDouble(),
-                                  Colors.blue),
-                              CircularSegmentEntry(
-                                  100 -
-                                      (other.essentials['confidence'] as num)
-                                          .toDouble(),
-                                  Colors.blueGrey)
-                            ],
-                          )
-                        : CircularStackEntry(
-                            [
-                              CircularSegmentEntry(100, Colors.amber),
-                            ],
-                          )
-                  ],
-                  chartType: CircularChartType.Pie,
-                  // percentageValues: true,
-                  // holeLabel: '33',
-                  labelStyle: Theme.of(context).textTheme.headlineMedium,
+                Text(
+                  other.essentials.containsKey('confidence')
+                      ? '${other.essentials['confidence'].toString()}%'
+                      : '-%',
+                  style: Theme.of(context).textTheme.headlineMedium,
                 ),
               ],
             ),
