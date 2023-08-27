@@ -1,6 +1,6 @@
 class Constants {
-  static String appName = 'Roomie';
-  static String year = '2023';
-  static String semester = '2';
-  static bool authSeason = true;
+  static late String appName;
+  static late String year;
+  static late String semester;
+  static late bool auth;
 }

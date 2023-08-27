@@ -238,7 +238,7 @@ class ProfileCard extends StatelessWidget {
                                     context,
                                     Roommate(
                                       other: me.essentials['roommate'],
-                                      authMode: Constants.authSeason,
+                                      authMode: Constants.auth,
                                     ),
                                   );
                                 }

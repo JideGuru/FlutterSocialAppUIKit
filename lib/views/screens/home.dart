@@ -44,8 +44,6 @@ class _HomeState extends State<Home> {
           if (usersSnapshot.connectionState == ConnectionState.done) {
             var deck = getDeck(usersSnapshot, widget.me);
             var me = getUserFromCollections(usersSnapshot, widget.me.email);
-            // var weights = getWeights(usersSnapshot, widget.me.tag);
-            // deck = sort(me, deck, weights);
             return FutureBuilder(
               future: weightsColRef.get(),
               builder: (context, weightsSnapshot) {

@@ -32,8 +32,10 @@ List<ProfileCard> sort(
     weightedDeck.add(Pair(score['total'], weightedCard));
   }
   weightedDeck.sort((a, b) => b.first.compareTo(a.first));
+  print('sorted Deck:\n');
   List<ProfileCard> sortedDeck = [];
   for (var profile in weightedDeck) {
+    print('${profile.second.other.email}: ${profile.first}');
     sortedDeck.add(profile.second);
   }
   return sortedDeck;
