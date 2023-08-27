@@ -83,10 +83,11 @@ class User {
 
     String email = snapshot.id;
     int tag = fromFirestore['tag'];
-
     Map<String, dynamic> essentials = {}, survey = {};
     for (var essential in essentialList) {
-      essentials[essential] = fromFirestore[essential];
+      if (fromFirestore.containsKey(essential)) {
+        essentials[essential] = fromFirestore[essential];
+      }
     }
     for (var question in questionList) {
       survey[question] = fromFirestore[question];

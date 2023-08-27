@@ -1,13 +1,15 @@
+import 'package:circular_chart_flutter/circular_chart_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:social_app_ui/util/chat.dart';
 import 'package:social_app_ui/util/configs/list_config.dart';
+import 'package:social_app_ui/util/const.dart';
 import 'package:social_app_ui/util/enum.dart';
 import 'package:social_app_ui/util/router.dart';
 import 'package:social_app_ui/util/configs/theme_config.dart';
 import 'package:social_app_ui/util/user.dart';
 import 'package:social_app_ui/views/screens/chat/conversation.dart';
-import 'package:social_app_ui/views/screens/other_profile.dart';
 import 'package:social_app_ui/views/screens/details/roommate.dart';
+import 'package:social_app_ui/views/screens/other_profile.dart';
 import 'package:social_app_ui/views/widgets/inprofile_button.dart';
 
 class ProfileCard extends StatelessWidget {
@@ -46,9 +48,33 @@ class ProfileCard extends StatelessWidget {
                   other.essentials['nickname'],
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
-                Text(
-                  other.essentials['studentNumber'],
-                  style: Theme.of(context).textTheme.headlineMedium,
+                AnimatedCircularChart(
+                  size: Size(40, 40),
+                  initialChartData: [
+                    other.essentials.containsKey('confidence')
+                        ? CircularStackEntry(
+                            [
+                              CircularSegmentEntry(
+                                  (other.essentials['confidence'] as num)
+                                      .toDouble(),
+                                  Colors.blue),
+                              CircularSegmentEntry(
+                                  100 -
+                                      (other.essentials['confidence'] as num)
+                                          .toDouble(),
+                                  Colors.blueGrey)
+                            ],
+                          )
+                        : CircularStackEntry(
+                            [
+                              CircularSegmentEntry(100, Colors.amber),
+                            ],
+                          )
+                  ],
+                  chartType: CircularChartType.Pie,
+                  // percentageValues: true,
+                  // holeLabel: '33',
+                  labelStyle: Theme.of(context).textTheme.headlineMedium,
                 ),
               ],
             ),
@@ -206,12 +232,17 @@ class ProfileCard extends StatelessWidget {
                         InprofileButton(
                           icon: Icons.description,
                           label: '룸메이트',
-                          onPressed: () {
-                            Navigate.pushPage(
-                              context,
-                              Roommate(other: 'v2@jbnu.ac.kr'),
-                            );
-                          },
+                          onPressed: me.essentials.containsKey('roommate')
+                              ? () {
+                                  Navigate.pushPage(
+                                    context,
+                                    Roommate(
+                                      other: me.essentials['roommate'],
+                                      authMode: Constants.authSeason,
+                                    ),
+                                  );
+                                }
+                              : null,
                         ),
                       ],
                     ),

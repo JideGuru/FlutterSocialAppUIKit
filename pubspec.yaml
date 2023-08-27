@@ -36,6 +36,7 @@ dependencies:
   swiping_card_deck: ^1.3.0
   buttons_tabbar: ^1.3.7+1
   loading_animation_widget: ^1.2.0+4
+  circular_chart_flutter: ^0.0.2
 
 dev_dependencies:
   flutter_test:

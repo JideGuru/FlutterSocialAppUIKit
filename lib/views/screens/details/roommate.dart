@@ -14,8 +14,10 @@ import 'package:social_app_ui/util/extensions.dart';
 
 class Roommate extends StatefulWidget {
   final String other;
+  final bool authMode;
   Roommate({
     required this.other,
+    required this.authMode,
   });
   @override
   _RoommateState createState() => _RoommateState();
@@ -107,7 +109,9 @@ class _RoommateState extends State<Roommate> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      '룸메이트에 대해 알려주세요',
+                      widget.authMode
+                          ? '룸메이트에 대해 알려주세요'
+                          : '${Constants.year}년도 ${Constants.semester}학기',
                       style: TextStyle(
                         fontSize: 40.0,
                         fontWeight: FontWeight.bold,
@@ -120,7 +124,11 @@ class _RoommateState extends State<Roommate> {
                       child: buildForm(other),
                     ),
                     SizedBox(height: 20.0),
-                    buildButton(context, otherOriginal, other, weight, domain),
+                    Visibility(
+                      visible: widget.authMode,
+                      child: buildButton(
+                          context, otherOriginal, other, weight, domain),
+                    ),
                     SizedBox(height: 20.0),
                   ],
                 );
@@ -218,65 +226,77 @@ class _RoommateState extends State<Roommate> {
 
         // questions
         CustomGroupButton(
-          hintText: '흡연 여부',
-          surveyMode: 'smoking',
-          user: other,
-        ).fadeInList(3, false),
+                hintText: '흡연 여부',
+                surveyMode: 'smoking',
+                user: other,
+                disabled: !widget.authMode)
+            .fadeInList(3, false),
         CustomSfSlider(
-          hintText: '잠버릇',
-          surveyMode: 'sleepingHabits',
-          user: other,
-        ).fadeInList(3, false),
+                hintText: '잠버릇',
+                surveyMode: 'sleepingHabits',
+                user: other,
+                disabled: !widget.authMode)
+            .fadeInList(3, false),
         CustomSfSlider(
-          hintText: '룸메이트와 맺고 싶은 관계',
-          surveyMode: 'relationship',
-          user: other,
-        ).fadeInList(3, false),
+                hintText: '룸메이트와 맺고 싶은 관계',
+                surveyMode: 'relationship',
+                user: other,
+                disabled: !widget.authMode)
+            .fadeInList(3, false),
         CustomSfSlider(
-          hintText: '잠드는 시간',
-          surveyMode: 'sleepAt',
-          user: other,
-        ).fadeInList(3, false),
+                hintText: '잠드는 시간',
+                surveyMode: 'sleepAt',
+                user: other,
+                disabled: !widget.authMode)
+            .fadeInList(3, false),
         CustomSfSlider(
-          hintText: '방 청소 주기',
-          surveyMode: 'roomCleaning',
-          user: other,
-        ).fadeInList(3, false),
+                hintText: '방 청소 주기',
+                surveyMode: 'roomCleaning',
+                user: other,
+                disabled: !widget.authMode)
+            .fadeInList(3, false),
         CustomSfSlider(
-          hintText: '화장실 청소 주기',
-          surveyMode: 'restroomCleaning',
-          user: other,
-        ).fadeInList(3, false),
+                hintText: '화장실 청소 주기',
+                surveyMode: 'restroomCleaning',
+                user: other,
+                disabled: !widget.authMode)
+            .fadeInList(3, false),
         CustomGroupButton(
-          hintText: '초대 선호도',
-          surveyMode: 'inviting',
-          user: other,
-        ).fadeInList(3, false),
+                hintText: '초대 선호도',
+                surveyMode: 'inviting',
+                user: other,
+                disabled: !widget.authMode)
+            .fadeInList(3, false),
         CustomGroupButton(
-          hintText: '물건공유 선호도',
-          surveyMode: 'sharing',
-          user: other,
-        ).fadeInList(3, false),
+                hintText: '물건공유 선호도',
+                surveyMode: 'sharing',
+                user: other,
+                disabled: !widget.authMode)
+            .fadeInList(3, false),
         CustomGroupButton(
-          hintText: '실내통화 선호도',
-          surveyMode: 'calling',
-          user: other,
-        ).fadeInList(3, false),
+                hintText: '실내통화 선호도',
+                surveyMode: 'calling',
+                user: other,
+                disabled: !widget.authMode)
+            .fadeInList(3, false),
         CustomGroupButton(
-          hintText: '이어폰 사용 선호도',
-          surveyMode: 'earphone',
-          user: other,
-        ).fadeInList(3, false),
+                hintText: '이어폰 사용 선호도',
+                surveyMode: 'earphone',
+                user: other,
+                disabled: !widget.authMode)
+            .fadeInList(3, false),
         CustomGroupButton(
-          hintText: '실내취식 선호도',
-          surveyMode: 'eating',
-          user: other,
-        ).fadeInList(3, false),
+                hintText: '실내취식 선호도',
+                surveyMode: 'eating',
+                user: other,
+                disabled: !widget.authMode)
+            .fadeInList(3, false),
         CustomGroupButton(
-          hintText: '늦은 스탠드 사용 선호도',
-          surveyMode: 'lateStand',
-          user: other,
-        ).fadeInList(3, false),
+                hintText: '늦은 스탠드 사용 선호도',
+                surveyMode: 'lateStand',
+                user: other,
+                disabled: !widget.authMode)
+            .fadeInList(3, false),
       ],
     );
   }
@@ -294,6 +314,13 @@ class _RoommateState extends State<Roommate> {
                 {
                   '${Constants.year}.${Constants.semester}.other':
                       other.toFirestore(),
+                },
+              );
+              otherOriginal.essentials['confidence'] = score['percentage'];
+              usersColRef.doc(other.email).update(
+                {
+                  '${Constants.year}.${Constants.semester}.me':
+                      otherOriginal.toFirestore(),
                 },
               );
               // updateDomains(score['highest'], [], domain);

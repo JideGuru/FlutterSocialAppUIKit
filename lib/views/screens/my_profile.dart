@@ -6,7 +6,7 @@ import 'package:social_app_ui/views/screens/details/detail.dart';
 import 'package:social_app_ui/views/widgets/profile_card.dart';
 
 class MyProfile extends StatelessWidget {
-  late final User me;
+  final User me;
   MyProfile({
     super.key,
     required this.me,

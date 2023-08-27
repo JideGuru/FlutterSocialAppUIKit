@@ -45,6 +45,8 @@ List<String> essentialList = [
   'dormitory',
   'studentNumber',
   'major',
+  'roommate',
+  'confidence',
 ];
 
 List<String> questionList = [
