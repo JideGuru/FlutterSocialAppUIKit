@@ -1,5 +1,4 @@
 import 'package:buttons_tabbar/buttons_tabbar.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:social_app_ui/util/configs/list_config.dart';
 import 'package:social_app_ui/util/const.dart';
@@ -69,10 +68,12 @@ class _HomeState extends State<Home> {
                                     .map((title) => Tab(child: Text(title)))
                                     .toList(),
                                 onTap: (tag) async {
-                                  await FirebaseFirestore.instance
-                                      .collection('users')
-                                      .doc(me.email)
-                                      .update({'tag': tag});
+                                  await usersColRef.doc(me.email).update(
+                                    {
+                                      '${Constants.year}.${Constants.semester}.me.tag':
+                                          tag
+                                    },
+                                  );
                                   mounted ? setState(() {}) : dispose();
                                 },
                               ),

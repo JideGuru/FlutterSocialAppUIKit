@@ -280,9 +280,12 @@ class _DetailState extends State<Detail> {
         : CustomButton(
             label: '저장',
             onPressed: () {
-              usersColRef
-                  .doc(widget.user.email)
-                  .update(widget.user.toFirestore());
+              usersColRef.doc(widget.user.email).update(
+                {
+                  '${Constants.year}.${Constants.semester}.me':
+                      widget.user.toFirestore()
+                },
+              );
             },
             //pop up need
           ).fadeInList(4, false);
