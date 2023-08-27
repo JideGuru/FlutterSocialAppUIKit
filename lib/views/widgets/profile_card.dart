@@ -209,7 +209,7 @@ class ProfileCard extends StatelessWidget {
                           onPressed: () {
                             Navigate.pushPage(
                               context,
-                              Roommate(other: 'rkdbg@jbnu.ac.kr'),
+                              Roommate(other: 'v2@jbnu.ac.kr'),
                             );
                           },
                         ),

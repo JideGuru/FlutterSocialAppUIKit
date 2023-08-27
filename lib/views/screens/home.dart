@@ -30,63 +30,71 @@ class _HomeState extends State<Home> {
       ),
       body: FutureBuilder(
         future: usersColRef.get(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            var deck = getDeck(snapshot, widget.me);
-            print("deck: $deck");
-            var me = getUserFromCollections(snapshot, widget.me.email);
-            print("me: $me");
-            // var weights = getWeights(snapshot, widget.me.tag);
+        builder: (context, usersSnapshot) {
+          if (usersSnapshot.connectionState == ConnectionState.done) {
+            var deck = getDeck(usersSnapshot, widget.me);
+            var me = getUserFromCollections(usersSnapshot, widget.me.email);
+            // var weights = getWeights(usersSnapshot, widget.me.tag);
             // deck = sort(me, deck, weights);
-            return Column(
-              children: [
-                SizedBox(
-                  width: MediaQuery.of(context).size.width - 50,
-                  child: DefaultTabController(
-                    initialIndex: me.tag,
-                    length: tagList.length,
-                    child: Column(
-                      children: <Widget>[
-                        ButtonsTabBar(
-                          decoration: BoxDecoration(
-                              color: ThemeConfig.lightTabBackground),
-                          contentPadding:
-                              EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                          height: 48,
-                          tabs: tagList
-                              .map((title) => Tab(child: Text(title)))
-                              .toList(),
-                          onTap: (tag) async {
-                            await FirebaseFirestore.instance
-                                .collection('users')
-                                .doc(me.email)
-                                .update({'tag': tag});
-                            mounted ? setState(() {}) : dispose();
-                          },
+            return FutureBuilder(
+              future: weightsColRef.get(),
+              builder: (context, weightsSnapshot) {
+                if (weightsSnapshot.connectionState == ConnectionState.done) {
+                  var weights = getWeights(weightsSnapshot, me.tag);
+                  deck = sort(me, deck, weights);
+                  return Column(
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width - 50,
+                        child: DefaultTabController(
+                          initialIndex: me.tag,
+                          length: tagList.length,
+                          child: Column(
+                            children: <Widget>[
+                              ButtonsTabBar(
+                                decoration: BoxDecoration(
+                                    color: ThemeConfig.lightTabBackground),
+                                contentPadding: EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 4),
+                                height: 48,
+                                tabs: tagList
+                                    .map((title) => Tab(child: Text(title)))
+                                    .toList(),
+                                onTap: (tag) async {
+                                  await FirebaseFirestore.instance
+                                      .collection('users')
+                                      .doc(me.email)
+                                      .update({'tag': tag});
+                                  mounted ? setState(() {}) : dispose();
+                                },
+                              ),
+                            ],
+                          ),
                         ),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height / 15,
-                ),
-                SwipingDeck(
-                  cardDeck: deck,
-                  cardWidth: ThemeConfig.cardWidth * 5.5,
-                  onLeftSwipe: (card) {
-                    updateDomains(
-                        card.highest, card.lowest, getDomains(snapshot));
-                  },
-                  onRightSwipe: (card) {
-                    updateDomains(
-                        card.highest, card.lowest, getDomains(snapshot));
-                  },
-                  onDeckEmpty: () {
-                    mounted ? setState(() {}) : dispose();
-                  },
-                ).fadeInList(1, false),
-              ],
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height / 15,
+                      ),
+                      SwipingDeck(
+                        cardDeck: deck,
+                        cardWidth: ThemeConfig.cardWidth * 5.5,
+                        onLeftSwipe: (card) {
+                          updateDomains(card.highest, card.lowest,
+                              getDomains(usersSnapshot));
+                        },
+                        onRightSwipe: (card) {
+                          updateDomains(card.highest, card.lowest,
+                              getDomains(usersSnapshot));
+                        },
+                        onDeckEmpty: () {
+                          mounted ? setState(() {}) : dispose();
+                        },
+                      ).fadeInList(1, false),
+                    ],
+                  );
+                } else
+                  return Container();
+              },
             );
           } else
             return Container();

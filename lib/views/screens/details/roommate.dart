@@ -3,6 +3,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:lottie/lottie.dart';
 import 'package:social_app_ui/util/animations.dart';
 import 'package:social_app_ui/util/configs/list_config.dart';
+import 'package:social_app_ui/util/const.dart';
 import 'package:social_app_ui/util/data.dart';
 import 'package:social_app_ui/util/sort/weight.dart';
 import 'package:social_app_ui/util/user.dart';
@@ -89,34 +90,43 @@ class _RoommateState extends State<Roommate> {
   buildFormContainer() {
     return FutureBuilder(
       future: usersColRef.get(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          var other = getUserFromCollections(snapshot, widget.other);
-          var otherOriginal = getUserFromCollections(snapshot, widget.other);
-          var domain = getDomains(snapshot);
-          var weight = getWeights(snapshot, 0);
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                '룸메이트에 대해 알려주세요',
-                style: TextStyle(
-                  fontSize: 40.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ).fadeInList(0, false),
-              SizedBox(height: 70.0),
-              Form(
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                key: formKey,
-                child: buildForm(other),
-              ),
-              SizedBox(height: 20.0),
-              buildButton(context, otherOriginal, other, weight, domain),
-              SizedBox(height: 20.0),
-            ],
+      builder: (context, usersSnapshot) {
+        if (usersSnapshot.connectionState == ConnectionState.done) {
+          var other = getUserFromCollections(usersSnapshot, widget.other);
+          var otherOriginal =
+              getUserFromCollections(usersSnapshot, widget.other);
+          return FutureBuilder(
+            future: weightsColRef.get(),
+            builder: (context, weightsSnapshot) {
+              if (weightsSnapshot.connectionState == ConnectionState.done) {
+                var domain = getDomains(weightsSnapshot);
+                var weight = getWeights(weightsSnapshot, 0);
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      '룸메이트에 대해 알려주세요',
+                      style: TextStyle(
+                        fontSize: 40.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ).fadeInList(0, false),
+                    SizedBox(height: 70.0),
+                    Form(
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      key: formKey,
+                      child: buildForm(other),
+                    ),
+                    SizedBox(height: 20.0),
+                    buildButton(context, otherOriginal, other, weight, domain),
+                    SizedBox(height: 20.0),
+                  ],
+                );
+              } else
+                return Container();
+            },
           );
         } else
           return Center(
@@ -280,6 +290,12 @@ class _RoommateState extends State<Roommate> {
             onPressed: () {
               var score = otherOriginal.getScore(other, weight, true);
               print(score['percentage']);
+              usersColRef.doc(other.email).update(
+                {
+                  '${Constants.year}.${Constants.semester}.other':
+                      other.toFirestore(),
+                },
+              );
               // updateDomains(score['highest'], [], domain);
               Navigator.pop(context);
             },

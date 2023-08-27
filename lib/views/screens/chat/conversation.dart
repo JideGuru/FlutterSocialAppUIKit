@@ -287,7 +287,6 @@ class _ConversationState extends State<Conversation> {
 
   void onSend(Chat myChat, Chat otherChat) {
     Map<String, dynamic> conversation = {};
-    print(conversation);
     conversation['message'] = controller.text;
     conversation['otherNickname'] = widget.other.essentials['nickname'];
     conversation['read'] = false;
@@ -296,7 +295,6 @@ class _ConversationState extends State<Conversation> {
         ? false
         : myChat.conversations.last['marked'];
     conversation['time'] = Timestamp.now();
-    print(conversation);
     chatsColRef.doc(widget.user.email).update({
       FieldPath([myChat.email]): FieldValue.arrayUnion([conversation])
     });

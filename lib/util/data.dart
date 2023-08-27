@@ -6,6 +6,9 @@ CollectionReference<Map<String, dynamic>> usersColRef =
 CollectionReference<Map<String, dynamic>> chatsColRef =
     FirebaseFirestore.instance.collection('chats');
 
+CollectionReference<Map<String, dynamic>> weightsColRef =
+    FirebaseFirestore.instance.collection('weights');
+
 int toggle(int num) {
   return (num + 1) % 2;
 }

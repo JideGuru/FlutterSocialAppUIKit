@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
 import 'package:social_app_ui/util/configs/list_config.dart';
+import 'package:social_app_ui/util/data.dart';
 import 'package:social_app_ui/util/user.dart';
 import 'package:social_app_ui/views/widgets/profile_card.dart';
 
@@ -76,13 +77,7 @@ Map<String, dynamic> getDomains(
 void updateDomains(
     List<String> highest, List<String> lowest, Map<String, dynamic> domains) {
   for (var h in highest)
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc('weights')
-        .update({h: FieldValue.increment(-0.1)});
+    weightsColRef.doc('weights').update({h: FieldValue.increment(-0.1)});
   for (var l in lowest)
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc('weights')
-        .update({l: FieldValue.increment(0.1)});
+    weightsColRef.doc('weights').update({l: FieldValue.increment(0.1)});
 }
