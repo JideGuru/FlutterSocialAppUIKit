@@ -2,6 +2,7 @@ import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:social_app_ui/util/configs/list_config.dart';
+import 'package:social_app_ui/util/const.dart';
 import 'package:social_app_ui/util/data.dart';
 import 'package:social_app_ui/util/extensions.dart';
 import 'package:social_app_ui/util/sort/map_util.dart';
@@ -29,7 +30,16 @@ class _HomeState extends State<Home> {
         centerTitle: true,
       ),
       body: FutureBuilder(
-        future: usersColRef.get(),
+        future: usersColRef
+            .where(
+              '${Constants.year}.${Constants.semester}.me.sex',
+              isEqualTo: widget.me.essentials['sex'],
+            )
+            .where(
+              '${Constants.year}.${Constants.semester}.me.dormitory',
+              isEqualTo: widget.me.essentials['dormitory'],
+            )
+            .get(),
         builder: (context, usersSnapshot) {
           if (usersSnapshot.connectionState == ConnectionState.done) {
             var deck = getDeck(usersSnapshot, widget.me);
