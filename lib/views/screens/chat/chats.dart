@@ -84,8 +84,13 @@ class _ChatsState extends State<Chats>
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.done) {
                       var other = User.fromFirestore(snapshot.data!);
+                      var meanRoommates =
+                          User.fromFirestoreRoommates(snapshot.data!);
                       return ChatItem(
-                          me: widget.user, other: other, chat: chat);
+                          me: widget.user,
+                          other: other,
+                          meanRoommates: meanRoommates,
+                          chat: chat);
                     } else
                       return Container();
                   },

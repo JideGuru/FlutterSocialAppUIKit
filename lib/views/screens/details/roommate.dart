@@ -309,7 +309,6 @@ class _RoommateState extends State<Roommate> {
             label: '제출',
             onPressed: () {
               var score = otherOriginal.getScore(other, weight, true);
-              print(score['percentage']);
               usersColRef.doc(other.email).update(
                 {
                   '${Constants.year}.${Constants.semester}.other':

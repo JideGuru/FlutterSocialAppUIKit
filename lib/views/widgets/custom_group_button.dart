@@ -24,6 +24,7 @@ class CustomGroupButton extends StatefulWidget {
 class _CustomGroupButtonState extends State<CustomGroupButton> {
   @override
   Widget build(BuildContext context) {
+    var surveyCheck = widget.user.survey.containsKey(widget.surveyMode);
     return Column(
       children: [
         Align(
@@ -34,19 +35,22 @@ class _CustomGroupButtonState extends State<CustomGroupButton> {
           ]}'),
         ),
         SizedBox(height: 20.0),
-        GroupButton(
-          controller: GroupButtonController(
-              disabledIndexes: widget.disabled
-                  ? [toggle(widget.user.survey[widget.surveyMode])]
-                  : [],
-              selectedIndex: widget.user.survey[widget.surveyMode]),
-          isRadio: true,
-          buttons: answerList[widget.surveyMode]!,
-          onSelected: (value, index, isSelected) {
-            widget.user.survey[widget.surveyMode] = index;
-            mounted ? setState(() {}) : dispose();
-          },
-        ),
+        surveyCheck
+            ? GroupButton(
+                options: GroupButtonOptions(),
+                controller: GroupButtonController(
+                    disabledIndexes: widget.disabled
+                        ? [toggle(widget.user.survey[widget.surveyMode])]
+                        : [],
+                    selectedIndex: widget.user.survey[widget.surveyMode]),
+                isRadio: true,
+                buttons: answerList[widget.surveyMode]!,
+                onSelected: (value, index, isSelected) {
+                  widget.user.survey[widget.surveyMode] = index;
+                  mounted ? setState(() {}) : dispose();
+                },
+              )
+            : SizedBox(),
         SizedBox(height: 40.0),
       ],
     ).fadeInList(3, false);

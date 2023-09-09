@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:social_app_ui/util/configs/theme_config.dart';
 import 'package:social_app_ui/util/extensions.dart';
 import 'package:social_app_ui/util/configs/list_config.dart';
 import 'package:social_app_ui/util/user.dart';
@@ -23,6 +24,8 @@ class CustomSfSlider extends StatefulWidget {
 class _CustomSfSliderState extends State<CustomSfSlider> {
   @override
   Widget build(BuildContext context) {
+    var surveyCheck = widget.user.survey.containsKey(widget.surveyMode);
+
     return Column(
       children: [
         Align(
@@ -33,19 +36,21 @@ class _CustomSfSliderState extends State<CustomSfSlider> {
           ]}'),
         ),
         SizedBox(height: 20.0),
-        SfSlider(
-          value: widget.user.survey[widget.surveyMode],
-          min: 0,
-          max: answerList[widget.surveyMode]!.length - 1,
-          interval: 1,
-          showTicks: true,
-          onChanged: widget.disabled
-              ? null
-              : (value) {
-                  widget.user.survey[widget.surveyMode] = value.round();
-                  mounted ? setState(() {}) : dispose();
-                },
-        ),
+        surveyCheck
+            ? SfSlider(
+                value: widget.user.survey[widget.surveyMode],
+                min: 0,
+                max: answerList[widget.surveyMode]!.length - 1,
+                interval: 1,
+                showTicks: true,
+                onChanged: widget.disabled
+                    ? null
+                    : (value) {
+                        widget.user.survey[widget.surveyMode] = value.round();
+                        mounted ? setState(() {}) : dispose();
+                      },
+              )
+            : SizedBox(),
         SizedBox(height: 40.0),
       ],
     ).fadeInList(3, false);

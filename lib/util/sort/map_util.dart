@@ -8,12 +8,11 @@ List<ProfileCard> getDeck(
   List<ProfileCard> deck = [];
   for (var doc in snapshot.data!.docs) {
     if (doc.id == me.email) continue;
-    if (doc.id == 'weights') continue;
     deck.add(
       ProfileCard(
-        me: me,
-        other: User.fromFirestore(doc),
-      ),
+          me: me,
+          other: User.fromFirestore(doc),
+          meanRoommates: User.fromFirestoreRoommates(doc)),
     );
   }
   return deck;

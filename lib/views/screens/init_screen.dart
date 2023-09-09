@@ -19,7 +19,8 @@ class InitScreen extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             User me = User.fromFirestore(snapshot.data!);
-            return MainScreen(me: me);
+            User meanRoommates = User.fromFirestoreRoommates(snapshot.data!);
+            return MainScreen(me: me, meanRoommates: meanRoommates,);
           } else
             return Center(
               child:

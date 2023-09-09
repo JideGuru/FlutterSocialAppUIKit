@@ -12,12 +12,13 @@ import 'package:social_app_ui/views/screens/other_profile.dart';
 import 'package:social_app_ui/views/widgets/inprofile_button.dart';
 
 class ProfileCard extends StatelessWidget {
-  final User me, other;
+  final User me, other, meanRoommates;
   final List<String> highest, lowest;
   ProfileCard({
     super.key,
     required this.me,
     required this.other,
+    required this.meanRoommates,
     this.highest = const [],
     this.lowest = const [],
   });
@@ -173,7 +174,8 @@ class ProfileCard extends StatelessWidget {
                           onPressed: () {
                             Navigate.pushPage(
                               context,
-                              OtherProfile(user: other),
+                              OtherProfile(
+                                  user: other, meanRoommates: meanRoommates),
                             );
                           },
                         ),
@@ -189,6 +191,7 @@ class ProfileCard extends StatelessWidget {
                               Conversation(
                                 user: me,
                                 other: other,
+                                meanRoomates: meanRoommates,
                                 chat: Chat(
                                   email: other.email,
                                   conversations: [],

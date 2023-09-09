@@ -14,9 +14,11 @@ import 'package:social_app_ui/util/extensions.dart';
 
 class Detail extends StatefulWidget {
   late final User user;
+  late final String userMode;
   final Owner detailMode;
   Detail({
     required this.user,
+    this.userMode = 'own',
     this.detailMode = Owner.OTHERS,
   });
   @override
@@ -83,7 +85,10 @@ class _DetailState extends State<Detail> {
         SizedBox(
           height: MediaQuery.of(context).size.height / 15,
         ),
-        Text('${Constants.year}년도 ${Constants.semester}학기',
+        Text(
+                widget.userMode == 'own'
+                    ? '${Constants.year}년도 ${Constants.semester}학기'
+                    : '이전 룸메이트들의 설문 결과',
                 style: Theme.of(context).textTheme.headlineLarge)
             .fadeInList(0, false),
         SizedBox(height: 70.0),
@@ -100,178 +105,193 @@ class _DetailState extends State<Detail> {
   }
 
   buildForm() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        //essentials
-        Column(
-          children: [
-            Align(
-              alignment: Alignment.center,
-              child: Text(
-                '닉네임',
-                style: Theme.of(context).textTheme.labelMedium,
-              ),
-            ),
-            SizedBox(height: 10.0),
-            Text(widget.user.essentials['nickname']),
-            SizedBox(height: 20.0),
-          ],
-        ).fadeInList(3, false),
-        Column(
-          children: [
-            Align(
-              alignment: Alignment.center,
-              child: Text(
-                '성별',
-                style: Theme.of(context).textTheme.labelMedium,
-              ),
-            ),
-            SizedBox(height: 10.0),
-            Text(sexList[widget.user.essentials['sex']]),
-            SizedBox(height: 20.0),
-          ],
-        ).fadeInList(3, false),
-        Column(
-          children: [
-            Align(
-              alignment: Alignment.center,
-              child: Text(
-                '거주 예정 생활관',
-                style: Theme.of(context).textTheme.labelMedium,
-              ),
-            ),
-            SizedBox(height: 10.0),
-            Text(widget.user.essentials['dormitory']),
-            SizedBox(height: 20.0),
-          ],
-        ).fadeInList(3, false),
-        Column(
-          children: [
-            Align(
-              alignment: Alignment.center,
-              child: Text(
-                '학번',
-                style: Theme.of(context).textTheme.labelMedium,
-              ),
-            ),
-            SizedBox(height: 10.0),
-            Text(widget.user.essentials['studentNumber']),
-            SizedBox(height: 20.0),
-          ],
-        ).fadeInList(3, false),
-        Column(
-          children: [
-            Align(
-              alignment: Alignment.center,
-              child: Text(
-                '단과대학',
-                style: Theme.of(context).textTheme.labelMedium,
-              ),
-            ),
-            SizedBox(height: 10.0),
-            Text(widget.user.essentials['major']),
-            SizedBox(height: 20.0),
-          ],
-        ).fadeInList(3, false),
-        SizedBox(
-          height: 40,
-        ),
+    var surveyCheck = widget.user.survey.length;
+    return surveyCheck > 0
+        ? Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              //essentials
+              widget.userMode == 'own'
+                  ? Column(
+                      children: [
+                        Column(
+                          children: [
+                            Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                '닉네임',
+                                style: Theme.of(context).textTheme.labelMedium,
+                              ),
+                            ),
+                            SizedBox(height: 10.0),
+                            Text(widget.user.essentials['nickname']),
+                            SizedBox(height: 20.0),
+                          ],
+                        ).fadeInList(3, false),
+                        Column(
+                          children: [
+                            Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                '성별',
+                                style: Theme.of(context).textTheme.labelMedium,
+                              ),
+                            ),
+                            SizedBox(height: 10.0),
+                            Text(sexList[widget.user.essentials['sex']]),
+                            SizedBox(height: 20.0),
+                          ],
+                        ).fadeInList(3, false),
+                        Column(
+                          children: [
+                            Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                '거주 예정 생활관',
+                                style: Theme.of(context).textTheme.labelMedium,
+                              ),
+                            ),
+                            SizedBox(height: 10.0),
+                            Text(widget.user.essentials['dormitory']),
+                            SizedBox(height: 20.0),
+                          ],
+                        ).fadeInList(3, false),
+                        Column(
+                          children: [
+                            Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                '학번',
+                                style: Theme.of(context).textTheme.labelMedium,
+                              ),
+                            ),
+                            SizedBox(height: 10.0),
+                            Text(widget.user.essentials['studentNumber']),
+                            SizedBox(height: 20.0),
+                          ],
+                        ).fadeInList(3, false),
+                        Column(
+                          children: [
+                            Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                '단과대학',
+                                style: Theme.of(context).textTheme.labelMedium,
+                              ),
+                            ),
+                            SizedBox(height: 10.0),
+                            Text(widget.user.essentials['major']),
+                            SizedBox(height: 20.0),
+                          ],
+                        ).fadeInList(3, false),
+                        SizedBox(
+                          height: 40,
+                        ),
+                      ],
+                    )
+                  : SizedBox(),
 
-        // questions
-        CustomGroupButton(
-          disabled: widget.detailMode == Owner.OTHERS,
-          hintText: '흡연 여부',
-          surveyMode: 'smoking',
-          user: widget.user,
-        ).fadeInList(3, false),
-        CustomSfSlider(
-          disabled: widget.detailMode == Owner.OTHERS,
-          hintText: '잠버릇',
-          surveyMode: 'sleepingHabits',
-          user: widget.user,
-        ).fadeInList(3, false),
-        CustomSfSlider(
-          disabled: widget.detailMode == Owner.OTHERS,
-          hintText: '룸메이트와 맺고 싶은 관계',
-          surveyMode: 'relationship',
-          user: widget.user,
-        ).fadeInList(3, false),
-        CustomSfSlider(
-          disabled: widget.detailMode == Owner.OTHERS,
-          hintText: '잠드는 시간',
-          surveyMode: 'sleepAt',
-          user: widget.user,
-        ).fadeInList(3, false),
-        CustomSfSlider(
-          disabled: widget.detailMode == Owner.OTHERS,
-          hintText: '방 청소 주기',
-          surveyMode: 'roomCleaning',
-          user: widget.user,
-        ).fadeInList(3, false),
-        CustomSfSlider(
-          disabled: widget.detailMode == Owner.OTHERS,
-          hintText: '화장실 청소 주기',
-          surveyMode: 'restroomCleaning',
-          user: widget.user,
-        ).fadeInList(3, false),
-        CustomGroupButton(
-          disabled: widget.detailMode == Owner.OTHERS,
-          hintText: '초대 선호도',
-          surveyMode: 'inviting',
-          user: widget.user,
-        ).fadeInList(3, false),
-        CustomGroupButton(
-          disabled: widget.detailMode == Owner.OTHERS,
-          hintText: '물건공유 선호도',
-          surveyMode: 'sharing',
-          user: widget.user,
-        ).fadeInList(3, false),
-        CustomGroupButton(
-          disabled: widget.detailMode == Owner.OTHERS,
-          hintText: '실내통화 선호도',
-          surveyMode: 'calling',
-          user: widget.user,
-        ).fadeInList(3, false),
-        CustomGroupButton(
-          disabled: widget.detailMode == Owner.OTHERS,
-          hintText: '이어폰 사용 선호도',
-          surveyMode: 'earphone',
-          user: widget.user,
-        ).fadeInList(3, false),
-        CustomGroupButton(
-          disabled: widget.detailMode == Owner.OTHERS,
-          hintText: '실내취식 선호도',
-          surveyMode: 'eating',
-          user: widget.user,
-        ).fadeInList(3, false),
-        CustomGroupButton(
-          disabled: widget.detailMode == Owner.OTHERS,
-          hintText: '늦은 스탠드 사용 선호도',
-          surveyMode: 'lateStand',
-          user: widget.user,
-        ).fadeInList(3, false),
-        Column(
-          children: [
-            Align(
-              alignment: Alignment.center,
-              child: Text('룸메이트 후보들에게 추가로 전하고 싶은 말'),
-            ),
-            SizedBox(height: 10.0),
-            CustomTextField(
-              enabled: widget.detailMode == Owner.OTHERS ? false : !loading,
-              initialValue: widget.user.survey['etc'],
-              hintText: '기타',
-              textInputAction: TextInputAction.next,
-              onChange: (String? val) {
-                widget.user.survey['etc'] = val;
-              },
-            ),
-            SizedBox(height: 20.0),
-          ],
-        ).fadeInList(3, false),
-      ],
-    );
+              // questions
+              CustomGroupButton(
+                disabled: widget.detailMode == Owner.OTHERS,
+                hintText: '흡연 여부',
+                surveyMode: 'smoking',
+                user: widget.user,
+              ).fadeInList(3, false),
+              CustomSfSlider(
+                disabled: widget.detailMode == Owner.OTHERS,
+                hintText: '잠버릇',
+                surveyMode: 'sleepingHabits',
+                user: widget.user,
+              ).fadeInList(3, false),
+              CustomSfSlider(
+                disabled: widget.detailMode == Owner.OTHERS,
+                hintText: '룸메이트와 맺고 싶은 관계',
+                surveyMode: 'relationship',
+                user: widget.user,
+              ).fadeInList(3, false),
+              CustomSfSlider(
+                disabled: widget.detailMode == Owner.OTHERS,
+                hintText: '잠드는 시간',
+                surveyMode: 'sleepAt',
+                user: widget.user,
+              ).fadeInList(3, false),
+              CustomSfSlider(
+                disabled: widget.detailMode == Owner.OTHERS,
+                hintText: '방 청소 주기',
+                surveyMode: 'roomCleaning',
+                user: widget.user,
+              ).fadeInList(3, false),
+              CustomSfSlider(
+                disabled: widget.detailMode == Owner.OTHERS,
+                hintText: '화장실 청소 주기',
+                surveyMode: 'restroomCleaning',
+                user: widget.user,
+              ).fadeInList(3, false),
+              CustomGroupButton(
+                disabled: widget.detailMode == Owner.OTHERS,
+                hintText: '초대 선호도',
+                surveyMode: 'inviting',
+                user: widget.user,
+              ).fadeInList(3, false),
+              CustomGroupButton(
+                disabled: widget.detailMode == Owner.OTHERS,
+                hintText: '물건공유 선호도',
+                surveyMode: 'sharing',
+                user: widget.user,
+              ).fadeInList(3, false),
+              CustomGroupButton(
+                disabled: widget.detailMode == Owner.OTHERS,
+                hintText: '실내통화 선호도',
+                surveyMode: 'calling',
+                user: widget.user,
+              ).fadeInList(3, false),
+              CustomGroupButton(
+                disabled: widget.detailMode == Owner.OTHERS,
+                hintText: '이어폰 사용 선호도',
+                surveyMode: 'earphone',
+                user: widget.user,
+              ).fadeInList(3, false),
+              CustomGroupButton(
+                disabled: widget.detailMode == Owner.OTHERS,
+                hintText: '실내취식 선호도',
+                surveyMode: 'eating',
+                user: widget.user,
+              ).fadeInList(3, false),
+              CustomGroupButton(
+                disabled: widget.detailMode == Owner.OTHERS,
+                hintText: '늦은 스탠드 사용 선호도',
+                surveyMode: 'lateStand',
+                user: widget.user,
+              ).fadeInList(3, false),
+              widget.userMode == 'own'
+                  ? Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.center,
+                          child: Text('룸메이트 후보들에게 추가로 전하고 싶은 말'),
+                        ),
+                        SizedBox(height: 10.0),
+                        CustomTextField(
+                          enabled: widget.detailMode == Owner.OTHERS
+                              ? false
+                              : !loading,
+                          initialValue: widget.user.survey['etc'],
+                          hintText: '기타',
+                          textInputAction: TextInputAction.next,
+                          onChange: (String? val) {
+                            widget.user.survey['etc'] = val;
+                          },
+                        ),
+                        SizedBox(height: 20.0),
+                      ],
+                    ).fadeInList(3, false)
+                  : SizedBox(),
+            ],
+          )
+        : Center(
+            child: Text('이전 룸메이트들의 설문이 존재하지 않음'),
+          );
   }
 
   buildButton() {

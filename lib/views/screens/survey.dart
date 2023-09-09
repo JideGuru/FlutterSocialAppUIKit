@@ -40,7 +40,12 @@ class _SurveyState extends State<Survey> {
 
   nextStep() async {
     if (surveyIndex == surveyList.length) {
-      Navigate.pushPageReplacement(context, MainScreen(me: user));
+      Navigate.pushPageReplacement(
+          context,
+          MainScreen(
+            me: user,
+            meanRoommates: User(email: '', essentials: {}, survey: {}),
+          ));
     }
     FormState form = formKey.currentState!;
     form.save();
@@ -48,7 +53,10 @@ class _SurveyState extends State<Survey> {
       validate = true;
       mounted ? setState(() {}) : dispose();
     } else {
-      surveyMode = surveyList[surveyIndex++];
+      while (true) {
+        surveyMode = surveyList[surveyIndex++];
+        if (surveyMode != 'roommate' && surveyMode != 'confidence') break;
+      }
       mounted ? setState(() {}) : dispose();
     }
   }

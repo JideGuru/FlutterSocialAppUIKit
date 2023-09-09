@@ -7,10 +7,11 @@ import 'package:social_app_ui/views/screens/my_profile.dart';
 import 'package:social_app_ui/views/screens/settings.dart';
 
 class MainScreen extends StatefulWidget {
-  late final User me;
+  late final User me, meanRoommates;
   MainScreen({
     super.key,
     required this.me,
+    required this.meanRoommates,
   });
   @override
   _MainScreenState createState() => _MainScreenState();
@@ -29,7 +30,7 @@ class _MainScreenState extends State<MainScreen> {
         onPageChanged: onPageChanged,
         children: <Widget>[
           Home(me: widget.me),
-          MyProfile(me: widget.me),
+          MyProfile(me: widget.me, meanRoommates: widget.meanRoommates),
           Chats(user: widget.me),
           Settings(),
         ],

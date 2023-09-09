@@ -3,10 +3,11 @@ import 'package:social_app_ui/util/user.dart';
 import 'package:social_app_ui/views/screens/details/detail.dart';
 
 class OtherProfile extends StatelessWidget {
-  final User user;
+  final User user, meanRoommates;
   OtherProfile({
     super.key,
     required this.user,
+    required this.meanRoommates,
   });
 
   @override
@@ -25,9 +26,14 @@ class OtherProfile extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Detail(user: user),
-      ),
+      body: PageView(controller: PageController(initialPage: 0), children: [
+        SingleChildScrollView(
+          child: Detail(user: user),
+        ),
+        SingleChildScrollView(
+          child: Detail(user: meanRoommates, userMode: 'roommates'),
+        ),
+      ]),
     );
   }
 }

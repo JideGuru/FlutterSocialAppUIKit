@@ -26,16 +26,15 @@ List<ProfileCard> sort(
     var weightedCard = ProfileCard(
       me: user,
       other: card.other,
+      meanRoommates: card.meanRoommates,
       highest: score['highest'],
       lowest: score['lowest'],
     );
     weightedDeck.add(Pair(score['total'], weightedCard));
   }
   weightedDeck.sort((a, b) => b.first.compareTo(a.first));
-  print('sorted Deck:\n');
   List<ProfileCard> sortedDeck = [];
   for (var profile in weightedDeck) {
-    print('${profile.second.other.email}: ${profile.first}');
     sortedDeck.add(profile.second);
   }
   return sortedDeck;

@@ -10,12 +10,13 @@ import 'package:social_app_ui/views/screens/other_profile.dart';
 import 'package:social_app_ui/views/widgets/chat_bubble.dart';
 
 class Conversation extends StatefulWidget {
-  final User user, other;
+  final User user, other, meanRoomates;
   final Chat chat;
   Conversation({
     super.key,
     required this.user,
     required this.other,
+    required this.meanRoomates,
     required this.chat,
   });
   @override
@@ -63,7 +64,7 @@ class _ConversationState extends State<Conversation> {
           onTap: () {
             Navigate.pushPage(
               context,
-              OtherProfile(user: widget.other),
+              OtherProfile(user: widget.other, meanRoommates: widget.meanRoomates),
             );
           },
         ).fadeInList(1, false),

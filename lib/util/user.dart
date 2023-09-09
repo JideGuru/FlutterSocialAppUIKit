@@ -101,6 +101,46 @@ class User {
     );
   }
 
+  factory User.fromFirestoreRoommates(DocumentSnapshot snapshot) {
+    var fromFirestore = snapshot.data() as Map<String, dynamic>;
+
+    String email = snapshot.id;
+    Map<String, dynamic> essentials = {}, survey = {};
+    int cnt = 0;
+    for (var y in fromFirestore.keys) {
+      var year = fromFirestore[y];
+      for (var s in year.keys) {
+        var sem = year[s] as Map<String, dynamic>;
+        if (sem.containsKey('other')) {
+          var roommate = sem['other'];
+          for (var question in questionList) {
+            if (question == 'etc') continue;
+            if (!survey.containsKey(question)) {
+              survey[question] = 0;
+            }
+            survey[question] += roommate[question];
+          }
+          cnt++;
+        }
+      }
+    }
+    if (cnt > 0) {
+      for (var question in questionList) {
+        if (survey.containsKey(question)) {
+          survey[question] /= cnt;
+          survey[question] = (survey[question] as double).round();
+        }
+      }
+    }
+
+    return User(
+      email: email,
+      tag: 0,
+      essentials: essentials,
+      survey: survey,
+    );
+  }
+
   Map<String, dynamic> toFirestore() {
     Map<String, dynamic> toFirestore = {};
     toFirestore['tag'] = tag;
