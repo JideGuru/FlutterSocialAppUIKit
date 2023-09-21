@@ -150,24 +150,11 @@ class _RoommateState extends State<Roommate> {
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         //essentials
+        Essential(other, '닉네임', 'nickname').fadeInList(3, false),
         Column(
           children: [
             Align(
-              alignment: Alignment.center,
-              child: Text(
-                '닉네임',
-                style: Theme.of(context).textTheme.labelMedium,
-              ),
-            ),
-            SizedBox(height: 10.0),
-            Text(other.essentials['nickname']),
-            SizedBox(height: 20.0),
-          ],
-        ).fadeInList(3, false),
-        Column(
-          children: [
-            Align(
-              alignment: Alignment.center,
+              alignment: Alignment.centerLeft,
               child: Text(
                 '성별',
                 style: Theme.of(context).textTheme.labelMedium,
@@ -178,52 +165,12 @@ class _RoommateState extends State<Roommate> {
             SizedBox(height: 20.0),
           ],
         ).fadeInList(3, false),
-        Column(
-          children: [
-            Align(
-              alignment: Alignment.center,
-              child: Text(
-                '거주 생활관',
-                style: Theme.of(context).textTheme.labelMedium,
-              ),
-            ),
-            SizedBox(height: 10.0),
-            Text(other.essentials['dormitory']),
-            SizedBox(height: 20.0),
-          ],
-        ).fadeInList(3, false),
-        Column(
-          children: [
-            Align(
-              alignment: Alignment.center,
-              child: Text(
-                '학번',
-                style: Theme.of(context).textTheme.labelMedium,
-              ),
-            ),
-            SizedBox(height: 10.0),
-            Text(other.essentials['studentNumber']),
-            SizedBox(height: 20.0),
-          ],
-        ).fadeInList(3, false),
-        Column(
-          children: [
-            Align(
-              alignment: Alignment.center,
-              child: Text(
-                '단과대학',
-                style: Theme.of(context).textTheme.labelMedium,
-              ),
-            ),
-            SizedBox(height: 10.0),
-            Text(other.essentials['major']),
-            SizedBox(height: 20.0),
-          ],
-        ).fadeInList(3, false),
+        Essential(other, '거주 생활관', 'dormitory').fadeInList(3, false),
+        Essential(other, '학번', 'studentNumber').fadeInList(3, false),
+        Essential(other, '단과대학', 'major').fadeInList(3, false),
         SizedBox(
           height: 40,
         ),
-
         // questions
         CustomGroupButton(
                 hintText: '흡연 여부',
@@ -231,72 +178,101 @@ class _RoommateState extends State<Roommate> {
                 user: other,
                 disabled: !widget.authMode)
             .fadeInList(3, false),
+        SizedBox(height: 20),
         CustomSfSlider(
                 hintText: '잠버릇',
                 surveyMode: 'sleepingHabits',
                 user: other,
                 disabled: !widget.authMode)
             .fadeInList(3, false),
+        SizedBox(height: 20),
         CustomSfSlider(
                 hintText: '룸메이트와 맺고 싶은 관계',
                 surveyMode: 'relationship',
                 user: other,
                 disabled: !widget.authMode)
             .fadeInList(3, false),
+        SizedBox(height: 20),
         CustomSfSlider(
                 hintText: '잠드는 시간',
                 surveyMode: 'sleepAt',
                 user: other,
                 disabled: !widget.authMode)
             .fadeInList(3, false),
+        SizedBox(height: 20),
         CustomSfSlider(
                 hintText: '방 청소 주기',
                 surveyMode: 'roomCleaning',
                 user: other,
                 disabled: !widget.authMode)
             .fadeInList(3, false),
+        SizedBox(height: 20),
         CustomSfSlider(
                 hintText: '화장실 청소 주기',
                 surveyMode: 'restroomCleaning',
                 user: other,
                 disabled: !widget.authMode)
             .fadeInList(3, false),
+        SizedBox(height: 20),
         CustomGroupButton(
                 hintText: '초대 선호도',
                 surveyMode: 'inviting',
                 user: other,
                 disabled: !widget.authMode)
             .fadeInList(3, false),
+        SizedBox(height: 20),
         CustomGroupButton(
                 hintText: '물건공유 선호도',
                 surveyMode: 'sharing',
                 user: other,
                 disabled: !widget.authMode)
             .fadeInList(3, false),
+        SizedBox(height: 20),
         CustomGroupButton(
                 hintText: '실내통화 선호도',
                 surveyMode: 'calling',
                 user: other,
                 disabled: !widget.authMode)
             .fadeInList(3, false),
+        SizedBox(height: 20),
         CustomGroupButton(
                 hintText: '이어폰 사용 선호도',
                 surveyMode: 'earphone',
                 user: other,
                 disabled: !widget.authMode)
             .fadeInList(3, false),
+        SizedBox(height: 20),
         CustomGroupButton(
                 hintText: '실내취식 선호도',
                 surveyMode: 'eating',
                 user: other,
                 disabled: !widget.authMode)
             .fadeInList(3, false),
+        SizedBox(height: 20),
         CustomGroupButton(
                 hintText: '늦은 스탠드 사용 선호도',
                 surveyMode: 'lateStand',
                 user: other,
                 disabled: !widget.authMode)
             .fadeInList(3, false),
+        SizedBox(height: 20),
+      ],
+    );
+  }
+
+  Column Essential(User other, String label, String key) {
+    return Column(
+      children: [
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            label,
+            style: Theme.of(context).textTheme.labelMedium,
+          ),
+        ),
+        SizedBox(height: 10.0),
+        Text(other.essentials[key]),
+        SizedBox(height: 20.0),
       ],
     );
   }

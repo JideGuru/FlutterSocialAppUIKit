@@ -26,14 +26,9 @@ class OtherProfile extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
       ),
-      body: PageView(controller: PageController(initialPage: 0), children: [
-        SingleChildScrollView(
-          child: Detail(user: user),
-        ),
-        SingleChildScrollView(
-          child: Detail(user: meanRoommates, userMode: 'roommates'),
-        ),
-      ]),
+      body: SingleChildScrollView(
+        child: Detail(user: user, meanRoommate: meanRoommates),
+      ),
     );
   }
 }

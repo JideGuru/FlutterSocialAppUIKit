@@ -11,7 +11,7 @@ class CustomGroupButton extends StatefulWidget {
   final bool disabled;
   CustomGroupButton({
     super.key,
-    required this.hintText,
+    this.hintText = '',
     required this.surveyMode,
     required this.user,
     this.disabled = false,
@@ -27,17 +27,26 @@ class _CustomGroupButtonState extends State<CustomGroupButton> {
     var surveyCheck = widget.user.survey.containsKey(widget.surveyMode);
     return Column(
       children: [
-        Align(
-          alignment: Alignment.center,
-          child: Text('${widget.hintText} ${[
-            answerList[widget.surveyMode]
-                ?[widget.user.survey[widget.surveyMode]]
-          ]}'),
+        Visibility(
+          visible: widget.hintText != '',
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Column(
+              children: [
+                Text(
+                  '${widget.hintText}',
+                  style: Theme.of(context).textTheme.labelMedium,
+                ),
+                SizedBox(height: 20),
+              ],
+            ),
+          ),
         ),
-        SizedBox(height: 20.0),
         surveyCheck
             ? GroupButton(
-                options: GroupButtonOptions(),
+                options: GroupButtonOptions(
+                  selectedColor: widget.hintText == '' ? Colors.amber : null,
+                ),
                 controller: GroupButtonController(
                     disabledIndexes: widget.disabled
                         ? [toggle(widget.user.survey[widget.surveyMode])]
@@ -51,7 +60,6 @@ class _CustomGroupButtonState extends State<CustomGroupButton> {
                 },
               )
             : SizedBox(),
-        SizedBox(height: 40.0),
       ],
     ).fadeInList(3, false);
   }
