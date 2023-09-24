@@ -8,6 +8,7 @@ import 'package:syncfusion_flutter_sliders/sliders.dart';
 class CustomSfSlider extends StatefulWidget {
   late final String hintText, surveyMode;
   late final User user;
+  final String userMode;
   final disabled;
   CustomSfSlider({
     super.key,
@@ -15,6 +16,7 @@ class CustomSfSlider extends StatefulWidget {
     required this.surveyMode,
     required this.user,
     this.disabled = false,
+    this.userMode = '',
   });
 
   @override
@@ -47,16 +49,30 @@ class _CustomSfSliderState extends State<CustomSfSlider> {
         surveyCheck
             ? SfSliderTheme(
                 data: SfSliderThemeData(
+                  disabledThumbColor: widget.userMode == 'roommate'
+                      ? Color.fromARGB(255, 157, 157, 143)
+                      : null,
+                  disabledInactiveTrackColor: widget.userMode == 'roommate'
+                      ? Color.fromARGB(255, 186, 186, 143).withOpacity(0.5)
+                      : null,
+                  disabledActiveTrackColor: widget.userMode == 'roommate'
+                      ? Color.fromARGB(255, 186, 186, 143)
+                      : null,
+                  thumbColor: widget.userMode == 'roommate'
+                      ? Color.fromARGB(255, 199, 199, 60)
+                      : null,
+                  inactiveTrackColor: widget.userMode == 'roommate'
+                      ? Color.fromARGB(255, 199, 199, 60).withOpacity(0.5)
+                      : null,
+                  activeTrackColor: widget.userMode == 'roommate'
+                      ? Color.fromARGB(255, 199, 199, 60)
+                      : null,
                   activeLabelStyle:
                       TextStyle(fontSize: labelSize, color: Colors.black),
                   inactiveLabelStyle:
                       TextStyle(fontSize: labelSize, color: Colors.black),
                 ),
                 child: SfSlider(
-                  activeColor: widget.hintText == '' ? Colors.amber : null,
-                  inactiveColor: widget.hintText == ''
-                      ? Colors.amber.withOpacity(0.5)
-                      : null,
                   value: widget.user.survey[widget.surveyMode],
                   min: 0,
                   max: answerList[widget.surveyMode]!.length - 1,
@@ -83,7 +99,7 @@ class _CustomSfSliderState extends State<CustomSfSlider> {
                     return actualValue.toString();
                   },
                   onChanged: widget.disabled
-                      ? (value) {}
+                      ? null
                       : (value) {
                           widget.user.survey[widget.surveyMode] = value.round();
                           mounted ? setState(() {}) : dispose();

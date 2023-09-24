@@ -29,7 +29,8 @@ class _MainScreenState extends State<MainScreen> {
         controller: _pageController,
         onPageChanged: onPageChanged,
         children: <Widget>[
-          Home(me: widget.me),
+          if (!widget.me.essentials.containsKey('roommate'))
+            Home(me: widget.me),
           MyProfile(me: widget.me, meanRoommates: widget.meanRoommates),
           Chats(user: widget.me),
           Settings(),
@@ -38,10 +39,11 @@ class _MainScreenState extends State<MainScreen> {
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: '홈',
-          ),
+          if (!widget.me.essentials.containsKey('roommate'))
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: '홈',
+            ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
             label: '내 프로필',

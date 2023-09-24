@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:social_app_ui/util/animations.dart';
 import 'package:social_app_ui/util/auth.dart';
 import 'package:social_app_ui/util/const.dart';
+import 'package:social_app_ui/util/data.dart';
 import 'package:social_app_ui/util/enum.dart';
 import 'package:social_app_ui/util/router.dart';
 import 'package:social_app_ui/util/validations.dart';
@@ -22,10 +24,11 @@ class _LoginState extends State<Login> {
   bool validate = false;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  String email = '', password = '';
+  String email = '', password = '', emailVal = '';
   FocusNode emailFN = FocusNode();
   FocusNode passFN = FocusNode();
   FormMode formMode = FormMode.LOGIN;
+  int emailValNum = 12345;
 
   final auth = Auth();
 
@@ -53,9 +56,20 @@ class _LoginState extends State<Login> {
       else
         switch (formMode) {
           case FormMode.REGISTER:
-            Navigate.pushPageReplacement(context, Survey(email: email));
+            FirebaseAuth.instance.currentUser!.sendEmailVerification();
+            auth.showAuthDialog(
+                context, '인증 링크를 메일로 전송했습니다. 학교 메일 인증을 완료해주세요.');
+            formMode = FormMode.LOGIN;
+            setState(() {});
             break;
           case FormMode.LOGIN:
+            usersColRef.doc(email).get().then((value) {
+              if (value.exists) {
+                Navigate.pushPageReplacement(context, InitScreen(email: email));
+              } else
+                Navigate.pushPageReplacement(context, Survey(email: email));
+            });
+            break;
           case FormMode.FORGOT_PASSWORD:
             Navigate.pushPageReplacement(context, InitScreen(email: email));
             break;
@@ -180,19 +194,28 @@ class _LoginState extends State<Login> {
   }
 
   buildForm() {
+    final screenWidth = MediaQuery.of(context).size.width;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        CustomTextField(
-          enabled: !loading,
-          hintText: "학교 이메일",
-          textInputAction: TextInputAction.next,
-          validateFunction: Validations.validateEmail,
-          onSaved: (String? val) {
-            email = val ?? '';
-          },
-          focusNode: emailFN,
-          nextFocusNode: passFN,
+        Row(
+          children: [
+            Container(
+              width: formMode == FormMode.REGISTER
+                  ? screenWidth * 0.5
+                  : screenWidth * 0.8,
+              child: CustomTextField(
+                enabled: !loading,
+                hintText: "학교 이메일",
+                textInputAction: TextInputAction.next,
+                validateFunction: Validations.validateEmail,
+                onChange: (String? val) {
+                  email = val ?? '';
+                },
+                focusNode: emailFN,
+              ),
+            ),
+          ],
         ).fadeInList(1, false),
         Visibility(
           visible: formMode != FormMode.FORGOT_PASSWORD,

@@ -208,7 +208,7 @@ class _DetailState extends State<Detail> {
     return Column(
       children: [
         CustomSfSlider(
-          disabled: widget.detailMode == Owner.OTHERS,
+          disabled: widget.detailMode == Owner.OTHERS || Constants.auth,
           hintText: hintText,
           surveyMode: surveyMode,
           user: widget.user,
@@ -219,6 +219,7 @@ class _DetailState extends State<Detail> {
             disabled: true,
             surveyMode: surveyMode,
             user: widget.meanRoommate,
+            userMode: 'roommate',
           ).fadeInList(3, false),
         ),
         SizedBox(height: 40),

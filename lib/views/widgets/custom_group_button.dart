@@ -9,12 +9,14 @@ class CustomGroupButton extends StatefulWidget {
   late final String hintText, surveyMode;
   late final User user;
   final bool disabled;
+  final userMode;
   CustomGroupButton({
     super.key,
     this.hintText = '',
     required this.surveyMode,
     required this.user,
     this.disabled = false,
+    this.userMode = '',
   });
 
   @override
@@ -45,7 +47,7 @@ class _CustomGroupButtonState extends State<CustomGroupButton> {
         surveyCheck
             ? GroupButton(
                 options: GroupButtonOptions(
-                  selectedColor: widget.hintText == '' ? Colors.amber : null,
+                  selectedColor: widget.userMode == 'roommate' ? Color.fromARGB(255, 199, 199, 60) : null,
                 ),
                 controller: GroupButtonController(
                     disabledIndexes: widget.disabled

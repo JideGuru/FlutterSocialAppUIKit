@@ -183,35 +183,40 @@ class _RoommateState extends State<Roommate> {
                 hintText: '잠버릇',
                 surveyMode: 'sleepingHabits',
                 user: other,
-                disabled: !widget.authMode)
+                disabled: !widget.authMode,
+                userMode: 'roommate')
             .fadeInList(3, false),
         SizedBox(height: 20),
         CustomSfSlider(
                 hintText: '룸메이트와 맺고 싶은 관계',
                 surveyMode: 'relationship',
                 user: other,
-                disabled: !widget.authMode)
+                disabled: !widget.authMode,
+                userMode: 'roommate')
             .fadeInList(3, false),
         SizedBox(height: 20),
         CustomSfSlider(
                 hintText: '잠드는 시간',
                 surveyMode: 'sleepAt',
                 user: other,
-                disabled: !widget.authMode)
+                disabled: !widget.authMode,
+                userMode: 'roommate')
             .fadeInList(3, false),
         SizedBox(height: 20),
         CustomSfSlider(
                 hintText: '방 청소 주기',
                 surveyMode: 'roomCleaning',
                 user: other,
-                disabled: !widget.authMode)
+                disabled: !widget.authMode,
+                userMode: 'roommate')
             .fadeInList(3, false),
         SizedBox(height: 20),
         CustomSfSlider(
                 hintText: '화장실 청소 주기',
                 surveyMode: 'restroomCleaning',
                 user: other,
-                disabled: !widget.authMode)
+                disabled: !widget.authMode,
+                userMode: 'roommate')
             .fadeInList(3, false),
         SizedBox(height: 20),
         CustomGroupButton(
