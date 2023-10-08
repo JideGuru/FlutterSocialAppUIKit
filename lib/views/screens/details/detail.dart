@@ -231,7 +231,7 @@ class _DetailState extends State<Detail> {
     return Column(
       children: [
         CustomGroupButton(
-          disabled: widget.detailMode == Owner.OTHERS,
+          disabled: widget.detailMode == Owner.OTHERS || Constants.auth,
           hintText: hintText,
           surveyMode: surveyMode,
           user: widget.user,
@@ -242,6 +242,7 @@ class _DetailState extends State<Detail> {
             disabled: true,
             surveyMode: surveyMode,
             user: widget.meanRoommate,
+            userMode: 'roommate',
           ).fadeInList(3, false),
         ),
         SizedBox(height: 40),
@@ -252,17 +253,20 @@ class _DetailState extends State<Detail> {
   buildButton() {
     return loading
         ? Center(child: CircularProgressIndicator())
-        : CustomButton(
-            label: '저장',
-            onPressed: () {
-              usersColRef.doc(widget.user.email).update(
-                {
-                  '${Constants.year}.${Constants.semester}.me':
-                      widget.user.toFirestore()
-                },
-              );
-            },
-            //pop up need
+        : Visibility(
+            visible: !Constants.auth,
+            child: CustomButton(
+              label: '저장',
+              onPressed: () {
+                usersColRef.doc(widget.user.email).update(
+                  {
+                    '${Constants.year}.${Constants.semester}.me':
+                        widget.user.toFirestore()
+                  },
+                );
+              },
+              //pop up need
+            ),
           ).fadeInList(4, false);
   }
 }

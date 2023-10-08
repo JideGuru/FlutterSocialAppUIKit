@@ -31,10 +31,10 @@ class Auth {
       );
       var verified = FirebaseAuth.instance.currentUser!.emailVerified;
       print(verified);
-      if (!verified) {
-        FirebaseAuth.instance.currentUser!.sendEmailVerification();
-        return '학교 계정 인증을 완료해주세요.';
-      }
+      // if (!verified) {
+      //   FirebaseAuth.instance.currentUser!.sendEmailVerification();
+      //   return '학교 계정 인증을 완료해주세요.';
+      // }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         return '가입되지 않은 계정입니다.';
