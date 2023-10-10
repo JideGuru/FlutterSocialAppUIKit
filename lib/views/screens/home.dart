@@ -1,13 +1,14 @@
 import 'package:buttons_tabbar/buttons_tabbar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:social_app_ui/util/configs/list_config.dart';
-import 'package:social_app_ui/util/const.dart';
+import 'package:social_app_ui/util/configs/configs.dart';
 import 'package:social_app_ui/util/data.dart';
+import 'package:social_app_ui/util/enum.dart';
 import 'package:social_app_ui/util/extensions.dart';
-import 'package:social_app_ui/util/sort/map_util.dart';
-import 'package:social_app_ui/util/sort/weight.dart';
 import 'package:social_app_ui/util/configs/theme_config.dart';
+import 'package:social_app_ui/util/sort/filter.dart';
 import 'package:social_app_ui/util/user.dart';
+import 'package:social_app_ui/views/widgets/profile_card.dart';
 import 'package:swiping_card_deck/swiping_card_deck.dart';
 
 class Home extends StatefulWidget {
@@ -31,31 +32,47 @@ class _HomeState extends State<Home> {
       body: FutureBuilder(
         future: usersColRef
             .where(
-              '${Constants.year}.${Constants.semester}.me.sex',
+              'sex',
               isEqualTo: widget.me.essentials['sex'],
             )
             .where(
-              '${Constants.year}.${Constants.semester}.me.dormitory',
+              'dormitory',
               isEqualTo: widget.me.essentials['dormitory'],
             )
             .get(),
         builder: (context, usersSnapshot) {
           if (usersSnapshot.connectionState == ConnectionState.done) {
-            var deck = getDeck(usersSnapshot, widget.me);
-            var me = getUserFromCollections(usersSnapshot, widget.me.email);
             return FutureBuilder(
-              future: weightsColRef.get(),
+              future: weightsColRef.doc('weights').get(),
               builder: (context, weightsSnapshot) {
+                late User me;
+                for (var doc in usersSnapshot.data!.docs) {
+                  if (doc.id == widget.me.email) me = User.fromFirestore(doc);
+                }
                 if (weightsSnapshot.connectionState == ConnectionState.done) {
-                  var weights = getWeights(weightsSnapshot, me.tag);
-                  deck = sort(me, deck, weights);
+                  var filter = ContentsFilter();
+                  filter.filt(me, weightsSnapshot.data!, usersSnapshot.data!);
+                  var orderedUsers = filter.orderedUsers;
+                  var orderedScores = filter.orderedScores;
+                  List<ProfileCard> orderedProfiles = [];
+                  for (var user in orderedUsers) {
+                    var idx = orderedUsers.indexOf(user);
+                    ProfileCard profile = ProfileCard(
+                      profileMode: Owner.OTHERS,
+                      user: user,
+                      me: me,
+                      highest: orderedScores[idx]['highest'],
+                      lowest: orderedScores[idx]['lowest'],
+                    );
+                    orderedProfiles.add(profile);
+                  }
                   return Column(
                     children: [
                       SizedBox(
                         width: MediaQuery.of(context).size.width - 50,
                         child: DefaultTabController(
-                          initialIndex: me.tag,
-                          length: tagList.length,
+                          initialIndex: me.essentials['tag'],
+                          length: tagMaps.length,
                           child: Column(
                             children: <Widget>[
                               ButtonsTabBar(
@@ -64,15 +81,12 @@ class _HomeState extends State<Home> {
                                 contentPadding: EdgeInsets.symmetric(
                                     horizontal: 8, vertical: 4),
                                 height: 48,
-                                tabs: tagList
+                                tabs: tagMaps.values
                                     .map((title) => Tab(child: Text(title)))
                                     .toList(),
                                 onTap: (tag) async {
                                   await usersColRef.doc(me.email).update(
-                                    {
-                                      '${Constants.year}.${Constants.semester}.me.tag':
-                                          tag
-                                    },
+                                    {'tag': tag},
                                   );
                                   mounted ? setState(() {}) : dispose();
                                 },
@@ -85,15 +99,31 @@ class _HomeState extends State<Home> {
                         height: MediaQuery.of(context).size.height / 15,
                       ),
                       SwipingDeck(
-                        cardDeck: deck,
+                        cardDeck: orderedProfiles,
                         cardWidth: ThemeConfig.cardWidth * 5.5,
                         onLeftSwipe: (card) {
-                          updateDomains(card.highest, card.lowest,
-                              getDomains(usersSnapshot));
+                          for (var element in card.highest) {
+                            weightsColRef.doc('weights').update(
+                              {element: FieldValue.increment(-1)},
+                            );
+                          }
+                          for (var element in card.lowest) {
+                            weightsColRef.doc('weights').update(
+                              {element: FieldValue.increment(1)},
+                            );
+                          }
                         },
                         onRightSwipe: (card) {
-                          updateDomains(card.highest, card.lowest,
-                              getDomains(usersSnapshot));
+                          for (var element in card.highest) {
+                            weightsColRef.doc('weights').update(
+                              {element: FieldValue.increment(-1)},
+                            );
+                          }
+                          for (var element in card.lowest) {
+                            weightsColRef.doc('weights').update(
+                              {element: FieldValue.increment(1)},
+                            );
+                          }
                         },
                         onDeckEmpty: () {
                           mounted ? setState(() {}) : dispose();

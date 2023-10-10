@@ -38,6 +38,7 @@ dependencies:
   loading_animation_widget: ^1.2.0+4
   circular_chart_flutter: ^0.0.2
   syncfusion_flutter_core: ^22.2.12
+  flutter_styled_toast: ^2.2.1
 
 dev_dependencies:
   flutter_test:

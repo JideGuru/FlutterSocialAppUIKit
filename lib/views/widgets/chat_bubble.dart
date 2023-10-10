@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:social_app_ui/util/enum.dart';
 
 class ChatBubble extends StatefulWidget {
-  final bool withDayBar, read;
-  final Map<String, dynamic> conversation;
+  final bool withDayBar, withRead;
+  final Map<String, dynamic> message;
   final Owner sender;
   ChatBubble({
-    required this.read,
     required this.withDayBar,
-    required this.conversation,
-    this.sender = Owner.MINE,
+    required this.withRead,
+    required this.message,
+    required this.sender,
   });
   @override
   _ChatBubbleState createState() => _ChatBubbleState();
@@ -36,7 +36,7 @@ class _ChatBubbleState extends State<ChatBubble> {
             bottomLeft: Radius.circular(10.0),
             bottomRight: Radius.circular(5.0),
           );
-    var time = (widget.conversation['time'] as Timestamp)
+    var time = (widget.message['time'] as Timestamp)
         .toDate()
         .toIso8601String()
         .split('T');
@@ -58,7 +58,7 @@ class _ChatBubbleState extends State<ChatBubble> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Visibility(
-                    visible: widget.read,
+                    visible: widget.withRead,
                     child: Text(
                       '읽음',
                       style: Theme.of(context).textTheme.bodySmall,
@@ -89,7 +89,7 @@ class _ChatBubbleState extends State<ChatBubble> {
                   Padding(
                     padding: EdgeInsets.all(5),
                     child: Text(
-                      widget.conversation['message'],
+                      widget.message['message'],
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                             color: widget.sender == Owner.MINE
                                 ? Theme.of(context).colorScheme.onSecondary

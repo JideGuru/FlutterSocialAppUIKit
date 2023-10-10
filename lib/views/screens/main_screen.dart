@@ -2,16 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:social_app_ui/util/user.dart';
 import 'package:social_app_ui/views/screens/chat/chats.dart';
 import 'package:social_app_ui/views/screens/home.dart';
-
 import 'package:social_app_ui/views/screens/my_profile.dart';
 import 'package:social_app_ui/views/screens/settings.dart';
 
 class MainScreen extends StatefulWidget {
-  late final User me, meanRoommates;
+  late final User me;
   MainScreen({
     super.key,
     required this.me,
-    required this.meanRoommates,
   });
   @override
   _MainScreenState createState() => _MainScreenState();
@@ -20,26 +18,26 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   late PageController _pageController;
   int _page = 0;
-
   @override
   Widget build(BuildContext context) {
+    int status = widget.me.essentials['status'];
+    bool homeFlag = status == 0;
     return Scaffold(
       body: PageView(
         physics: NeverScrollableScrollPhysics(),
         controller: _pageController,
         onPageChanged: onPageChanged,
         children: <Widget>[
-          if (!widget.me.essentials.containsKey('roommate'))
-            Home(me: widget.me),
-          MyProfile(me: widget.me, meanRoommates: widget.meanRoommates),
-          Chats(user: widget.me),
+          if (homeFlag) Home(me: widget.me),
+          MyProfile(me: widget.me),
+          Chats(me: widget.me),
           Settings(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         items: <BottomNavigationBarItem>[
-          if (!widget.me.essentials.containsKey('roommate'))
+          if (homeFlag)
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
               label: '홈',

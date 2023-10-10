@@ -1,22 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:social_app_ui/util/chat.dart';
 import 'package:social_app_ui/util/data.dart';
 import 'package:social_app_ui/util/router.dart';
 import 'package:social_app_ui/util/user.dart';
 import 'package:social_app_ui/views/screens/chat/conversation.dart';
 
 class ChatItem extends StatefulWidget {
-  final User me, other, meanRoommates;
-  final Chat chat;
+  final User me, other;
+  final List<dynamic> chats;
+  final bool marked;
 
-  ChatItem({
-    super.key,
-    required this.me,
-    required this.other,
-    required this.meanRoommates,
-    required this.chat,
-  });
+  ChatItem(
+      {super.key,
+      required this.me,
+      required this.other,
+      required this.chats,
+      this.marked = false});
 
   @override
   _ChatItemState createState() => _ChatItemState();
@@ -25,24 +24,22 @@ class ChatItem extends StatefulWidget {
 class _ChatItemState extends State<ChatItem> {
   @override
   Widget build(BuildContext context) {
-    var recentConversation = widget.chat.conversations.last;
-    var recentTime = (recentConversation['time'] as Timestamp)
-        .toDate()
-        .toIso8601String()
-        .split('T');
-    var notRead = widget.chat.conversations
+    var recentChat = widget.chats.last;
+    var recentTime =
+        (recentChat['time'] as Timestamp).toDate().toIso8601String().split('T');
+    var notRead = widget.chats
         .where((conversation) =>
-            !conversation['read'] &&
-            conversation['senderEmail'] != widget.me.email)
+            !conversation['read'] && conversation['sender'] != widget.me.email)
         .length;
     var now = Timestamp.now().toDate().toIso8601String().split('T');
-    var mark = recentConversation['marked'] ? '✓' : '';
+    var marked = widget.marked;
+    var mark = marked ? '🌠' : '';
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: ListTile(
         contentPadding: EdgeInsets.all(0),
         title: Text(
-          "${widget.chat.conversations.last['otherNickname']} ${mark}",
+          "${widget.other.essentials['nickname']} ${mark}",
           maxLines: 1,
           style: TextStyle(
             fontWeight: FontWeight.bold,
@@ -51,7 +48,7 @@ class _ChatItemState extends State<ChatItem> {
         subtitle: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10),
           child: Text(
-            "${recentConversation['message']}",
+            "${recentChat['message']}",
             overflow: TextOverflow.ellipsis,
             maxLines: 2,
           ),
@@ -93,10 +90,9 @@ class _ChatItemState extends State<ChatItem> {
           Navigate.pushPage(
             context,
             Conversation(
-              user: widget.me,
+              me: widget.me,
               other: widget.other,
-              meanRoomates: widget.meanRoommates,
-              chat: widget.chat,
+              chats: widget.chats,
             ),
           );
         },
@@ -111,19 +107,17 @@ class _ChatItemState extends State<ChatItem> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       PopupMenuItem(
-                        child: Text(widget.chat.conversations.last['marked']
-                            ? '즐겨찾기 해제'
-                            : '즐겨찾기'),
+                        child: Text(widget.marked ? '즐겨찾기 해제' : '즐겨찾기'),
                         onTap: () {
-                          widget.chat.conversations.last['marked'] =
-                              !widget.chat.conversations.last['marked'];
-
-                          chatsColRef.doc(widget.me.email).update(
-                            {
-                              FieldPath([widget.chat.email]):
-                                  widget.chat.conversations,
-                            },
-                          );
+                          setState(() {
+                            marked = !marked;
+                            chatsColRef.doc(widget.me.email).update(
+                              {
+                                FieldPath([widget.other.email, 'marked']):
+                                    marked
+                              },
+                            );
+                          });
                         },
                       ),
                       PopupMenuItem(
@@ -132,7 +126,7 @@ class _ChatItemState extends State<ChatItem> {
                           chatsColRef.doc(widget.me.email).update(
                             {
                               FieldPath(
-                                [widget.chat.email],
+                                [widget.other.email],
                               ): FieldValue.delete(),
                             },
                           );

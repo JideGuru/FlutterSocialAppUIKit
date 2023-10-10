@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 CollectionReference<Map<String, dynamic>> usersColRef =
-    FirebaseFirestore.instance.collection('users-v2');
+    FirebaseFirestore.instance.collection('users-v0');
 
 CollectionReference<Map<String, dynamic>> chatsColRef =
-    FirebaseFirestore.instance.collection('chats');
+    FirebaseFirestore.instance.collection('chats-v0');
 
 CollectionReference<Map<String, dynamic>> weightsColRef =
     FirebaseFirestore.instance.collection('weights');
@@ -12,6 +12,5 @@ CollectionReference<Map<String, dynamic>> weightsColRef =
 DocumentReference<Map<String, dynamic>> constsDocRef =
     FirebaseFirestore.instance.collection('constants').doc('constants');
 
-int toggle(int num) {
-  return (num + 1) % 2;
-}
+CollectionReference<Map<String, dynamic>> evalsColRef =
+    FirebaseFirestore.instance.collection('roommateEvals');

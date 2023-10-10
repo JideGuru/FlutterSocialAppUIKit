@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:social_app_ui/util/enum.dart';
 import 'package:social_app_ui/util/user.dart';
 import 'package:social_app_ui/views/screens/details/detail.dart';
 
 class OtherProfile extends StatelessWidget {
-  final User user, meanRoommates;
+  final User other;
   OtherProfile({
     super.key,
-    required this.user,
-    required this.meanRoommates,
+    required this.other,
   });
 
   @override
@@ -27,7 +27,10 @@ class OtherProfile extends StatelessWidget {
         ),
       ),
       body: SingleChildScrollView(
-        child: Detail(user: user, meanRoommate: meanRoommates),
+        child: Detail(
+          detailMode: Owner.OTHERS,
+          user: other,
+        ),
       ),
     );
   }

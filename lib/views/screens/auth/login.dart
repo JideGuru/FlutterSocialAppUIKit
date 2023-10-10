@@ -63,6 +63,19 @@ class _LoginState extends State<Login> {
             setState(() {});
             break;
           case FormMode.LOGIN:
+            // if (!FirebaseAuth.instance.currentUser!.emailVerified) {
+            //   FirebaseAuth.instance.currentUser!.sendEmailVerification();
+            //   auth.showAuthDialog(
+            //       context, '인증 링크를 메일로 다시 전송했습니다. 학교 메일 인증을 완료해주세요.');
+            // } else {
+            //   usersColRef.doc(email).get().then((value) {
+            //     if (value.exists) {
+            //       Navigate.pushPageReplacement(
+            //           context, InitScreen(email: email));
+            //     } else
+            //       Navigate.pushPageReplacement(context, Survey(email: email));
+            //   });
+            // }
             usersColRef.doc(email).get().then((value) {
               if (value.exists) {
                 Navigate.pushPageReplacement(context, InitScreen(email: email));
@@ -71,7 +84,7 @@ class _LoginState extends State<Login> {
             });
             break;
           case FormMode.FORGOT_PASSWORD:
-            Navigate.pushPageReplacement(context, InitScreen(email: email));
+            // Navigate.pushPageReplacement(context, InitScreen(email: email));
             break;
         }
     }

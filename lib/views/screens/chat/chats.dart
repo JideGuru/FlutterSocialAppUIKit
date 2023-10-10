@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:social_app_ui/util/chat.dart';
 import 'package:social_app_ui/util/data.dart';
@@ -7,10 +6,10 @@ import 'package:social_app_ui/util/user.dart';
 import 'package:social_app_ui/views/widgets/chat_item.dart';
 
 class Chats extends StatefulWidget {
-  final User user;
+  final User me;
   Chats({
     super.key,
-    required this.user,
+    required this.me,
   });
   @override
   _ChatsState createState() => _ChatsState();
@@ -35,35 +34,14 @@ class _ChatsState extends State<Chats>
         centerTitle: true,
       ),
       body: StreamBuilder(
-        stream: chatsColRef.doc(widget.user.email).snapshots(),
+        stream: chatsColRef.doc(widget.me.email).snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasData &&
               snapshot.connectionState == ConnectionState.active) {
-            var chatsFromSnapshot = getChatsFromSnapshot(snapshot);
-            var markedChats = [], chats = [];
-            if (chatsFromSnapshot.length > 0) {
-              chatsFromSnapshot.sort(
-                (a, b) {
-                  var aTime =
-                      (a.conversations.last['time'] as Timestamp).toDate();
-                  var bTime =
-                      (b.conversations.last['time'] as Timestamp).toDate();
-                  return bTime.compareTo(aTime);
-                },
-              );
-              markedChats = List.from(
-                chatsFromSnapshot.where(
-                  (chat) => chat.conversations.last['marked'],
-                ),
-              );
-              chats = List.from(
-                chatsFromSnapshot.where(
-                  (chat) => !chat.conversations.last['marked'],
-                ),
-              );
-              markedChats.addAll(chats);
-              chats = markedChats;
-            }
+            var chatFromFirestore = Chat.fromFirestore(snapshot.data!);
+            var chatMaps = chatFromFirestore.chatMaps;
+            var orderedEmails = chatFromFirestore.orderedEmails;
+
             return ListView.separated(
               padding: EdgeInsets.all(10),
               separatorBuilder: (BuildContext context, int index) {
@@ -76,27 +54,31 @@ class _ChatsState extends State<Chats>
                   ),
                 );
               },
-              itemCount: chats.length,
+              itemCount: orderedEmails.length,
               itemBuilder: (BuildContext context, int index) {
-                Chat chat = chats[index];
                 return FutureBuilder(
-                  future: usersColRef.doc(chat.email).get(),
+                  future: usersColRef.doc(orderedEmails[index]).get(),
                   builder: (context, snapshot) {
+                    var email = orderedEmails[index];
+                    var chats = chatMaps[email]['chats'];
+                    var marked = false;
+                    if ((chatMaps[email] as Map<String, dynamic>)
+                        .containsKey('marked'))
+                      marked = chatMaps[email]['marked'];
                     if (snapshot.connectionState == ConnectionState.done) {
                       var other = User.fromFirestore(snapshot.data!);
-                      var meanRoommates =
-                          User.fromFirestoreRoommates(snapshot.data!);
                       return ChatItem(
-                          me: widget.user,
-                          other: other,
-                          meanRoommates: meanRoommates,
-                          chat: chat);
+                        me: widget.me,
+                        other: other,
+                        chats: chats,
+                        marked: marked,
+                      );
                     } else
                       return Container();
                   },
                 );
               },
-            ).fadeInList(1, false);
+            ).fadeInList(3, false);
           } else
             return Container();
         },

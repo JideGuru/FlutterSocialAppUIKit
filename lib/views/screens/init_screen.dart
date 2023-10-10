@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:social_app_ui/util/data.dart';
 import 'package:social_app_ui/util/user.dart';
+import 'package:social_app_ui/views/screens/evaluate.dart';
 import 'package:social_app_ui/views/screens/main_screen.dart';
 
 class InitScreen extends StatelessWidget {
@@ -19,8 +20,10 @@ class InitScreen extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             User me = User.fromFirestore(snapshot.data!);
-            User meanRoommates = User.fromFirestoreRoommates(snapshot.data!);
-            return MainScreen(me: me, meanRoommates: meanRoommates,);
+            if (me.essentials['status'] == 2) {
+              return Evaluate(me: me);
+            }
+            else return MainScreen(me: me);
           } else
             return Center(
               child:

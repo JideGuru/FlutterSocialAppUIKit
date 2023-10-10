@@ -1,272 +1,222 @@
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
-import 'package:social_app_ui/util/animations.dart';
+import 'package:flutter_styled_toast/flutter_styled_toast.dart';
+import 'package:group_button/group_button.dart';
+import 'package:social_app_ui/util/configs/configs.dart';
 import 'package:social_app_ui/util/const.dart';
 import 'package:social_app_ui/util/data.dart';
 import 'package:social_app_ui/util/enum.dart';
-import 'package:social_app_ui/util/configs/list_config.dart';
 import 'package:social_app_ui/util/user.dart';
-import 'package:social_app_ui/views/widgets/custom_button.dart';
-import 'package:social_app_ui/views/widgets/custom_group_button.dart';
-import 'package:social_app_ui/views/widgets/custom_sf_slider.dart';
 import 'package:social_app_ui/views/widgets/custom_text_field.dart';
-import 'package:social_app_ui/util/extensions.dart';
 
 class Detail extends StatefulWidget {
-  late final User user, meanRoommate;
-  late final String userMode;
+  final User user;
   final Owner detailMode;
-  Detail({
+  const Detail({
+    super.key,
+    required this.detailMode,
     required this.user,
-    required this.meanRoommate,
-    this.userMode = 'own',
-    this.detailMode = Owner.OTHERS,
   });
+
   @override
-  _DetailState createState() => _DetailState();
+  State<Detail> createState() => _DetailState();
 }
 
 class _DetailState extends State<Detail> {
-  List<String> surveyList = List.from(essentialList)..addAll(questionList);
-
-  bool loading = false;
-  bool validate = false;
-  GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    return Container(
-      child: Row(
-        children: [
-          buildLottieContainer(),
-          Expanded(
-            child: AnimatedContainer(
-              duration: Duration(milliseconds: 500),
-              child: Center(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.1),
-                  child: buildFormContainer(),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+    List<String> details = List.from(essentialHintTexts.keys)
+      ..addAll(surveyHintTexts.keys);
+    details.add('etc');
 
-  buildLottieContainer() {
-    final screenWidth = MediaQuery.of(context).size.width;
-    return AnimatedContainer(
-      width: screenWidth < 700 ? 0 : screenWidth * 0.5,
-      duration: Duration(milliseconds: 500),
-      color: Theme.of(context).colorScheme.secondary.withOpacity(0.3),
-      child: Center(
-        child: Lottie.asset(
-          AppAnimations.chatAnimation,
-          height: 400,
-          fit: BoxFit.cover,
-        ),
-      ),
-    );
-  }
+    var meanSurveys = widget.user.calculateMeanRoommateSurveys();
 
-  buildFormContainer() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        SizedBox(
-          height: MediaQuery.of(context).size.height / 15,
-        ),
-        Text('${Constants.year}년도 ${Constants.semester}학기',
-                style: Theme.of(context).textTheme.headlineLarge)
-            .fadeInList(0, false),
-        SizedBox(height: 70.0),
-        Form(
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          key: formKey,
-          child: buildForm(),
-        ),
-        SizedBox(height: 20.0),
-        if (widget.detailMode != Owner.OTHERS) buildButton(),
-        SizedBox(height: 20.0),
-      ],
-    );
-  }
-
-  buildForm() {
-    var surveyCheck = widget.user.survey.length;
-    return surveyCheck > 0
-        ? Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              //essentials
-              widget.userMode == 'own'
-                  ? Column(
-                      children: [
-                        Essential('닉네임', 'nickname').fadeInList(3, false),
-                        Column(
-                          children: [
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                '성별',
-                                style: Theme.of(context).textTheme.labelMedium,
-                              ),
-                            ),
-                            SizedBox(height: 10.0),
-                            Text(sexList[widget.user.essentials['sex']]),
-                            SizedBox(height: 20.0),
-                          ],
-                        ).fadeInList(3, false),
-                        Essential('거주 예정 생활관', 'dormitory')
-                            .fadeInList(3, false),
-                        Essential('학번', 'studentNumber').fadeInList(3, false),
-                        Essential('단과대학', 'major').fadeInList(3, false),
-                        SizedBox(
-                          height: 40,
-                        ),
-                      ],
-                    )
-                  : SizedBox(),
-
-              // questions
-              CustomGroupButtons('흡연여부', 'smoking'),
-
-              CustomSfSliders('잠버릇', 'sleepingHabits'),
-              CustomSfSliders('관계', 'relationship'),
-              CustomSfSliders('취침시간', 'sleepAt'),
-              CustomSfSliders('방 청소', 'roomCleaning'),
-              CustomSfSliders('화장실 청소', 'restroomCleaning'),
-
-              CustomGroupButtons('초대', 'inviting'),
-              CustomGroupButtons('물건공유', 'sharing'),
-              CustomGroupButtons('통화', 'calling'),
-              CustomGroupButtons('이어폰', 'earphone'),
-              CustomGroupButtons('취식', 'eating'),
-              CustomGroupButtons('늦은 스탠드 사용', 'lateStand'),
-
-              widget.userMode == 'own'
-                  ? Column(
-                      children: [
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            '룸메이트 후보들에게 추가로 전하고 싶은 말',
-                            style: Theme.of(context).textTheme.labelMedium,
-                          ),
-                        ),
-                        SizedBox(height: 10.0),
-                        CustomTextField(
-                          enabled: widget.detailMode == Owner.OTHERS
-                              ? false
-                              : !loading,
-                          initialValue: widget.user.survey['etc'],
-                          hintText: '기타',
-                          textInputAction: TextInputAction.next,
-                          onChange: (String? val) {
-                            widget.user.survey['etc'] = val;
-                          },
-                        ),
-                        SizedBox(height: 20.0),
-                      ],
-                    ).fadeInList(3, false)
-                  : SizedBox(),
-            ],
-          )
-        : Center(
-            child: Text('이전 룸메이트들의 설문이 존재하지 않음'),
-          );
-  }
-
-  Column Essential(String label, String key) {
-    return Column(
-      children: [
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Text(
-            label,
-            style: Theme.of(context).textTheme.labelMedium,
-          ),
-        ),
-        SizedBox(height: 10.0),
-        Text(widget.user.essentials[key]),
-        SizedBox(height: 20.0),
-      ],
-    );
-  }
-
-  Column CustomSfSliders(hintText, String surveyMode) {
-    return Column(
-      children: [
-        CustomSfSlider(
-          disabled: widget.detailMode == Owner.OTHERS || Constants.auth,
-          hintText: hintText,
-          surveyMode: surveyMode,
-          user: widget.user,
-        ).fadeInList(3, false),
-        Visibility(
-          visible: widget.meanRoommate.survey.containsKey(surveyMode),
-          child: CustomSfSlider(
-            disabled: true,
-            surveyMode: surveyMode,
-            user: widget.meanRoommate,
-            userMode: 'roommate',
-          ).fadeInList(3, false),
-        ),
-        SizedBox(height: 40),
-      ],
-    );
-  }
-
-  Column CustomGroupButtons(String hintText, String surveyMode) {
-    return Column(
-      children: [
-        CustomGroupButton(
-          disabled: widget.detailMode == Owner.OTHERS || Constants.auth,
-          hintText: hintText,
-          surveyMode: surveyMode,
-          user: widget.user,
-        ).fadeInList(3, false),
-        Visibility(
-          visible: widget.meanRoommate.survey.containsKey(surveyMode),
-          child: CustomGroupButton(
-            disabled: true,
-            surveyMode: surveyMode,
-            user: widget.meanRoommate,
-            userMode: 'roommate',
-          ).fadeInList(3, false),
-        ),
-        SizedBox(height: 40),
-      ],
-    );
-  }
-
-  buildButton() {
-    return loading
-        ? Center(child: CircularProgressIndicator())
-        : Visibility(
-            visible: !Constants.auth,
-            child: CustomButton(
-              label: '저장',
-              onPressed: () {
-                usersColRef.doc(widget.user.email).update(
-                  {
-                    '${Constants.year}.${Constants.semester}.me':
-                        widget.user.toFirestore()
-                  },
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.1),
+      child: Column(
+        children: List.generate(
+          details.length,
+          (index) {
+            var key = details[index];
+            if (surveyKeys.contains(key)) {
+              if (surveyMaps[key]!.length != 2) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(surveyHintTexts[key]!),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Slider(
+                      min: 0,
+                      max: surveyMaps[key]!.length.toDouble(),
+                      value: (widget.user.surveys[key]).toDouble(),
+                      onChanged:
+                          (widget.detailMode == Owner.OTHERS || Constants.auth)
+                              ? null
+                              : (value) {
+                                  setState(() {
+                                    widget.user.surveys[key] = value.round();
+                                  });
+                                },
+                      onChangeEnd: (value) {
+                        usersColRef
+                            .doc(widget.user.email)
+                            .update({'surveys.$key': widget.user.surveys[key]});
+                        showToast(
+                          '저장되었습니다.',
+                          context: context,
+                          animation: StyledToastAnimation.fade,
+                        );
+                      },
+                    ),
+                    meanSurveys.length > 0
+                        ? Slider(
+                            value: meanSurveys[key]!.toDouble(),
+                            onChanged: null)
+                        : Container(),
+                    SizedBox(
+                      height: 50,
+                    ),
+                  ],
                 );
-              },
-              //pop up need
-            ),
-          ).fadeInList(4, false);
+              } else if (surveyMaps[key]!.length == 2) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(surveyHintTexts[key]!),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    GroupButton(
+                      controller: GroupButtonController(
+                        selectedIndex: widget.user.surveys[key],
+                        disabledIndexes: (widget.detailMode == Owner.OTHERS ||
+                                Constants.auth)
+                            ? [0, 1]
+                            : [],
+                      ),
+                      onSelected: (value, index, isSelected) {
+                        widget.user.surveys[key] = index;
+                        usersColRef
+                            .doc(widget.user.email)
+                            .update({'surveys.$key': widget.user.surveys[key]});
+                        showToast(
+                          '저장되었습니다.',
+                          context: context,
+                          animation: StyledToastAnimation.fade,
+                        );
+                      },
+                      buttons: surveyMaps[key]!,
+                    ),
+                    meanSurveys.length > 0
+                        ? GroupButton(
+                            buttons: surveyMaps[key]!,
+                            controller: GroupButtonController(
+                              selectedIndex: meanSurveys[key],
+                              disabledIndexes: [0, 1],
+                            ),
+                          )
+                        : Container(),
+                    SizedBox(
+                      height: 50,
+                    ),
+                  ],
+                );
+              } else
+                return Column();
+            } else if (essentialKeys.contains(key)) {
+              if (key == 'dormitory') {
+                return Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.center,
+                      child: Text(essentialHintTexts[key]!),
+                    ),
+                    SizedBox(height: 10.0),
+                    DropdownButton(
+                      value: widget.user.essentials[key],
+                      items: dormitoryList[widget.user.essentials['sex']].map(
+                        (String building) {
+                          return DropdownMenuItem(
+                            child: Text(building),
+                            value: dormitoryList[widget.user.essentials['sex']]
+                                .indexOf(building),
+                          );
+                        },
+                      ).toList(),
+                      onChanged: (widget.detailMode == Owner.OTHERS ||
+                              Constants.auth)
+                          ? null
+                          : (value) {
+                              widget.user.essentials[key] = value;
+                              usersColRef.doc(widget.user.email).update(
+                                  {'dormitory': widget.user.essentials[key]});
+                              showToast(
+                                '저장되었습니다.',
+                                context: context,
+                                animation: StyledToastAnimation.fade,
+                              );
+                              setState(() {});
+                            },
+                    ),
+                    SizedBox(height: 20.0),
+                  ],
+                );
+              } else {
+                var value = widget.user.essentials[key].toString();
+                if (key != 'nickname')
+                  value = essentialMaps[key]![widget.user.essentials[key]]
+                      .toString();
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(essentialHintTexts[key]!),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(value),
+                    SizedBox(
+                      height: 50,
+                    ),
+                  ],
+                );
+              }
+            } else if (key == 'etc') {
+              return Column(
+                children: [
+                  Text('etc hint text'),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  CustomTextField(
+                    enabled:
+                        widget.detailMode != Owner.OTHERS || !Constants.auth,
+                    initialValue: widget.user.surveys[key],
+                    onChange: (text) {
+                      usersColRef
+                          .doc(widget.user.email)
+                          .update({'surveys.etc': text});
+                      showToast(
+                        '저장되었습니다.',
+                        context: context,
+                        animation: StyledToastAnimation.fade,
+                      );
+                    },
+                  ),
+                  SizedBox(
+                    height: 50,
+                  ),
+                ],
+              );
+            } else
+              return Column();
+          },
+        ),
+      ),
+    );
   }
 }

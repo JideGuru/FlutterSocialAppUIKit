@@ -1,96 +1,61 @@
 import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
-import 'package:lottie/lottie.dart';
-import 'package:social_app_ui/util/animations.dart';
-import 'package:social_app_ui/util/configs/list_config.dart';
-import 'package:social_app_ui/util/const.dart';
+import 'package:social_app_ui/util/configs/configs.dart';
 import 'package:social_app_ui/util/data.dart';
+import 'package:social_app_ui/util/extensions.dart';
 import 'package:social_app_ui/util/router.dart';
 import 'package:social_app_ui/util/user.dart';
-import 'package:social_app_ui/util/validations.dart';
+import 'package:social_app_ui/views/screens/init_screen.dart';
 import 'package:social_app_ui/views/widgets/custom_button.dart';
-import 'package:social_app_ui/views/widgets/custom_dropdown_button.dart';
-import 'package:social_app_ui/views/widgets/custom_group_button.dart';
-import 'package:social_app_ui/views/widgets/custom_sf_slider.dart';
 import 'package:social_app_ui/views/widgets/custom_text_field.dart';
-import 'package:social_app_ui/util/extensions.dart';
-
-import 'main_screen.dart';
 
 class Survey extends StatefulWidget {
   final String email;
   Survey({
+    super.key,
     required this.email,
   });
+
   @override
-  _SurveyState createState() => _SurveyState();
+  State<Survey> createState() => _SurveyState();
 }
 
 class _SurveyState extends State<Survey> {
-  List<String> surveyList = List.from(essentialList)..addAll(questionList);
-  String surveyMode = 'introduction';
-  int surveyIndex = 0;
-
-  late User user;
-  late String dropdownDormValue, dropdownStuNumValue, dropdownMajorValue;
-
-  bool loading = false;
-  bool validate = false;
-  GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
-  nextStep() async {
-    if (surveyIndex == surveyList.length) {
-      Navigate.pushPageReplacement(
-          context,
-          MainScreen(
-            me: user,
-            meanRoommates: User(email: '', essentials: {}, survey: {}),
-          ));
-    }
-    FormState form = formKey.currentState!;
-    form.save();
-    if (!form.validate()) {
-      validate = true;
-      mounted ? setState(() {}) : dispose();
-    } else {
-      while (true) {
-        surveyMode = surveyList[surveyIndex++];
-        if (surveyMode != 'roommate' && surveyMode != 'confidence') break;
-      }
-      mounted ? setState(() {}) : dispose();
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    user = User.init(widget.email);
-    usersColRef.doc(user.email).set({});
-    chatsColRef.doc(user.email).set({});
-    dropdownDormValue = user.essentials['dormitory'];
-    dropdownStuNumValue = user.essentials['studentNumber'];
-    dropdownMajorValue = user.essentials['major'];
-  }
-
+  late User me = User.onlyEmail(widget.email);
+  int index = -1;
+  List<String> keys = List.from(essentialHintTexts.keys)..addAll(surveyKeys);
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    var key = 'introduction';
+    if (index >= 0 && index < keys.length)
+      key = keys[index];
+    else if (index >= keys.length) key = 'etc';
     return Scaffold(
-      body: Container(
-        child: Row(
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.1),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            buildLottieContainer(),
-            Expanded(
-              child: AnimatedContainer(
-                duration: Duration(milliseconds: 500),
-                child: Center(
-                  child: Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: screenWidth * 0.1),
-                    child: buildFormContainer(),
-                  ),
-                ),
-              ),
+            form(key).fadeInList(3, false),
+            CustomButton(
+              onPressed: () {
+                setState(
+                  () {
+                    if (index < keys.length) {
+                      index++;
+                    } else {
+                      usersColRef.doc(me.email).set(me.toFirestore());
+                      chatsColRef.doc(me.email).set({});
+                      Navigate.pushPageReplacement(
+                        context,
+                        InitScreen(email: me.email),
+                      );
+                    }
+                  },
+                );
+              },
             ),
           ],
         ),
@@ -98,320 +63,201 @@ class _SurveyState extends State<Survey> {
     );
   }
 
-  buildLottieContainer() {
-    final screenWidth = MediaQuery.of(context).size.width;
-    return AnimatedContainer(
-      width: screenWidth < 700 ? 0 : screenWidth * 0.5,
-      duration: Duration(milliseconds: 500),
-      color: Theme.of(context).colorScheme.secondary.withOpacity(0.3),
-      child: Center(
-        child: Lottie.asset(
-          AppAnimations.chatAnimation,
-          height: 400,
-          fit: BoxFit.cover,
-        ),
-      ),
-    );
-  }
-
-  buildFormContainer() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        Text(
-          '설문조사',
-          style: TextStyle(
-            fontSize: 40.0,
-            fontWeight: FontWeight.bold,
-          ),
-        ).fadeInList(0, false),
-        SizedBox(height: 70.0),
-        Form(
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          key: formKey,
-          child: buildForm(),
-        ),
-        SizedBox(height: 20.0),
-        buildButton(),
-      ],
-    );
-  }
-
-  buildForm() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        Visibility(
-          visible: surveyMode == 'introduction',
-          child: Column(
-            children: [
-              SizedBox(height: 10.0),
-              Align(
-                alignment: Alignment.center,
-                child: Text('룸메이트 후보들에게 나에 대해 알려주세요.'),
-              ),
-            ],
-          ).fadeInList(3, false),
-        ),
-
-        //essentials
-        Visibility(
-          visible: surveyMode == 'nickname',
-          child: Column(
-            children: [
-              Align(
-                alignment: Alignment.center,
-                child: Text('닉네임을 알려주세요.'),
-              ),
-              SizedBox(height: 10.0),
-              CustomTextField(
-                enabled: !loading,
-                hintText: "닉네임",
-                textInputAction: TextInputAction.next,
-                validateFunction: Validations.validateNickname,
-                onChange: (String? val) {
-                  user.essentials[surveyMode] = val ?? '';
+  Column form(String key) {
+    if (surveyKeys.contains(key)) {
+      if (surveyMaps[key]!.length != 2) {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(surveyHintTexts[key]!),
+            SizedBox(
+              height: 10,
+            ),
+            Slider(
+              min: 0,
+              max: surveyMaps[key]!.length.toDouble(),
+              value: (me.surveys[key]).toDouble(),
+              onChanged: (value) {
+                setState(() {
+                  me.surveys[key] = value.round();
+                });
+              },
+            ),
+            SizedBox(
+              height: 50,
+            ),
+          ],
+        );
+      } else if (surveyMaps[key]!.length == 2) {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(surveyHintTexts[key]!),
+            SizedBox(
+              height: 10,
+            ),
+            GroupButton(
+              controller: GroupButtonController(selectedIndex: 0),
+              onSelected: (value, index, isSelected) {
+                me.surveys[key] = index;
+              },
+              buttons: surveyMaps[key]!,
+            ),
+            SizedBox(
+              height: 50,
+            ),
+          ],
+        );
+      } else
+        return Column();
+    } else {
+      if (key == 'introduction') {
+        return Column(
+          children: [
+            Text('introduction hint text'),
+            SizedBox(
+              height: 60,
+            ),
+          ],
+        );
+      } else if (key == 'etc') {
+        me.surveys[key] = '';
+        return Column(
+          children: [
+            Text('etc hint text'),
+            SizedBox(
+              height: 10,
+            ),
+            CustomTextField(
+              onChange: (text) {
+                me.surveys[key] = text;
+              },
+            ),
+            SizedBox(
+              height: 50,
+            ),
+          ],
+        );
+      } else if (key == 'nickname') {
+        return Column(
+          children: [
+            Text('nickname hint text'),
+            SizedBox(
+              height: 10,
+            ),
+            CustomTextField(
+              onChange: (text) {
+                me.essentials[key] = text;
+              },
+            ),
+            SizedBox(
+              height: 50,
+            ),
+          ],
+        );
+      } else if (key == 'major') {
+        return Column(
+          children: [
+            Align(
+              alignment: Alignment.center,
+              child: Text(essentialHintTexts[key]!),
+            ),
+            SizedBox(height: 10.0),
+            DropdownButton(
+              value: me.essentials[key],
+              items: majorList.map(
+                (String major) {
+                  return DropdownMenuItem(
+                    child: Text(major),
+                    value: majorList.indexOf(major),
+                  );
                 },
-              ),
-              SizedBox(height: 20.0),
-            ],
-          ).fadeInList(3, false),
-        ),
-        Visibility(
-          visible: surveyMode == 'sex',
-          child: Column(
-            children: [
-              Align(
-                alignment: Alignment.center,
-                child: Text('성별을 알려주세요.'),
-              ),
-              SizedBox(height: 10.0),
-              GroupButton(
-                controller: GroupButtonController(
-                  selectedIndex: 0,
-                ),
-                isRadio: true,
-                buttons: sexList,
-                onSelected: (value, index, isSelected) {
-                  user.essentials[surveyMode] = index;
+              ).toList(),
+              onChanged: (value) {
+                me.essentials[key] = value;
+                setState(() {});
+              },
+            ),
+            SizedBox(height: 20.0),
+          ],
+        );
+      } else if (key == 'studentNumber') {
+        return Column(
+          children: [
+            Align(
+              alignment: Alignment.center,
+              child: Text(essentialHintTexts[key]!),
+            ),
+            SizedBox(height: 10.0),
+            DropdownButton(
+              value: me.essentials[key],
+              items: studentNumberList.map(
+                (String num) {
+                  return DropdownMenuItem(
+                    child: Text(num),
+                    value: studentNumberList.indexOf(num),
+                  );
                 },
-              ),
-              SizedBox(height: 20.0),
-            ],
-          ).fadeInList(3, false),
-        ),
-        Visibility(
-          visible: surveyMode == 'dormitory',
-          child: Column(
-            children: [
-              Align(
-                alignment: Alignment.center,
-                child: Text('거주 예정 생활관을 알려주세요.'),
-              ),
-              SizedBox(height: 10.0),
-              CustomDropdownButton(
-                items: dormitoryList,
-                surveyMode: surveyMode,
-                user: user,
-              ),
-              SizedBox(height: 20.0),
-            ],
-          ).fadeInList(3, false),
-        ),
-        Visibility(
-          visible: surveyMode == 'studentNumber',
-          child: Column(
-            children: [
-              Align(
-                alignment: Alignment.center,
-                child: Text('학번을 알려주세요.'),
-              ),
-              SizedBox(height: 10.0),
-              CustomDropdownButton(
-                items: studentNumberList,
-                surveyMode: surveyMode,
-                user: user,
-              ),
-              SizedBox(height: 20.0),
-            ],
-          ).fadeInList(3, false),
-        ),
-        Visibility(
-          visible: surveyMode == 'major',
-          child: Column(
-            children: [
-              Align(
-                alignment: Alignment.center,
-                child: Text('단과대학을 알려주세요.'),
-              ),
-              SizedBox(height: 10.0),
-              CustomDropdownButton(
-                items: majorList,
-                surveyMode: surveyMode,
-                user: user,
-              ),
-              SizedBox(height: 20.0),
-            ],
-          ).fadeInList(3, false),
-        ),
-
-        // questions
-        Visibility(
-          visible: surveyMode == 'smoking',
-          child: CustomGroupButton(
-            hintText: '흡연 여부를 알려주세요.',
-            surveyMode: surveyMode,
-            user: user,
-          ),
-        ),
-        Visibility(
-          visible: surveyMode == 'sleepingHabits',
-          child: Column(
-            children: [
-              CustomSfSlider(
-                hintText: '잠버릇을 알려주세요.',
-                surveyMode: surveyMode,
-                user: user,
-              ),
-            ],
-          ),
-        ),
-        Visibility(
-          visible: surveyMode == 'relationship',
-          child: Column(
-            children: [
-              CustomSfSlider(
-                hintText: '룸메이트와 맺고 싶은 관계를 알려주세요.',
-                surveyMode: surveyMode,
-                user: user,
-              ),
-            ],
-          ),
-        ),
-        Visibility(
-          visible: surveyMode == 'sleepAt',
-          child: Column(
-            children: [
-              CustomSfSlider(
-                hintText: '잠드는 시간을 알려주세요.',
-                surveyMode: surveyMode,
-                user: user,
-              ),
-            ],
-          ),
-        ),
-        Visibility(
-          visible: surveyMode == 'roomCleaning',
-          child: Column(
-            children: [
-              CustomSfSlider(
-                hintText: '방 청소 주기를 알려주세요.',
-                surveyMode: surveyMode,
-                user: user,
-              ),
-            ],
-          ),
-        ),
-        Visibility(
-          visible: surveyMode == 'restroomCleaning',
-          child: Column(
-            children: [
-              CustomSfSlider(
-                hintText: '화장실 청소 주기를 알려주세요.',
-                surveyMode: surveyMode,
-                user: user,
-              ),
-            ],
-          ),
-        ),
-        Visibility(
-          visible: surveyMode == 'inviting',
-          child: CustomGroupButton(
-            hintText: '초대 선호도를 알려주세요.',
-            surveyMode: surveyMode,
-            user: user,
-          ),
-        ),
-        Visibility(
-          visible: surveyMode == 'sharing',
-          child: CustomGroupButton(
-            hintText: '물건공유 선호도를 알려주세요.',
-            surveyMode: surveyMode,
-            user: user,
-          ),
-        ),
-        Visibility(
-          visible: surveyMode == 'calling',
-          child: CustomGroupButton(
-            hintText: '실내통화 선호도를 알려주세요.',
-            surveyMode: surveyMode,
-            user: user,
-          ),
-        ),
-        Visibility(
-          visible: surveyMode == 'earphone',
-          child: CustomGroupButton(
-            hintText: '이어폰 사용 선호도를 알려주세요.',
-            surveyMode: surveyMode,
-            user: user,
-          ),
-        ),
-        Visibility(
-          visible: surveyMode == 'eating',
-          child: CustomGroupButton(
-            hintText: '실내취식 선호도를 알려주세요.',
-            surveyMode: surveyMode,
-            user: user,
-          ),
-        ),
-        Visibility(
-          visible: surveyMode == 'lateStand',
-          child: CustomGroupButton(
-            hintText: '늦은 스탠드 사용 선호도를 알려주세요.',
-            surveyMode: surveyMode,
-            user: user,
-          ),
-        ),
-        Visibility(
-          visible: surveyMode == 'etc',
-          child: Column(
-            children: [
-              Align(
-                alignment: Alignment.center,
-                child: Text('룸메이트 후보들에게 추가로 전하고 싶은 말을 알려주세요.'),
-              ),
-              SizedBox(height: 10.0),
-              CustomTextField(
-                enabled: !loading,
-                hintText: '기타',
-                textInputAction: TextInputAction.next,
-                onChange: (String? val) {
-                  user.survey[surveyMode] = val ?? '';
+              ).toList(),
+              onChanged: (value) {
+                me.essentials[key] = value;
+                setState(() {});
+              },
+            ),
+            SizedBox(height: 20.0),
+          ],
+        );
+      } else if (key == 'dormitory') {
+        return Column(
+          children: [
+            Align(
+              alignment: Alignment.center,
+              child: Text(essentialHintTexts[key]!),
+            ),
+            SizedBox(height: 10.0),
+            DropdownButton(
+              value: me.essentials[key],
+              items: dormitoryList[me.essentials['sex']].map(
+                (String building) {
+                  return DropdownMenuItem(
+                    child: Text(building),
+                    value: dormitoryList[me.essentials['sex']].indexOf(building),
+                  );
                 },
-              ),
-              SizedBox(height: 20.0),
-            ],
-          ).fadeInList(3, false),
-        ),
-      ],
-    );
-  }
-
-  buildButton() {
-    return loading
-        ? Center(child: CircularProgressIndicator())
-        : CustomButton(
-            label: '다음',
-            onPressed: () {
-              usersColRef.doc(user.email).update(
-                {
-                  '${Constants.year}.${Constants.semester}.me':
-                      user.toFirestore(),
-                },
-              );
-              nextStep();
-            }).fadeInList(4, false);
+              ).toList(),
+              onChanged: (value) {
+                me.essentials[key] = value;
+                setState(() {});
+              },
+            ),
+            SizedBox(height: 20.0),
+          ],
+        );
+      } else if (key == 'sex') {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(essentialHintTexts[key]!),
+            SizedBox(
+              height: 10,
+            ),
+            GroupButton(
+              controller: GroupButtonController(selectedIndex: 0),
+              onSelected: (value, index, isSelected) {
+                me.essentials[key] = index;
+              },
+              buttons: essentialMaps[key]!,
+            ),
+            SizedBox(
+              height: 50,
+            ),
+          ],
+        );
+      } else
+        return Column();
+    }
   }
 }
