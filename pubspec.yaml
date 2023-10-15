@@ -39,6 +39,8 @@ dependencies:
   circular_chart_flutter: ^0.0.2
   syncfusion_flutter_core: ^22.2.12
   flutter_styled_toast: ^2.2.1
+  firebase_messaging: ^14.6.9
+  http: ^1.1.0
 
 dev_dependencies:
   flutter_test:

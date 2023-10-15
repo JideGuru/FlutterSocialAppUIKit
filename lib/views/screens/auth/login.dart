@@ -6,6 +6,7 @@ import 'package:social_app_ui/util/auth.dart';
 import 'package:social_app_ui/util/const.dart';
 import 'package:social_app_ui/util/data.dart';
 import 'package:social_app_ui/util/enum.dart';
+import 'package:social_app_ui/util/notify.dart';
 import 'package:social_app_ui/util/router.dart';
 import 'package:social_app_ui/util/validations.dart';
 import 'package:social_app_ui/views/screens/init_screen.dart';
@@ -78,6 +79,7 @@ class _LoginState extends State<Login> {
             // }
             usersColRef.doc(email).get().then((value) {
               if (value.exists) {
+                Notify.updateToken(email: email);
                 Navigate.pushPageReplacement(context, InitScreen(email: email));
               } else
                 Navigate.pushPageReplacement(context, Survey(email: email));

@@ -194,7 +194,7 @@ class _DetailState extends State<Detail> {
                   ),
                   CustomTextField(
                     enabled:
-                        widget.detailMode != Owner.OTHERS || !Constants.auth,
+                        widget.detailMode != Owner.OTHERS && !Constants.auth,
                     initialValue: widget.user.surveys[key],
                     onChange: (text) {
                       usersColRef

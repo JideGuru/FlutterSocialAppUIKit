@@ -4,6 +4,7 @@ import 'package:social_app_ui/util/chat.dart';
 import 'package:social_app_ui/util/data.dart';
 import 'package:social_app_ui/util/enum.dart';
 import 'package:social_app_ui/util/extensions.dart';
+import 'package:social_app_ui/util/notify.dart';
 import 'package:social_app_ui/util/router.dart';
 import 'package:social_app_ui/util/user.dart';
 import 'package:social_app_ui/views/screens/other_profile.dart';
@@ -241,6 +242,11 @@ class _ConversationState extends State<Conversation> {
                                         FieldPath([widget.me.email, 'chats']):
                                             FieldValue.arrayUnion([msg])
                                       },
+                                    );
+                                    Notify.notify(
+                                      from: widget.me,
+                                      to: widget.me,
+                                      message: msg['message'],
                                     );
                                     controller.text = '';
                                   },

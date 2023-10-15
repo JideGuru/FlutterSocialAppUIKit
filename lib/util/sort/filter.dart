@@ -15,7 +15,6 @@ class ContentsFilter {
     var ordered = getOrderedUsers(me, usersSnapshot, weights);
     orderedUsers = ordered[0];
     orderedScores = ordered[1];
-    print('calculed');
   }
 
   Map<String, double> getWeightDomains(DocumentSnapshot documentSnapshot) {

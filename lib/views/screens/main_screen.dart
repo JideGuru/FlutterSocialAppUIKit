@@ -29,7 +29,10 @@ class _MainScreenState extends State<MainScreen> {
         onPageChanged: onPageChanged,
         children: <Widget>[
           if (homeFlag) Home(me: widget.me),
-          MyProfile(me: widget.me),
+          MyProfile(
+            me: widget.me,
+            onStatusChanged: onStatusChagned,
+          ),
           Chats(me: widget.me),
           Settings(),
         ],
@@ -75,6 +78,18 @@ class _MainScreenState extends State<MainScreen> {
   void dispose() {
     super.dispose();
     _pageController.dispose();
+  }
+
+  void onStatusChagned(int index) {
+    mounted
+        ? setState(() {
+            if (index == 0)
+              this._page = 1;
+            else
+              this._page = 0;
+            _pageController.jumpToPage(this._page);
+          })
+        : dispose();
   }
 
   void onPageChanged(int page) {
