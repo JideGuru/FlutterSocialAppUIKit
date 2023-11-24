@@ -1,7 +1,7 @@
 # 🔥🔥 Flutter Social App Concept [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)  [![Twitter Follow](https://img.shields.io/twitter/follow/iamjideguru.svg?style=social)](https://twitter.com/iamjideguru)
 Flutter representation of a Social App Concept i found on Uplabs.
 
-Star⭐ the repo if you like what you see😉.
+Star⭐ the repo if you like what you see.
 
 
 Images are from [Unsplash](https://unsplash.com)
