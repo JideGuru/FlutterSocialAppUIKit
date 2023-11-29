@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:social_app_ui/util/chat.dart';
+import 'package:social_app_ui/util/configs/configs.dart';
 import 'package:social_app_ui/util/data.dart';
 import 'package:social_app_ui/util/extensions.dart';
 import 'package:social_app_ui/util/user.dart';
@@ -28,7 +29,7 @@ class _ChatsState extends State<Chats>
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "채팅",
+          consts['chat'].toString(),
           style: Theme.of(context).textTheme.bodyLarge,
         ),
         centerTitle: true,

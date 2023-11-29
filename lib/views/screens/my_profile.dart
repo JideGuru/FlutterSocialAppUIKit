@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:social_app_ui/util/configs/configs.dart';
 import 'package:social_app_ui/util/data.dart';
 import 'package:social_app_ui/util/enum.dart';
 import 'package:social_app_ui/util/extensions.dart';
@@ -22,7 +23,7 @@ class MyProfile extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "내 프로필",
+          consts['my-profile'].toString(),
           style: Theme.of(context).textTheme.bodyLarge,
         ),
         centerTitle: true,
@@ -40,13 +41,13 @@ class MyProfile extends StatelessWidget {
               SizedBox(height: 25),
               Text(me.email, style: Theme.of(context).textTheme.bodyLarge),
               SizedBox(height: 25),
-              Text('룸메이트를 구하는 중인가요?'),
+              Text(consts['finding'].toString()),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ToggleButtons(
                   children: [
-                    Text('네'),
-                    Text('아니요'),
+                    Text(consts['yes'].toString()),
+                    Text(consts['no'].toString()),
                   ],
                   isSelected: [
                     me.essentials['status'] == 0,
@@ -63,7 +64,7 @@ class MyProfile extends StatelessWidget {
               ),
               SizedBox(height: 50),
               Text(
-                "아래에서 설문을 수정할 수 있습니다.",
+                consts['modify'].toString(),
                 style: TextStyle(),
               ),
               SizedBox(height: screenHeight * 0.1),

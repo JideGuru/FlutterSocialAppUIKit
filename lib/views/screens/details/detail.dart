@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:group_button/group_button.dart';
 import 'package:social_app_ui/util/configs/configs.dart';
-import 'package:social_app_ui/util/const.dart';
 import 'package:social_app_ui/util/data.dart';
 import 'package:social_app_ui/util/enum.dart';
 import 'package:social_app_ui/util/user.dart';
@@ -28,6 +27,9 @@ class _DetailState extends State<Detail> {
     List<String> details = List.from(essentialHintTexts.keys)
       ..addAll(surveyHintTexts.keys);
     details.add('etc');
+    print(details);
+    print(surveyMaps);
+    print(surveyKeys);
 
     var meanSurveys = widget.user.calculateMeanRoommateSurveys();
 
@@ -52,20 +54,20 @@ class _DetailState extends State<Detail> {
                       min: 0,
                       max: surveyMaps[key]!.length.toDouble(),
                       value: (widget.user.surveys[key]).toDouble(),
-                      onChanged:
-                          (widget.detailMode == Owner.OTHERS || Constants.auth)
-                              ? null
-                              : (value) {
-                                  setState(() {
-                                    widget.user.surveys[key] = value.round();
-                                  });
-                                },
+                      onChanged: (widget.detailMode == Owner.OTHERS ||
+                              variables['auth'])
+                          ? null
+                          : (value) {
+                              setState(() {
+                                widget.user.surveys[key] = value.round();
+                              });
+                            },
                       onChangeEnd: (value) {
                         usersColRef
                             .doc(widget.user.email)
                             .update({'surveys.$key': widget.user.surveys[key]});
                         showToast(
-                          '저장되었습니다.',
+                          consts['saved'].toString(),
                           context: context,
                           animation: StyledToastAnimation.fade,
                         );
@@ -94,7 +96,7 @@ class _DetailState extends State<Detail> {
                       controller: GroupButtonController(
                         selectedIndex: widget.user.surveys[key],
                         disabledIndexes: (widget.detailMode == Owner.OTHERS ||
-                                Constants.auth)
+                                variables['auth'])
                             ? [0, 1]
                             : [],
                       ),
@@ -104,7 +106,7 @@ class _DetailState extends State<Detail> {
                             .doc(widget.user.email)
                             .update({'surveys.$key': widget.user.surveys[key]});
                         showToast(
-                          '저장되었습니다.',
+                          consts['saved'].toString(),
                           context: context,
                           animation: StyledToastAnimation.fade,
                         );
@@ -148,14 +150,14 @@ class _DetailState extends State<Detail> {
                         },
                       ).toList(),
                       onChanged: (widget.detailMode == Owner.OTHERS ||
-                              Constants.auth)
+                              variables['auth'])
                           ? null
                           : (value) {
                               widget.user.essentials[key] = value;
                               usersColRef.doc(widget.user.email).update(
                                   {'dormitory': widget.user.essentials[key]});
                               showToast(
-                                '저장되었습니다.',
+                                consts['saved'].toString(),
                                 context: context,
                                 animation: StyledToastAnimation.fade,
                               );
@@ -188,20 +190,20 @@ class _DetailState extends State<Detail> {
             } else if (key == 'etc') {
               return Column(
                 children: [
-                  Text('etc hint text'),
+                  Text(consts['etc'].toString()),
                   SizedBox(
                     height: 10,
                   ),
                   CustomTextField(
                     enabled:
-                        widget.detailMode != Owner.OTHERS && !Constants.auth,
+                        widget.detailMode != Owner.OTHERS && !variables['auth'],
                     initialValue: widget.user.surveys[key],
                     onChange: (text) {
                       usersColRef
                           .doc(widget.user.email)
                           .update({'surveys.etc': text});
                       showToast(
-                        '저장되었습니다.',
+                        consts['etc'].toString(),
                         context: context,
                         animation: StyledToastAnimation.fade,
                       );

@@ -116,7 +116,7 @@ class _SurveyState extends State<Survey> {
       if (key == 'introduction') {
         return Column(
           children: [
-            Text('introduction hint text'),
+            Text(consts['introduction'].toString()),
             SizedBox(
               height: 60,
             ),
@@ -126,7 +126,7 @@ class _SurveyState extends State<Survey> {
         me.surveys[key] = '';
         return Column(
           children: [
-            Text('etc hint text'),
+            Text(consts['etc'].toString()),
             SizedBox(
               height: 10,
             ),
@@ -143,7 +143,7 @@ class _SurveyState extends State<Survey> {
       } else if (key == 'nickname') {
         return Column(
           children: [
-            Text('nickname hint text'),
+            Text(essentialHintTexts['nickname'].toString()),
             SizedBox(
               height: 10,
             ),

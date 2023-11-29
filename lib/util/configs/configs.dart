@@ -1,4 +1,12 @@
-import 'package:social_app_ui/util/const.dart';
+String appName = '';
+
+Map<String, dynamic> variables = {
+  'current-year': '',
+  'current-semester': '',
+  'auth': false,
+};
+
+Map<String, String> consts = {};
 
 List<String> essentialKeys = [
   'status',
@@ -53,7 +61,7 @@ Map<String, String> surveyHintTexts = {
   'lateStand': 'lateStand hint text',
 };
 
-Map<String, List<String>> essentialMaps = {
+Map<String, List<dynamic>> essentialMaps = {
   'sex': [
     '남성',
     '여성',
@@ -89,13 +97,10 @@ Map<String, List<String>> essentialMaps = {
     '치과대학',
     '환경생명자원대학'
   ],
-  'studentNumber': List.generate(
-    10,
-    (index) => ((int.parse(Constants.year) - 2000) - index).toString(),
-  ),
+  'studentNumber': [],
 };
 
-Map<String, List<String>> surveyMaps = {
+Map<String, List<dynamic>> surveyMaps = {
   'smoking': [
     '비흡연',
     '흡연',
@@ -204,8 +209,7 @@ List<String> majorList = [
   '환경생명자원대학',
 ];
 
-List<String> studentNumberList = List.generate(
-    10, (index) => ((int.parse(Constants.year) - 2000) - index).toString());
+List<String> studentNumberList = [];
 
 Map<String, String> tagMaps = {
   'total': '전체',

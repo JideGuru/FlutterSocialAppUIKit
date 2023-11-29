@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:social_app_ui/util/configs/configs.dart';
 import 'package:social_app_ui/util/user.dart';
 import 'package:social_app_ui/views/screens/chat/chats.dart';
 import 'package:social_app_ui/views/screens/home.dart';
@@ -43,19 +44,19 @@ class _MainScreenState extends State<MainScreen> {
           if (homeFlag)
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
-              label: '홈',
+              label: consts['home'].toString(),
             ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
-            label: '내 프로필',
+            label: consts['my-profile'].toString(),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.message),
-            label: '채팅',
+            label: consts['chat'].toString(),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
-            label: '설정',
+            label: consts['setting'].toString(),
           ),
         ],
         onTap: navigationTapped,

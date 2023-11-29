@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:social_app_ui/util/configs/list_config.dart';
+import 'package:social_app_ui/util/configs/configs.dart';
 import 'package:social_app_ui/util/enum.dart';
 import 'package:social_app_ui/util/configs/theme_config.dart';
 import 'package:social_app_ui/util/router.dart';
@@ -79,7 +79,7 @@ class ProfileCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        "이런 점이 비슷해요",
+                        consts['commonality'].toString(),
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -120,7 +120,7 @@ class ProfileCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        "이런 점이 달라요",
+                        consts['difference'].toString(),
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -155,7 +155,7 @@ class ProfileCard extends StatelessWidget {
                     children: [
                       InprofileButton(
                         icon: Icons.description,
-                        label: '프로필',
+                        label: consts['profile'].toString(),
                         onPressed: () {
                           Navigate.pushPage(
                             context,
@@ -168,7 +168,7 @@ class ProfileCard extends StatelessWidget {
                       ),
                       InprofileButton(
                         icon: Icons.chat_bubble,
-                        label: '새 채팅',
+                        label: consts['chat'].toString(),
                         onPressed: () {
                           Navigate.pushPage(
                             context,
@@ -194,8 +194,8 @@ class ProfileCard extends StatelessWidget {
   List<String> visualize(List<String> est) {
     List<String> list = [];
     for (var item in est) {
-      var tagIndex = questionList.indexOf(item) + 1;
-      list.add(tagList[tagIndex]);
+      var tagIndex = surveyMaps.keys.toList().indexOf(item) + 1;
+      list.add(tagMaps.keys.toList()[tagIndex]);
     }
     return list;
   }

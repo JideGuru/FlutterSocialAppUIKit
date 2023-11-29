@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:social_app_ui/util/animations.dart';
 import 'package:social_app_ui/util/auth.dart';
-import 'package:social_app_ui/util/const.dart';
+import 'package:social_app_ui/util/configs/configs.dart';
 import 'package:social_app_ui/util/data.dart';
 import 'package:social_app_ui/util/enum.dart';
 import 'package:social_app_ui/util/notify.dart';
@@ -58,8 +58,7 @@ class _LoginState extends State<Login> {
         switch (formMode) {
           case FormMode.REGISTER:
             FirebaseAuth.instance.currentUser!.sendEmailVerification();
-            auth.showAuthDialog(
-                context, '인증 링크를 메일로 전송했습니다. 학교 메일 인증을 완료해주세요.');
+            auth.showAuthDialog(context, consts['auth-link'].toString());
             formMode = FormMode.LOGIN;
             setState(() {});
             break;
@@ -67,7 +66,7 @@ class _LoginState extends State<Login> {
             // if (!FirebaseAuth.instance.currentUser!.emailVerified) {
             //   FirebaseAuth.instance.currentUser!.sendEmailVerification();
             //   auth.showAuthDialog(
-            //       context, '인증 링크를 메일로 다시 전송했습니다. 학교 메일 인증을 완료해주세요.');
+            //       context, consts['auth-link-again'].toString());
             // } else {
             //   usersColRef.doc(email).get().then((value) {
             //     if (value.exists) {
@@ -139,7 +138,7 @@ class _LoginState extends State<Login> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Text(
-          '${Constants.appName}',
+          '${appName}',
           style: TextStyle(fontSize: 40.0, fontWeight: FontWeight.bold),
         ).fadeInList(0, false),
         SizedBox(height: 70.0),
@@ -160,7 +159,7 @@ class _LoginState extends State<Login> {
                     formMode = FormMode.FORGOT_PASSWORD;
                     setState(() {});
                   },
-                  child: Text('비밀번호를 잊으셨나요?'),
+                  child: Text(consts['forget-password'].toString()),
                 ),
               ),
             ],
@@ -174,7 +173,7 @@ class _LoginState extends State<Login> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                '계정이 없으신가요?',
+                consts['register'].toString(),
                 style: Theme.of(context).textTheme.bodySmall,
               ),
               TextButton(
@@ -182,7 +181,7 @@ class _LoginState extends State<Login> {
                   formMode = FormMode.REGISTER;
                   setState(() {});
                 },
-                child: Text('가입하기'),
+                child: Text(consts['register'].toString()),
               ),
             ],
           ),
@@ -192,14 +191,14 @@ class _LoginState extends State<Login> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('이미 계정이 있으신가요?',
+              Text(consts['registered-already'].toString(),
                   style: Theme.of(context).textTheme.bodySmall),
               TextButton(
                 onPressed: () {
                   formMode = FormMode.LOGIN;
                   setState(() {});
                 },
-                child: Text('로그인하기'),
+                child: Text(consts['login'].toString()),
               ),
             ],
           ),
@@ -221,7 +220,7 @@ class _LoginState extends State<Login> {
                   : screenWidth * 0.8,
               child: CustomTextField(
                 enabled: !loading,
-                hintText: "학교 이메일",
+                hintText: consts['university-email'].toString(),
                 textInputAction: TextInputAction.next,
                 validateFunction: Validations.validateEmail,
                 onChange: (String? val) {
@@ -239,7 +238,7 @@ class _LoginState extends State<Login> {
               SizedBox(height: 20.0),
               CustomTextField(
                 enabled: !loading,
-                hintText: "비밀번호",
+                hintText: consts['password'].toString(),
                 textInputAction: TextInputAction.done,
                 validateFunction: Validations.validatePassword,
                 submitAction: login,
@@ -259,7 +258,8 @@ class _LoginState extends State<Login> {
   buildButton() {
     return loading
         ? Center(child: CircularProgressIndicator())
-        : CustomButton(label: "제출", onPressed: () => login())
-            .fadeInList(4, false);
+        : CustomButton(
+            label: consts['submit'].toString(),
+            onPressed: () => login()).fadeInList(4, false);
   }
 }

@@ -26,7 +26,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("추천 프로필", style: Theme.of(context).textTheme.bodyLarge),
+        title: Text(consts['recommended-profiles'].toString(), style: Theme.of(context).textTheme.bodyLarge),
         centerTitle: true,
       ),
       body: FutureBuilder(

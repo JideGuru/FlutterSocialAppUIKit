@@ -9,8 +9,8 @@ CollectionReference<Map<String, dynamic>> chatsColRef =
 CollectionReference<Map<String, dynamic>> weightsColRef =
     FirebaseFirestore.instance.collection('weights');
 
-DocumentReference<Map<String, dynamic>> constsDocRef =
-    FirebaseFirestore.instance.collection('constants').doc('constants');
+CollectionReference<Map<String, dynamic>> constsColRef =
+    FirebaseFirestore.instance.collection('constants');
 
 CollectionReference<Map<String, dynamic>> evalsColRef =
     FirebaseFirestore.instance.collection('roommateEvals');

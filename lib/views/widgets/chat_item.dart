@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:social_app_ui/util/configs/configs.dart';
 import 'package:social_app_ui/util/data.dart';
 import 'package:social_app_ui/util/router.dart';
 import 'package:social_app_ui/util/user.dart';
@@ -107,7 +108,9 @@ class _ChatItemState extends State<ChatItem> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       PopupMenuItem(
-                        child: Text(widget.marked ? '즐겨찾기 해제' : '즐겨찾기'),
+                        child: Text(widget.marked
+                            ? consts['unbookmark'].toString()
+                            : consts['bookmark'].toString()),
                         onTap: () {
                           setState(() {
                             marked = !marked;
@@ -121,7 +124,7 @@ class _ChatItemState extends State<ChatItem> {
                         },
                       ),
                       PopupMenuItem(
-                        child: Text('나가기'),
+                        child: Text(consts['close'].toString()),
                         onTap: () {
                           chatsColRef.doc(widget.me.email).update(
                             {

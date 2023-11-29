@@ -130,7 +130,7 @@ class _EvaluateState extends State<Evaluate> {
       if (key == 'evaluation') {
         return Column(
           children: [
-            Text('evaluation hint text'),
+            Text(consts['evaluation'].toString()),
             SizedBox(
               height: 60,
             ),
@@ -139,7 +139,7 @@ class _EvaluateState extends State<Evaluate> {
       } else if (key == 'roomNumber') {
         return Column(
           children: [
-            Text('roomNumber hint text'),
+            Text(consts['roomNumber'].toString()),
             SizedBox(
               height: 10,
             ),

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:social_app_ui/util/configs/configs.dart';
 
 class Auth {
   Logger logger = Logger();
@@ -13,9 +14,9 @@ class Auth {
       );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        return '비밀번호가 취약합니다.';
+        return consts['weak-password'].toString();
       } else if (e.code == 'email-already-in-use') {
-        return '이미 가입된 계정입니다.';
+        return consts['already-registered'].toString();
       }
     } catch (e) {
       logger.e(e);
@@ -36,9 +37,9 @@ class Auth {
       // }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        return '가입되지 않은 계정입니다.';
+        return consts['user-not-found'].toString();
       } else if (e.code == 'wrong-password') {
-        return '틀린 비밀번호입니다.';
+        return consts['wrong-password'].toString();
       }
     } catch (e) {
       logger.e(e);
@@ -54,7 +55,7 @@ class Auth {
       );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        return '가입되지 않은 계정입니다.';
+        return consts['user-not-found'].toString();
       }
     }
     return '해당 이메일로 비밀번호 재설정 링크를 전송했습니다.';
@@ -68,8 +69,8 @@ class Auth {
           content: Text(failMessage),
           actions: <Widget>[
             TextButton(
-              onPressed: () => Navigator.pop(context, '닫기'),
-              child: Text('닫기'),
+              onPressed: () => Navigator.pop(context, consts['close'].toString()),
+              child: Text(consts['close'].toString()),
             ),
           ],
         );

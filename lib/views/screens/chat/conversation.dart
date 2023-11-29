@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:social_app_ui/util/chat.dart';
+import 'package:social_app_ui/util/configs/configs.dart';
 import 'package:social_app_ui/util/data.dart';
 import 'package:social_app_ui/util/enum.dart';
 import 'package:social_app_ui/util/extensions.dart';
@@ -77,7 +78,9 @@ class _ConversationState extends State<Conversation> {
             itemBuilder: (context) {
               return [
                 PopupMenuItem(
-                  child: Text(marked ? '즐겨찾기 해제' : '즐겨찾기'),
+                  child: Text(marked
+                      ? consts['unbookmark'].toString()
+                      : consts['bookmark'].toString()),
                   onTap: () {
                     setState(() {
                       marked = !marked;
@@ -91,7 +94,7 @@ class _ConversationState extends State<Conversation> {
                   },
                 ),
                 PopupMenuItem(
-                  child: Text('나가기'),
+                  child: Text(consts['leave'].toString()),
                   onTap: () {
                     Navigator.pop(context);
                     chatsColRef.doc(widget.me.email).update(
@@ -212,7 +215,8 @@ class _ConversationState extends State<Conversation> {
                                     decoration: InputDecoration(
                                       border: InputBorder.none,
                                       enabledBorder: InputBorder.none,
-                                      hintText: "메시지를 작성해주세요.",
+                                      hintText: consts['type-your-message']
+                                          .toString(),
                                       hintStyle: Theme.of(context)
                                           .textTheme
                                           .bodyMedium,

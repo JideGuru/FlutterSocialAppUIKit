@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:social_app_ui/util/configs/configs.dart';
 import 'package:social_app_ui/util/enum.dart';
 import 'package:social_app_ui/util/user.dart';
 import 'package:social_app_ui/views/screens/details/detail.dart';
@@ -15,7 +16,7 @@ class OtherProfile extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "자세한 프로필",
+          consts['details'].toString(),
           style: Theme.of(context).textTheme.bodyLarge,
         ),
         centerTitle: true,
