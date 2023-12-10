@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:social_app_ui/util/configs/configs.dart';
+import 'package:social_app_ui/util/user.dart';
 import 'package:social_app_ui/views/screens/chat/chats.dart';
 import 'package:social_app_ui/views/screens/home.dart';
-
 import 'package:social_app_ui/views/screens/my_profile.dart';
 import 'package:social_app_ui/views/screens/settings.dart';
 
 class MainScreen extends StatefulWidget {
-  late final String email;
+  late final User me;
   MainScreen({
     super.key,
-    required this.email,
+    required this.me,
   });
   @override
   _MainScreenState createState() => _MainScreenState();
@@ -18,47 +19,44 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   late PageController _pageController;
   int _page = 0;
-
   @override
   Widget build(BuildContext context) {
+    int status = widget.me.essentials['status'];
+    bool homeFlag = status == 0;
     return Scaffold(
       body: PageView(
         physics: NeverScrollableScrollPhysics(),
         controller: _pageController,
         onPageChanged: onPageChanged,
         children: <Widget>[
-          Home(email: widget.email),
-          MyProfile(email: widget.email),
-          Chats(email: widget.email),
+          if (homeFlag) Home(me: widget.me),
+          MyProfile(
+            me: widget.me,
+            onStatusChanged: onStatusChagned,
+          ),
+          Chats(me: widget.me),
           Settings(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.home,
+          if (homeFlag)
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: consts['home'].toString(),
             ),
-            label: '홈',
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: consts['my-profile'].toString(),
           ),
           BottomNavigationBarItem(
-            icon: Icon(
-              Icons.person,
-            ),
-            label: '내 프로필',
+            icon: Icon(Icons.message),
+            label: consts['chat'].toString(),
           ),
           BottomNavigationBarItem(
-            icon: Icon(
-              Icons.message,
-            ),
-            label: '채팅',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.settings,
-            ),
-            label: '설정',
+            icon: Icon(Icons.settings),
+            label: consts['setting'].toString(),
           ),
         ],
         onTap: navigationTapped,
@@ -81,6 +79,18 @@ class _MainScreenState extends State<MainScreen> {
   void dispose() {
     super.dispose();
     _pageController.dispose();
+  }
+
+  void onStatusChagned(int index) {
+    mounted
+        ? setState(() {
+            if (index == 0)
+              this._page = 1;
+            else
+              this._page = 0;
+            _pageController.jumpToPage(this._page);
+          })
+        : dispose();
   }
 
   void onPageChanged(int page) {

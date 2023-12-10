@@ -1,70 +1,77 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:social_app_ui/util/configs/configs.dart';
 import 'package:social_app_ui/util/data.dart';
 import 'package:social_app_ui/util/enum.dart';
 import 'package:social_app_ui/util/extensions.dart';
 import 'package:social_app_ui/util/user.dart';
-import 'package:social_app_ui/views/screens/detail.dart';
+import 'package:social_app_ui/views/screens/details/detail.dart';
 import 'package:social_app_ui/views/widgets/profile_card.dart';
 
 class MyProfile extends StatelessWidget {
-  late final String email;
+  final User me;
+  final Function onStatusChanged;
   MyProfile({
     super.key,
-    required this.email,
+    required this.me,
+    required this.onStatusChanged,
   });
+
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "내 프로필",
+          consts['my-profile'].toString(),
           style: Theme.of(context).textTheme.bodyLarge,
         ),
         centerTitle: true,
       ),
-      body: FutureBuilder<DocumentSnapshot>(
-        future: usersColRef.doc(email).get(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            var me = User.fromFirestore(snapshot.data!);
-            return SingleChildScrollView(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    SizedBox(height: 60),
-                    ProfileCard(
-                      profileMode: Owner.MINE,
-                      email: email,
-                      user: me,
-                    ),
-                    SizedBox(height: 10),
-                    Text(email, style: Theme.of(context).textTheme.bodyLarge),
-                    SizedBox(height: 3),
-                    Text(
-                      "아래에서 설문을 수정할 수 있습니다.",
-                      style: TextStyle(),
-                    ),
-                    SizedBox(height: 60),
-                    Detail(
-                      user: me,
-                      detailMode: Owner.MINE,
-                    ),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.symmetric(horizontal: 10),
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(height: 50),
+              ProfileCard(profileMode: Owner.MINE, user: me),
+              SizedBox(height: 25),
+              Text(me.email, style: Theme.of(context).textTheme.bodyLarge),
+              SizedBox(height: 25),
+              Text(consts['finding'].toString()),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ToggleButtons(
+                  children: [
+                    Text(consts['yes'].toString()),
+                    Text(consts['no'].toString()),
                   ],
-                ).fadeInList(1, true),
+                  isSelected: [
+                    me.essentials['status'] == 0,
+                    me.essentials['status'] == 1,
+                  ],
+                  onPressed: (index) {
+                    me.essentials['status'] = index;
+                    usersColRef.doc(me.email).update({
+                      'status': index,
+                    });
+                    onStatusChanged(index);
+                  },
+                ),
               ),
-            );
-          }
-          return Center(
-            child:
-                LoadingAnimationWidget.waveDots(color: Colors.grey, size: 50),
-          );
-        },
+              SizedBox(height: 50),
+              Text(
+                consts['modify'].toString(),
+                style: TextStyle(),
+              ),
+              SizedBox(height: screenHeight * 0.1),
+              Detail(user: me, detailMode: Owner.MINE),
+            ],
+          ).fadeInList(1, true),
+        ),
       ),
     );
   }

@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 class InprofileButton extends StatelessWidget {
   final IconData icon;
   final String label;
-  final Function() onPressed;
+  final Function()? onPressed;
   final Color backgroundColor;
 
   const InprofileButton({
     super.key,
     required this.icon,
     required this.label,
-    required this.onPressed,
+    this.onPressed = null,
     this.backgroundColor = Colors.green,
   });
 

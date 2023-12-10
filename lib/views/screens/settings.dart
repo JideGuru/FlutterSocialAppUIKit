@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:social_app_ui/util/configs/configs.dart';
 
 class Settings extends StatefulWidget {
   @override
@@ -11,7 +12,7 @@ class _SettingsState extends State<Settings> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Notifications",
+          consts['setting'].toString(),
         ),
         centerTitle: true,
         actions: <Widget>[
