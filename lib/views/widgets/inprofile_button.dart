@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class InprofileButton extends StatelessWidget {
-  final IconData icon;
+  final Icon icon;
   final String label;
   final Function()? onPressed;
   final Color backgroundColor;
@@ -16,23 +16,25 @@ class InprofileButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextButton.icon(
-      style: TextButton.styleFrom(
-        backgroundColor: backgroundColor,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
+    return Container(
+      width: 100,
+      height: 40,
+      child: TextButton.icon(
+        style: TextButton.styleFrom(
+          backgroundColor: backgroundColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+          elevation: 5,
         ),
-        elevation: 5,
-      ),
-      onPressed: onPressed,
-      icon: Icon(
-        icon,
-      ),
-      label: Text(
-        label,
-        style: TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.bold,
+        onPressed: onPressed,
+        icon: icon,
+        label: Text(
+          label,
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
     );

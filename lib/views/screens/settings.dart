@@ -13,6 +13,7 @@ class _SettingsState extends State<Settings> {
       appBar: AppBar(
         title: Text(
           consts['setting'].toString(),
+          style: Theme.of(context).textTheme.bodyLarge,
         ),
         centerTitle: true,
         actions: <Widget>[
@@ -24,7 +25,17 @@ class _SettingsState extends State<Settings> {
           ),
         ],
       ),
-      body: SizedBox(),
+      body: Column(
+        children: [
+          SizedBox(),
+          Row(
+            children: [],
+          ),
+          Row(
+            children: [],
+          ),
+        ],
+      ),
     );
   }
 }

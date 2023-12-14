@@ -38,9 +38,7 @@ class CustomTextField extends StatelessWidget {
         initialValue: initialValue,
         enabled: enabled,
         onChanged: onChange,
-        style: TextStyle(
-          fontSize: 15.0,
-        ),
+        style: TextStyle(fontSize: 15.0, color: Color.fromRGBO(0, 0, 0, 0.5)),
         key: key,
         controller: controller,
         obscureText: obscureText,
@@ -60,10 +58,12 @@ class CustomTextField extends StatelessWidget {
         decoration: InputDecoration(
             hintText: hintText,
             hintStyle: TextStyle(
-              color: Colors.grey[400],
+              color: Color.fromRGBO(0, 0, 0, 0.5),
             ),
             contentPadding: EdgeInsets.symmetric(horizontal: 20.0),
+            fillColor: Color.fromRGBO(217, 217, 217, 0.5),
             border: border(),
+            filled: true,
             focusedBorder: border(),
             disabledBorder: border()),
       ),
@@ -75,10 +75,7 @@ class CustomTextField extends StatelessWidget {
       borderRadius: BorderRadius.all(
         Radius.circular(10.0),
       ),
-      borderSide: BorderSide(
-        color: Color(0xffB3ABAB),
-        width: 1.0,
-      ),
+      borderSide: BorderSide.none,
     );
   }
 }

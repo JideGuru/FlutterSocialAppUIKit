@@ -33,7 +33,7 @@ class RoomieApp extends StatelessWidget {
 
   ThemeData themeData(ThemeData theme) {
     return theme.copyWith(
-      textTheme: GoogleFonts.sourceSansProTextTheme(
+      textTheme: GoogleFonts.notoSansCyproMinoanTextTheme(
         theme.textTheme,
       ),
     );
