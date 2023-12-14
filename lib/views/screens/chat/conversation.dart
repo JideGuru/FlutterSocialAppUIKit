@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:social_app_ui/util/chat.dart';
 import 'package:social_app_ui/util/configs/configs.dart';
 import 'package:social_app_ui/util/data.dart';
@@ -52,11 +53,19 @@ class _ConversationState extends State<Conversation> {
                   children: <Widget>[
                     Text(
                       widget.other.essentials['nickname'],
-                      style: Theme.of(context).textTheme.bodyLarge,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w800,
+                          fontSize: 20,
+                          fontFamily: GoogleFonts.inter().fontFamily,
+                          color: Colors.black),
                     ),
                     Text(
                       widget.other.email,
-                      style: Theme.of(context).textTheme.bodySmall,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 15,
+                          fontFamily: GoogleFonts.inter().fontFamily,
+                          color: Colors.black),
                     ),
                     SizedBox(height: 5),
                   ],
@@ -195,7 +204,7 @@ class _ConversationState extends State<Conversation> {
                           Container(
                             decoration: BoxDecoration(
                               color: Theme.of(context).colorScheme.onSecondary,
-                              borderRadius: BorderRadius.circular(17),
+                              borderRadius: BorderRadius.circular(10),
                             ),
                             width: MediaQuery.of(context).size.width - 25,
                             padding: EdgeInsets.symmetric(
@@ -213,14 +222,14 @@ class _ConversationState extends State<Conversation> {
                                     style:
                                         Theme.of(context).textTheme.bodyMedium,
                                     decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      enabledBorder: InputBorder.none,
-                                      hintText: consts['type-your-message']
-                                          .toString(),
-                                      hintStyle: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium,
-                                    ),
+                                        border: InputBorder.none,
+                                        enabledBorder: InputBorder.none,
+                                        hintText: consts['type-your-message']
+                                            .toString(),
+                                        hintStyle: TextStyle(
+                                            fontSize: 18,
+                                            color: Color.fromRGBO(
+                                                199, 190, 190, 1))),
                                     cursorColor:
                                         Theme.of(context).colorScheme.secondary,
                                     maxLines: null,

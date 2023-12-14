@@ -363,6 +363,10 @@ Map<String, dynamic> firebaseConsts = {
     '비밀번호가 취약합니다',
     'Weak password.',
   ],
+  'language': [
+    '언어',
+    'language',
+  ],
   'already-registered': [
     '이미 가입된 계정입니다.',
     'Already registered.',

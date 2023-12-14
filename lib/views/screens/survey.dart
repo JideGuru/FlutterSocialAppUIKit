@@ -136,6 +136,8 @@ class _SurveyState extends State<Survey> {
               height: 10,
             ),
             GroupButton(
+              options: GroupButtonOptions(
+                  borderRadius: BorderRadius.all(Radius.circular(5))),
               controller: GroupButtonController(selectedIndex: 0),
               onSelected: (value, index, isSelected) {
                 me.surveys[key] = index;
@@ -346,6 +348,8 @@ class _SurveyState extends State<Survey> {
               height: 10,
             ),
             GroupButton(
+              options: GroupButtonOptions(
+                  borderRadius: BorderRadius.all(Radius.circular(5))),
               controller: GroupButtonController(selectedIndex: 0),
               onSelected: (value, index, isSelected) {
                 me.essentials[key] = index;

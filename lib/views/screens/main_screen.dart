@@ -35,7 +35,7 @@ class _MainScreenState extends State<MainScreen> {
             onStatusChanged: onStatusChagned,
           ),
           Chats(me: widget.me),
-          Settings(),
+          Settings(user: widget.me),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
