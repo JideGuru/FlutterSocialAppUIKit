@@ -26,7 +26,13 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(consts['recommended-profiles'].toString(), style: Theme.of(context).textTheme.bodyLarge),
+        title: Text(consts['recommended-profiles'].toString(),
+            style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w400,
+                fontStyle: FontStyle.normal,
+                letterSpacing: -0.24,
+                color: Color.fromRGBO(0, 0, 0, 1.0))),
         centerTitle: true,
       ),
       body: FutureBuilder(
@@ -76,13 +82,24 @@ class _HomeState extends State<Home> {
                           child: Column(
                             children: <Widget>[
                               ButtonsTabBar(
+                                labelStyle: TextStyle(
+                                  color: Color.fromRGBO(255, 255, 255, 1.0),
+                                ),
                                 decoration: BoxDecoration(
-                                    color: ThemeConfig.lightTabBackground),
+                                  color: Color.fromRGBO(22, 55, 96, 1.0),
+                                ),
                                 contentPadding: EdgeInsets.symmetric(
                                     horizontal: 8, vertical: 4),
                                 height: 48,
+                                unselectedBackgroundColor:
+                                    Color.fromRGBO(227, 227, 227, 1.0),
+                                unselectedLabelStyle: TextStyle(
+                                  color: Color.fromRGBO(0, 0, 0, 1.0),
+                                ),
                                 tabs: tagMaps.values
-                                    .map((title) => Tab(child: Text(title)))
+                                    .map(
+                                      (title) => Tab(text: title),
+                                    )
                                     .toList(),
                                 onTap: (tag) async {
                                   await usersColRef.doc(me.email).update(

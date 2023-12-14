@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:social_app_ui/util/animations.dart';
@@ -139,9 +140,52 @@ class _LoginState extends State<Login> {
       children: <Widget>[
         Text(
           '${appName}',
-          style: TextStyle(fontSize: 40.0, fontWeight: FontWeight.bold),
+          style: GoogleFonts.inknutAntiqua(
+              textStyle: TextStyle(
+            color: Colors.black,
+            fontSize: 40,
+          )),
         ).fadeInList(0, false),
-        SizedBox(height: 70.0),
+        Visibility(
+          visible: formMode == FormMode.REGISTER,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(height: 20.0),
+              Text(
+                consts['register'].toString(),
+                style: GoogleFonts.inknutAntiqua(
+                  textStyle: TextStyle(
+                    fontSize: 15,
+                  ),
+                ),
+              ),
+              SizedBox(height: 50.0),
+            ],
+          ),
+        ).fadeInList(0, false),
+        Visibility(
+          visible: formMode == FormMode.FORGOT_PASSWORD,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(height: 20.0),
+              Text(
+                consts['forget-password'].toString(),
+                style: GoogleFonts.inknutAntiqua(
+                  textStyle: TextStyle(
+                    fontSize: 15,
+                  ),
+                ),
+              ),
+              SizedBox(height: 50.0),
+            ],
+          ),
+        ).fadeInList(0, false),
+        Visibility(
+          visible: formMode == FormMode.LOGIN,
+          child: SizedBox(height: 70.0),
+        ),
         Form(
           autovalidateMode: AutovalidateMode.onUserInteraction,
           key: formKey,
@@ -168,7 +212,24 @@ class _LoginState extends State<Login> {
         SizedBox(height: 20.0),
         buildButton(),
         Visibility(
-          visible: formMode == FormMode.LOGIN,
+          visible: formMode != FormMode.LOGIN,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(consts['registered-already'].toString(),
+                  style: Theme.of(context).textTheme.bodySmall),
+              TextButton(
+                onPressed: () {
+                  formMode = FormMode.LOGIN;
+                  setState(() {});
+                },
+                child: Text(consts['login'].toString()),
+              ),
+            ],
+          ),
+        ),
+        Visibility(
+          visible: formMode != FormMode.REGISTER,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -186,23 +247,6 @@ class _LoginState extends State<Login> {
             ],
           ),
         ).fadeInList(5, false),
-        Visibility(
-          visible: formMode != FormMode.LOGIN,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(consts['registered-already'].toString(),
-                  style: Theme.of(context).textTheme.bodySmall),
-              TextButton(
-                onPressed: () {
-                  formMode = FormMode.LOGIN;
-                  setState(() {});
-                },
-                child: Text(consts['login'].toString()),
-              ),
-            ],
-          ),
-        ),
       ],
     );
   }
@@ -216,7 +260,7 @@ class _LoginState extends State<Login> {
           children: [
             Container(
               width: formMode == FormMode.REGISTER
-                  ? screenWidth * 0.5
+                  ? screenWidth * 0.8
                   : screenWidth * 0.8,
               child: CustomTextField(
                 enabled: !loading,
@@ -259,7 +303,9 @@ class _LoginState extends State<Login> {
     return loading
         ? Center(child: CircularProgressIndicator())
         : CustomButton(
-            label: consts['submit'].toString(),
+            label: formMode == FormMode.LOGIN
+                ? consts['login'].toString()
+                : consts['submit'].toString(),
             onPressed: () => login()).fadeInList(4, false);
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:group_button/group_button.dart';
 import 'package:social_app_ui/util/configs/configs.dart';
 import 'package:social_app_ui/util/data.dart';
@@ -23,6 +24,7 @@ class Survey extends StatefulWidget {
 class _SurveyState extends State<Survey> {
   late User me = User.onlyEmail(widget.email);
   int index = -1;
+  final int survey_Max_num = 17;
   List<String> keys = List.from(essentialHintTexts.keys)..addAll(surveyKeys);
   @override
   Widget build(BuildContext context) {
@@ -38,6 +40,25 @@ class _SurveyState extends State<Survey> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            Text(
+              consts['survey'].toString(),
+              style: GoogleFonts.atkinsonHyperlegible(
+                fontSize: 40.0,
+              ),
+            ),
+            SizedBox(height: 25.0),
+            Visibility(
+              visible: key != 'introduction',
+              child: Text(
+                "(${index}/17)",
+                style: GoogleFonts.inknutAntiqua(
+                  textStyle: TextStyle(
+                    fontSize: 20.0,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 25.0),
             form(key).fadeInList(3, false),
             CustomButton(
               onPressed: () {
@@ -66,6 +87,7 @@ class _SurveyState extends State<Survey> {
   Column form(String key) {
     if (surveyKeys.contains(key)) {
       if (surveyMaps[key]!.length != 2) {
+        String val = "";
         return Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -74,16 +96,31 @@ class _SurveyState extends State<Survey> {
             SizedBox(
               height: 10,
             ),
-            Slider(
-              min: 0,
-              max: surveyMaps[key]!.length.toDouble(),
-              value: (me.surveys[key]).toDouble(),
-              onChanged: (value) {
-                setState(() {
-                  me.surveys[key] = value.round();
-                });
-              },
+            SliderTheme(
+              data: SliderTheme.of(context).copyWith(
+                valueIndicatorTextStyle: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+              child: Slider(
+                min: 0,
+                max: surveyMaps[key]!.length.toDouble() - 1,
+                value: (me.surveys[key]).toDouble(),
+                divisions: surveyMaps[key]!.length - 1,
+                onChanged: (value) {
+                  setState(() {
+                    me.surveys[key] = value.round();
+                    print(value);
+                    val = surveyMaps[key]?[me.surveys[key]];
+                    print(val);
+                  });
+                },
+              ),
             ),
+            SizedBox(
+              height: 25,
+            ),
+            Text(surveyMaps[key]?[me.surveys[key]]),
             SizedBox(
               height: 50,
             ),
@@ -112,6 +149,10 @@ class _SurveyState extends State<Survey> {
         );
       } else
         return Column();
+      //   Text(consts['survey'].toString(),
+      // style:GoogleFonts.atkinsonHyperlegible(
+      //   fontSize: 40.0,
+      // ),)
     } else {
       if (key == 'introduction') {
         return Column(
@@ -165,20 +206,39 @@ class _SurveyState extends State<Survey> {
               child: Text(essentialHintTexts[key]!),
             ),
             SizedBox(height: 10.0),
-            DropdownButton(
-              value: me.essentials[key],
-              items: majorList.map(
-                (String major) {
-                  return DropdownMenuItem(
-                    child: Text(major),
-                    value: majorList.indexOf(major),
-                  );
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(5.0),
+                ),
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5), // 그림자 색상
+                    blurRadius: 7, // 그림자 흐림 정도
+                    offset: Offset(0, 9), // 그림자 위치 (x, y)
+                  ),
+                ],
+              ),
+              child: DropdownButton(
+                value: me.essentials[key],
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10.0),
+                ),
+                underline: const SizedBox(),
+                items: majorList.map(
+                  (String major) {
+                    return DropdownMenuItem(
+                      child: Text(major),
+                      value: majorList.indexOf(major),
+                    );
+                  },
+                ).toList(),
+                onChanged: (value) {
+                  me.essentials[key] = value;
+                  setState(() {});
                 },
-              ).toList(),
-              onChanged: (value) {
-                me.essentials[key] = value;
-                setState(() {});
-              },
+              ),
             ),
             SizedBox(height: 20.0),
           ],
@@ -191,20 +251,40 @@ class _SurveyState extends State<Survey> {
               child: Text(essentialHintTexts[key]!),
             ),
             SizedBox(height: 10.0),
-            DropdownButton(
-              value: me.essentials[key],
-              items: studentNumberList.map(
-                (String num) {
-                  return DropdownMenuItem(
-                    child: Text(num),
-                    value: studentNumberList.indexOf(num),
-                  );
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(5.0),
+                ),
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5), // 그림자 색상
+                    blurRadius: 7, // 그림자 흐림 정도
+                    offset: Offset(0, 9), // 그림자 위치 (x, y)
+                  ),
+                ],
+              ),
+              child: DropdownButton(
+                padding: EdgeInsets.symmetric(horizontal: 11.0),
+                value: me.essentials[key],
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10.0),
+                ),
+                underline: const SizedBox(),
+                items: studentNumberList.map(
+                  (String num) {
+                    return DropdownMenuItem(
+                      child: Text(num),
+                      value: studentNumberList.indexOf(num),
+                    );
+                  },
+                ).toList(),
+                onChanged: (value) {
+                  me.essentials[key] = value;
+                  setState(() {});
                 },
-              ).toList(),
-              onChanged: (value) {
-                me.essentials[key] = value;
-                setState(() {});
-              },
+              ),
             ),
             SizedBox(height: 20.0),
           ],
@@ -217,20 +297,41 @@ class _SurveyState extends State<Survey> {
               child: Text(essentialHintTexts[key]!),
             ),
             SizedBox(height: 10.0),
-            DropdownButton(
-              value: me.essentials[key],
-              items: dormitoryList[me.essentials['sex']].map(
-                (String building) {
-                  return DropdownMenuItem(
-                    child: Text(building),
-                    value: dormitoryList[me.essentials['sex']].indexOf(building),
-                  );
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(5.0),
+                ),
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5), // 그림자 색상
+                    blurRadius: 7, // 그림자 흐림 정도
+                    offset: Offset(0, 9), // 그림자 위치 (x, y)
+                  ),
+                ],
+              ),
+              child: DropdownButton(
+                padding: EdgeInsets.symmetric(horizontal: 11.0),
+                value: me.essentials[key],
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10.0),
+                ),
+                underline: const SizedBox(),
+                items: dormitoryList[me.essentials['sex']].map(
+                  (String building) {
+                    return DropdownMenuItem(
+                      child: Text(building),
+                      value:
+                          dormitoryList[me.essentials['sex']].indexOf(building),
+                    );
+                  },
+                ).toList(),
+                onChanged: (value) {
+                  me.essentials[key] = value;
+                  setState(() {});
                 },
-              ).toList(),
-              onChanged: (value) {
-                me.essentials[key] = value;
-                setState(() {});
-              },
+              ),
             ),
             SizedBox(height: 20.0),
           ],
