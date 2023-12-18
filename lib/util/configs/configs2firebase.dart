@@ -23,7 +23,7 @@ Map<String, dynamic> firebaseEssentialConsts = {
       'Student Number',
     ],
     'dormitory': [
-      '호관',
+      '입주 예정 호관을 선택해주세요.',
       'Expected Residence Hall',
     ],
   },
