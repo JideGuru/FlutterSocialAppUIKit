@@ -20,21 +20,21 @@ class _ChatBubbleState extends State<ChatBubble> {
   @override
   Widget build(BuildContext context) {
     final color = widget.sender == Owner.MINE
-        ? Theme.of(context).colorScheme.secondary
-        : Theme.of(context).colorScheme.onBackground;
+        ? Color.fromRGBO(12, 73, 127, 1)
+        : Color.fromRGBO(144, 144, 144, 1.0);
     final align = widget.sender == Owner.MINE
         ? MainAxisAlignment.end
         : MainAxisAlignment.start;
     final radius = widget.sender == Owner.MINE
         ? BorderRadius.only(
-            topLeft: Radius.circular(5.0),
-            bottomLeft: Radius.circular(5.0),
-            bottomRight: Radius.circular(10.0),
+            topLeft: Radius.circular(18.0),
+            bottomLeft: Radius.circular(18.0),
+            bottomRight: Radius.circular(18.0),
           )
         : BorderRadius.only(
-            topRight: Radius.circular(5.0),
-            bottomLeft: Radius.circular(10.0),
-            bottomRight: Radius.circular(5.0),
+            topRight: Radius.circular(18.0),
+            bottomLeft: Radius.circular(18.0),
+            bottomRight: Radius.circular(18.0),
           );
     var time = (widget.message['time'] as Timestamp)
         .toDate()
@@ -44,9 +44,28 @@ class _ChatBubbleState extends State<ChatBubble> {
       children: [
         Visibility(
           visible: widget.withDayBar,
-          child: Text(
-            time[0].toString(),
-            style: Theme.of(context).textTheme.bodySmall,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SizedBox(
+                width: 145,
+                height: 1,
+                child: Container(
+                  color: Color.fromRGBO(0, 0, 0, 0.5),
+                ),
+              ),
+              Text(
+                time[0].toString(),
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+              SizedBox(
+                width: 145,
+                height: 1,
+                child: Container(
+                  color: Color.fromRGBO(0, 0, 0, 0.5),
+                ),
+              ),
+            ],
           ),
         ),
         Row(

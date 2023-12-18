@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_styled_toast/flutter_styled_toast.dart';
+import 'package:group_button/group_button.dart';
 import 'package:social_app_ui/util/configs/configs.dart';
 import 'package:social_app_ui/util/data.dart';
 import 'package:social_app_ui/util/enum.dart';
@@ -37,38 +39,34 @@ class MyProfile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               SizedBox(height: 50),
-              ProfileCard(profileMode: Owner.MINE, user: me),
+              ProfileCard(
+                profileMode: Owner.MINE,
+                user: me,
+                me: me,
+              ),
               SizedBox(height: 25),
-              Text(me.email, style: Theme.of(context).textTheme.bodyLarge),
               SizedBox(height: 25),
               Text(consts['finding'].toString()),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ToggleButtons(
-                  children: [
-                    Text(consts['yes'].toString()),
-                    Text(consts['no'].toString()),
-                  ],
-                  isSelected: [
-                    me.essentials['status'] == 0,
-                    me.essentials['status'] == 1,
-                  ],
-                  onPressed: (index) {
-                    me.essentials['status'] = index;
-                    usersColRef.doc(me.email).update({
-                      'status': index,
-                    });
-                    onStatusChanged(index);
-                  },
+              GroupButton(
+                options: GroupButtonOptions(
+                    borderRadius: BorderRadius.circular(5.0)),
+                controller: GroupButtonController(
+                  selectedIndex: me.essentials['status'],
                 ),
-              ),
-              SizedBox(height: 50),
-              Text(
-                consts['modify'].toString(),
-                style: TextStyle(),
+                onSelected: (value, index, isSelected) {
+                  me.essentials['status'] = index;
+                  usersColRef
+                      .doc(me.email)
+                      .update({'status': me.essentials['status']});
+                  showToast(
+                    consts['saved'].toString(),
+                    context: context,
+                    animation: StyledToastAnimation.fade,
+                  );
+                },
+                buttons: [consts['yes'].toString(), consts['no'].toString()],
               ),
               SizedBox(height: screenHeight * 0.1),
-              Detail(user: me, detailMode: Owner.MINE),
             ],
           ).fadeInList(1, true),
         ),

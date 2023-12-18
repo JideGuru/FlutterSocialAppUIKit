@@ -17,7 +17,7 @@ class RoomieApp extends StatelessWidget {
       future: constsColRef.get(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          Constants.initConstants(snapshot.data!, 1);
+          Constants.initConstants(snapshot.data!, 0);
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             title: appName,
@@ -33,7 +33,7 @@ class RoomieApp extends StatelessWidget {
 
   ThemeData themeData(ThemeData theme) {
     return theme.copyWith(
-      textTheme: GoogleFonts.sourceSansProTextTheme(
+      textTheme: GoogleFonts.notoSansCyproMinoanTextTheme(
         theme.textTheme,
       ),
     );
