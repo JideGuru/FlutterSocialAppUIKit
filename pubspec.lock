@@ -398,6 +398,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "8.1.3"
+  flutter_gradients_reborn:
+    dependency: "direct main"
+    description:
+      name: flutter_gradients_reborn
+      sha256: b1e85754c31d88f9dd7dd98eca8da9b9d2c75bfff197ac4e918f6ef4e1d22bb5
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0+7"
   flutter_localizations:
     dependency: transitive
     description: flutter
@@ -461,6 +469,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.2.10"
+  getwidget:
+    dependency: "direct main"
+    description:
+      name: getwidget
+      sha256: "91df14a8d80e21f3ec02759295b90cc8badb8a872b90d34ad4aeb4085d833b5c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.0.0"
   glob:
     dependency: transitive
     description:

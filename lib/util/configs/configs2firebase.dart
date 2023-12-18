@@ -23,7 +23,7 @@ Map<String, dynamic> firebaseEssentialConsts = {
       'Student Number',
     ],
     'dormitory': [
-      '입주 예정 호관을 선택해주세요.',
+      '호관',
       'Expected Residence Hall',
     ],
   },
@@ -363,6 +363,10 @@ Map<String, dynamic> firebaseConsts = {
     '비밀번호가 취약합니다',
     'Weak password.',
   ],
+  'language': [
+    '언어',
+    'language',
+  ],
   'already-registered': [
     '이미 가입된 계정입니다.',
     'Already registered.',
@@ -448,7 +452,7 @@ Map<String, dynamic> firebaseConsts = {
     'Password',
   ],
   'submit': [
-    '제출하기',
+    '제출',
     'Submit',
   ],
   'chat': [

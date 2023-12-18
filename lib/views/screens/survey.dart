@@ -51,10 +51,8 @@ class _SurveyState extends State<Survey> {
               visible: key != 'introduction',
               child: Text(
                 "(${index}/17)",
-                style: GoogleFonts.inknutAntiqua(
-                  textStyle: TextStyle(
-                    fontSize: 20.0,
-                  ),
+                style: TextStyle(
+                  fontSize: 20.0,
                 ),
               ),
             ),
@@ -136,6 +134,8 @@ class _SurveyState extends State<Survey> {
               height: 10,
             ),
             GroupButton(
+              options: GroupButtonOptions(
+                  borderRadius: BorderRadius.all(Radius.circular(5))),
               controller: GroupButtonController(selectedIndex: 0),
               onSelected: (value, index, isSelected) {
                 me.surveys[key] = index;
@@ -346,6 +346,8 @@ class _SurveyState extends State<Survey> {
               height: 10,
             ),
             GroupButton(
+              options: GroupButtonOptions(
+                  borderRadius: BorderRadius.all(Radius.circular(5))),
               controller: GroupButtonController(selectedIndex: 0),
               onSelected: (value, index, isSelected) {
                 me.essentials[key] = index;

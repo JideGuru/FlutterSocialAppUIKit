@@ -35,7 +35,11 @@ class ProfileCard extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-          color: Color.fromRGBO(245, 245, 245, 1.0),
+          color: user.essentials['designLevel'] == 0
+              ? Color.fromRGBO(245, 245, 245, 1.0)
+              : (user.essentials['designLevel'] == 1
+                  ? Color.fromRGBO(249, 249, 249, 1.0)
+                  : Color.fromRGBO(255, 255, 255, 1.0)),
           boxShadow: [
             BoxShadow(
               color: Color.fromRGBO(0, 0, 0, 0.25),
@@ -58,29 +62,42 @@ class ProfileCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        user.essentials['nickname'],
-                        style: TextStyle(
-                          fontSize: 35,
-                          fontWeight: FontWeight.w700,
-                          fontStyle: FontStyle.normal,
-                          // color: Color.fromRGBO(0, 0, 0, 0.8),
-                        ),
-                        // gradientType: GradientType.linear,
-                        // colors: [
-                        //   Color.fromRGBO(180, 186, 236, 1.0),
-                        //   Color.fromRGBO(249, 227, 176, 1.0),
-                        //   Color.fromRGBO(255, 186, 171, 1.0),
-                        // ],
-                        // : [
-                        //   Color.fromRGBO(227, 85, 187, 1.0),
-                        //   Color.fromRGBO(14, 1, 43, 1.0),
-                        //   Color.fromRGBO(58, 2, 2, 1.0),
-                        //   Color.fromRGBO(185, 154, 64, 1.0),
-                        //   Color.fromRGBO(227, 204, 85, 1.0)
-                        // ],
-                        // radius: 1.0,
-                      ),
+                      user.essentials['designLevel'] == 0
+                          ? Text(
+                              user.essentials['nickname'],
+                              style: TextStyle(
+                                fontSize: 35,
+                                fontWeight: FontWeight.w700,
+                                fontStyle: FontStyle.normal,
+                              ),
+                            )
+                          : (user.essentials['designLevel'] == 1
+                              ? GradientText(
+                                  user.essentials['nickname'],
+                                  style: TextStyle(
+                                    fontSize: 35,
+                                    fontWeight: FontWeight.w700,
+                                    fontStyle: FontStyle.normal,
+                                  ),
+                                  gradientType: GradientType.linear,
+                                  colors: [
+                                    Color.fromRGBO(180, 186, 236, 1.0),
+                                    Color.fromRGBO(249, 227, 176, 1.0),
+                                    Color.fromRGBO(255, 186, 171, 1.0),
+                                  ],
+                                )
+                              : GradientText(user.essentials['nickname'],
+                                  gradientType: GradientType.linear,
+                                  style: TextStyle(
+                                    fontSize: 35,
+                                    fontWeight: FontWeight.w700,
+                                    fontStyle: FontStyle.normal,
+                                  ),
+                                  colors: [
+                                      Color.fromRGBO(227, 85, 187, 1.0),
+                                      Color.fromRGBO(14, 1, 43, 1.0),
+                                      Color.fromRGBO(227, 204, 85, 1.0)
+                                    ])),
                       Row(
                         children: [
                           Text(
@@ -91,11 +108,19 @@ class ProfileCard extends StatelessWidget {
                               fontWeight: FontWeight.w500,
                             ),
                           ),
-                          Image.asset(
-                            'assets/images/sliver.png',
-                            height: 25,
-                            width: 15,
-                          )
+                          user.essentials['designLevel'] == 0
+                              ? SizedBox()
+                              : (user.essentials['designLevel'] == 1
+                                  ? Image.asset(
+                                      'assets/images/sliver.png',
+                                      height: 35,
+                                      width: 25,
+                                    )
+                                  : Image.asset(
+                                      'assets/images/gold.png',
+                                      height: 35,
+                                      width: 25,
+                                    ))
                         ],
                       ),
                       SizedBox(height: 12),
@@ -133,7 +158,7 @@ class ProfileCard extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  consts['details'].toString(),
+                                  "Detail",
                                   style: TextStyle(
                                     color: Color.fromRGBO(0, 0, 0, 0.8),
                                     fontFamily:
