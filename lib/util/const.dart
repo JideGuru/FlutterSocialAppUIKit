@@ -36,6 +36,10 @@ class Constants {
       surveyMaps[key] =
           constsFromFirestore['surveys']['surveyMaps'][key][strLanguage];
     }
+    for (var key in detailHintTexts.keys) {
+      detailHintTexts[key] = constsFromFirestore['details'][key][language];
+    }
+
     var dormList =
         constsFromFirestore['essentials']['dormitoryList'][strLanguage];
     List<String> maleDorm = [], femaleDorm = [];

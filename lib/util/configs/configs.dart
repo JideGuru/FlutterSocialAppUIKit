@@ -226,3 +226,25 @@ Map<String, String> tagMaps = {
   'eating': '취식',
   'lateStand': '스탠드',
 };
+
+Map<String, String> detailHintTexts = {
+  'email': '계정',
+  'nickname': '닉네임',
+  'major': '단과대학',
+  'sex': '성별',
+  'studentNumber': '학번',
+  'dormitory': '호관',
+
+  'smoking': '흡연',
+  'sleepingHabits': '잠버릇',
+  'relationship': '관계',
+  'sleepAt': '취침시간',
+  'roomCleaning': '방 청소',
+  'restroomCleaning': '화장실 청소',
+  'inviting': '초대',
+  'sharing': '공유',
+  'calling': '전화',
+  'earphone': '이어폰',
+  'eating': '취식',
+  'lateStand': '스탠드',
+};

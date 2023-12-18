@@ -28,9 +28,6 @@ class _DetailState extends State<Detail> {
     List<String> details = List.from(essentialHintTexts.keys)
       ..addAll(surveyHintTexts.keys);
     details.add('etc');
-    print(details);
-    print(surveyMaps);
-    print(surveyKeys);
 
     var meanSurveys = widget.user.calculateMeanRoommateSurveys();
 
@@ -45,7 +42,7 @@ class _DetailState extends State<Detail> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(surveyHintTexts[key]!),
+                  Text(detailHintTexts[key]!),
                   Text(
                     "[${surveyMaps[key]?[widget.user.surveys[key]]}]",
                     style: TextStyle(fontSize: 12),
@@ -75,7 +72,11 @@ class _DetailState extends State<Detail> {
                   ),
                   meanSurveys.length > 0
                       ? Slider(
-                          value: meanSurveys[key]!.toDouble(), onChanged: null)
+                          min: 0,
+                          max: surveyMaps[key]!.length.toDouble() - 1,
+                          divisions: surveyMaps[key]!.length - 1,
+                          value: meanSurveys[key]!.toDouble(),
+                          onChanged: null)
                       : Container(),
                   SizedBox(
                     height: 7,
@@ -87,7 +88,7 @@ class _DetailState extends State<Detail> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(surveyHintTexts[key]!),
+                  Text(detailHintTexts[key]!),
                   SizedBox(
                     height: 10,
                   ),
@@ -114,6 +115,9 @@ class _DetailState extends State<Detail> {
                   ),
                   meanSurveys.length > 0
                       ? GroupButton(
+                          options: GroupButtonOptions(
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
                           buttons: surveyMaps[key]!,
                           controller: GroupButtonController(
                             selectedIndex: meanSurveys[key],
@@ -134,46 +138,52 @@ class _DetailState extends State<Detail> {
                 child: Column(
                   children: [
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(essentialHintTexts[key]!,
-                            style: TextStyle(
-                                color: Color.fromRGBO(0, 0, 0, 0.8),
-                                fontSize: 15,
-                                fontWeight: FontWeight.w700,
-                                fontFamily:
-                                    GoogleFonts.catamaran().fontFamily)),
-                        SizedBox(height: 10.0),
-                        DropdownButton(
-                          value: widget.user.essentials[key],
-                          items:
-                              dormitoryList[widget.user.essentials['sex']].map(
-                            (String building) {
-                              return DropdownMenuItem(
-                                child: Text(building,
-                                    style: TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w500,
-                                        color: Color.fromRGBO(0, 0, 0, 0.8))),
-                                value:
-                                    dormitoryList[widget.user.essentials['sex']]
-                                        .indexOf(building),
-                              );
-                            },
-                          ).toList(),
-                          onChanged: (widget.detailMode == Owner.OTHERS)
-                              ? null
-                              : (value) {
-                                  widget.user.essentials[key] = value;
-                                  usersColRef.doc(widget.user.email).update({
-                                    'dormitory': widget.user.essentials[key]
-                                  });
-                                  showToast(
-                                    consts['saved'].toString(),
-                                    context: context,
-                                    animation: StyledToastAnimation.fade,
-                                  );
-                                  setState(() {});
-                                },
+                        Expanded(
+                          child: Text(detailHintTexts[key]!,
+                              style: TextStyle(
+                                  color: Color.fromRGBO(0, 0, 0, 0.8),
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w700,
+                                  fontFamily:
+                                      GoogleFonts.catamaran().fontFamily)),
+                        ),
+                        // SizedBox(height: 10.0),
+                        Expanded(
+                          child: DropdownButton(
+                            value: widget.user.essentials[key],
+                            items: dormitoryList[widget.user.essentials['sex']]
+                                .map(
+                              (String building) {
+                                return DropdownMenuItem(
+                                  child: Text(building,
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w500,
+                                          color: Color.fromRGBO(0, 0, 0, 0.8))),
+                                  value: dormitoryList[
+                                          widget.user.essentials['sex']]
+                                      .indexOf(building),
+                                );
+                              },
+                            ).toList(),
+                            onChanged: (widget.detailMode == Owner.OTHERS)
+                                ? null
+                                : (value) {
+                                    widget.user.essentials[key] = value;
+                                    usersColRef.doc(widget.user.email).update({
+                                      'dormitory': widget.user.essentials[key]
+                                    });
+                                    showToast(
+                                      consts['saved'].toString(),
+                                      context: context,
+                                      animation: StyledToastAnimation.fade,
+                                    );
+                                    setState(() {});
+                                  },
+                          ),
                         ),
                       ],
                     ),
@@ -213,7 +223,7 @@ class _DetailState extends State<Detail> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
-                      child: Text(essentialHintTexts[key]!,
+                      child: Text(detailHintTexts[key]!,
                           style: TextStyle(
                               color: Color.fromRGBO(0, 0, 0, 0.8),
                               fontSize: 15,

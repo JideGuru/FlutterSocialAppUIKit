@@ -107,7 +107,7 @@ class _ChatItemState extends State<ChatItem> {
               Text(
                 now[0] == recentTime[0]
                     ? recentTime[1].substring(0, 5)
-                    : now[0],
+                    : recentTime[0],
                 style: Theme.of(context).textTheme.bodySmall,
               ),
               SizedBox(

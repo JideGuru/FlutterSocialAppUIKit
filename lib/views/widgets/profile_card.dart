@@ -2,7 +2,6 @@ import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:social_app_ui/util/configs/configs.dart';
-import 'package:social_app_ui/util/data.dart';
 import 'package:social_app_ui/util/enum.dart';
 import 'package:social_app_ui/util/configs/theme_config.dart';
 import 'package:social_app_ui/util/router.dart';
@@ -273,7 +272,7 @@ class ProfileCard extends StatelessWidget {
                                     ),
                                     tabs: highestVisualize
                                         .map(
-                                          (title) => Tab(text: title),
+                                          (title) => Tab(text: tagMaps[title]),
                                         )
                                         .toList(),
                                     onTap: (index) {},
@@ -346,7 +345,7 @@ class ProfileCard extends StatelessWidget {
                                     ),
                                     tabs: lowestVisualize
                                         .map(
-                                          (title) => Tab(text: title),
+                                          (title) => Tab(text: tagMaps[title]),
                                         )
                                         .toList(),
                                     onTap: (index) {},

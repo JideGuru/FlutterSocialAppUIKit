@@ -24,7 +24,6 @@ class User {
     var surveysFromFirestore = fromFirestore['surveys'] as Map<String, dynamic>;
     var roommateSurveysFromFirestore =
         fromFirestore['roommateSurveys'] as Map<String, dynamic>;
-
     email = snapshot.id;
     for (var key in essentialKeys) {
       essentials[key] = fromFirestore[key];
@@ -49,13 +48,15 @@ class User {
 
   Map<String, int> calculateMeanRoommateSurveys() {
     Map<String, int> means = {}, keyCounts = {};
-    for (var year in roommateSurveys.entries) {
-      for (var semester in (year as Map<String, dynamic>).values) {
-        for (var element in (semester as Map<String, int>).entries) {
-          if (!means.containsKey(element.key)) means[element.key] = 0;
-          means[element.key] = means[element.key]! + element.value;
-          if (!keyCounts.containsKey(element.key)) keyCounts[element.key] = 0;
-          keyCounts[element.key] = keyCounts[element.key]! + 1;
+    for (var year in roommateSurveys.keys) {
+      for (var semester in roommateSurveys[year].keys) {
+        for (var element in roommateSurveys[year][semester].keys) {
+          var key = element;
+          int value = roommateSurveys[year][semester][key];
+          if (!means.containsKey(key)) means[key] = 0;
+          means[key] = means[key]! + value;
+          if (!keyCounts.containsKey(key)) keyCounts[key] = 0;
+          keyCounts[key] = keyCounts[key]! + 1;
         }
       }
     }
