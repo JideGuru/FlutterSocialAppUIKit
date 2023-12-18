@@ -35,7 +35,11 @@ class ProfileCard extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-          color: Color.fromRGBO(245, 245, 245, 1.0),
+          color: user.essentials['designLevel'] == 0
+              ? Color.fromRGBO(245, 245, 245, 1.0)
+              : (user.essentials['designLevel'] == 1
+                  ? Color.fromRGBO(249, 249, 249, 1.0)
+                  : Color.fromRGBO(255, 255, 255, 1.0)),
           boxShadow: [
             BoxShadow(
               color: Color.fromRGBO(0, 0, 0, 0.25),
@@ -58,7 +62,7 @@ class ProfileCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      user.essentials['status'] == 0
+                      user.essentials['designLevel'] == 0
                           ? Text(
                               user.essentials['nickname'],
                               style: TextStyle(
@@ -67,7 +71,7 @@ class ProfileCard extends StatelessWidget {
                                 fontStyle: FontStyle.normal,
                               ),
                             )
-                          : (user.essentials['status'] == 1
+                          : (user.essentials['designLevel'] == 1
                               ? GradientText(
                                   user.essentials['nickname'],
                                   style: TextStyle(
@@ -104,18 +108,18 @@ class ProfileCard extends StatelessWidget {
                               fontWeight: FontWeight.w500,
                             ),
                           ),
-                          user.essentials['status'] == 0
+                          user.essentials['designLevel'] == 0
                               ? SizedBox()
-                              : (user.essentials['status'] == 1
+                              : (user.essentials['designLevel'] == 1
                                   ? Image.asset(
                                       'assets/images/sliver.png',
-                                      height: 25,
-                                      width: 15,
+                                      height: 35,
+                                      width: 25,
                                     )
                                   : Image.asset(
                                       'assets/images/gold.png',
-                                      height: 25,
-                                      width: 15,
+                                      height: 35,
+                                      width: 25,
                                     ))
                         ],
                       ),
@@ -154,7 +158,7 @@ class ProfileCard extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  consts['details'].toString(),
+                                  "Detail",
                                   style: TextStyle(
                                     color: Color.fromRGBO(0, 0, 0, 0.8),
                                     fontFamily:

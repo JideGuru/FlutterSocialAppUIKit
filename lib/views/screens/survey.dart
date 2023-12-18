@@ -51,10 +51,8 @@ class _SurveyState extends State<Survey> {
               visible: key != 'introduction',
               child: Text(
                 "(${index}/17)",
-                style: GoogleFonts.inknutAntiqua(
-                  textStyle: TextStyle(
-                    fontSize: 20.0,
-                  ),
+                style: TextStyle(
+                  fontSize: 20.0,
                 ),
               ),
             ),

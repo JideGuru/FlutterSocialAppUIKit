@@ -130,61 +130,76 @@ class _DetailState extends State<Detail> {
               return Column();
           } else if (essentialKeys.contains(key)) {
             if (key == 'dormitory') {
-              return Column(
-                children: [
-                  Align(
-                    alignment: Alignment.center,
-                    child: Text(essentialHintTexts[key]!),
-                  ),
-                  SizedBox(height: 10.0),
-                  DropdownButton(
-                    value: widget.user.essentials[key],
-                    items: dormitoryList[widget.user.essentials['sex']].map(
-                      (String building) {
-                        return DropdownMenuItem(
-                          child: Text(building, style: TextStyle(fontSize: 15)),
-                          value: dormitoryList[widget.user.essentials['sex']]
-                              .indexOf(building),
-                        );
-                      },
-                    ).toList(),
-                    onChanged: (widget.detailMode == Owner.OTHERS)
-                        ? null
-                        : (value) {
-                            widget.user.essentials[key] = value;
-                            usersColRef.doc(widget.user.email).update(
-                                {'dormitory': widget.user.essentials[key]});
-                            showToast(
-                              consts['saved'].toString(),
-                              context: context,
-                              animation: StyledToastAnimation.fade,
-                            );
-                            setState(() {});
-                          },
-                  ),
-                  SizedBox(height: 10.0),
-                  SizedBox(
-                    width: double.infinity, // 가로로 전체 화면을 차지하도록 설정
-                    height: 1.0, // 줄의 높이
-                    child: Container(
-                      color: Color.fromRGBO(0, 0, 0, 0.08), // 줄의 색상
+              return Container(
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Text(essentialHintTexts[key]!,
+                            style: TextStyle(
+                                color: Color.fromRGBO(0, 0, 0, 0.8),
+                                fontSize: 15,
+                                fontWeight: FontWeight.w700,
+                                fontFamily:
+                                    GoogleFonts.catamaran().fontFamily)),
+                        SizedBox(height: 10.0),
+                        DropdownButton(
+                          value: widget.user.essentials[key],
+                          items:
+                              dormitoryList[widget.user.essentials['sex']].map(
+                            (String building) {
+                              return DropdownMenuItem(
+                                child: Text(building,
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w500,
+                                        color: Color.fromRGBO(0, 0, 0, 0.8))),
+                                value:
+                                    dormitoryList[widget.user.essentials['sex']]
+                                        .indexOf(building),
+                              );
+                            },
+                          ).toList(),
+                          onChanged: (widget.detailMode == Owner.OTHERS)
+                              ? null
+                              : (value) {
+                                  widget.user.essentials[key] = value;
+                                  usersColRef.doc(widget.user.email).update({
+                                    'dormitory': widget.user.essentials[key]
+                                  });
+                                  showToast(
+                                    consts['saved'].toString(),
+                                    context: context,
+                                    animation: StyledToastAnimation.fade,
+                                  );
+                                  setState(() {});
+                                },
+                        ),
+                      ],
                     ),
-                  ),
-                  SizedBox(height: 10.0),
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      consts['survey'].toString(),
-                      style: TextStyle(
-                        color: Color.fromRGBO(0, 0, 0, 0.8),
-                        fontFamily: GoogleFonts.catamaran().fontFamily,
-                        fontSize: 30,
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.w700,
+                    SizedBox(height: 10.0),
+                    SizedBox(
+                      height: 1.0, // 줄의 높이
+                      child: Container(
+                        color: Color.fromRGBO(0, 0, 0, 0.08), // 줄의 색상
                       ),
                     ),
-                  ),
-                ],
+                    SizedBox(height: 10.0),
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        "Survey",
+                        style: TextStyle(
+                          color: Color.fromRGBO(0, 0, 0, 0.8),
+                          fontFamily: GoogleFonts.catamaran().fontFamily,
+                          fontSize: 30,
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               );
             } else {
               var value = widget.user.essentials[key].toString();

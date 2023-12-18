@@ -138,14 +138,12 @@ class _LoginState extends State<Login> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        Text(
-          '${appName}',
-          style: GoogleFonts.inknutAntiqua(
-              textStyle: TextStyle(
-            color: Colors.black,
-            fontSize: 40,
-          )),
-        ).fadeInList(0, false),
+        Text('${appName}',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 40,
+              fontWeight: FontWeight.w800,
+            )).fadeInList(0, false),
         Visibility(
           visible: formMode == FormMode.REGISTER,
           child: Row(
@@ -154,10 +152,8 @@ class _LoginState extends State<Login> {
               SizedBox(height: 20.0),
               Text(
                 consts['register'].toString(),
-                style: GoogleFonts.inknutAntiqua(
-                  textStyle: TextStyle(
-                    fontSize: 15,
-                  ),
+                style: TextStyle(
+                  fontSize: 15,
                 ),
               ),
               SizedBox(height: 50.0),
@@ -172,10 +168,8 @@ class _LoginState extends State<Login> {
               SizedBox(height: 20.0),
               Text(
                 consts['forget-password'].toString(),
-                style: GoogleFonts.inknutAntiqua(
-                  textStyle: TextStyle(
-                    fontSize: 15,
-                  ),
+                style: TextStyle(
+                  fontSize: 15,
                 ),
               ),
               SizedBox(height: 50.0),
@@ -305,7 +299,9 @@ class _LoginState extends State<Login> {
         : CustomButton(
             label: formMode == FormMode.LOGIN
                 ? consts['login'].toString()
-                : consts['submit'].toString(),
+                : (formMode == FormMode.REGISTER
+                    ? consts['register'].toString()
+                    : consts['submit'].toString()),
             onPressed: () => login()).fadeInList(4, false);
   }
 }
