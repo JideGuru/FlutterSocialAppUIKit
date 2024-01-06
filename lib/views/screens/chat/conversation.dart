@@ -51,13 +51,25 @@ class _ConversationState extends State<Conversation> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
-                      widget.other.essentials['nickname'],
-                      style: TextStyle(
-                          fontWeight: FontWeight.w800,
-                          fontSize: 20,
-                          fontFamily: GoogleFonts.inter().fontFamily,
-                          color: Colors.black),
+                    Row(
+                      children: [
+                        Text(
+                          widget.other.essentials['nickname'],
+                          style: TextStyle(
+                              fontWeight: FontWeight.w800,
+                              fontSize: 20,
+                              fontFamily: GoogleFonts.inter().fontFamily,
+                              color: Colors.black),
+                        ),
+                        Visibility(
+                          visible: widget.marked,
+                          child: Image.asset(
+                            'assets/images/pin.png',
+                            width: 13,
+                            height: 15.588,
+                          ),
+                        )
+                      ],
                     ),
                     Text(
                       widget.other.email,
@@ -92,13 +104,14 @@ class _ConversationState extends State<Conversation> {
                       : consts['bookmark'].toString()),
                   onTap: () {
                     setState(() {
-                      marked = !marked;
-
+                      // marked = !marked;
+                      // print(marked);
                       chatsColRef.doc(widget.me.email).update(
                         {
-                          FieldPath([widget.other.email, 'marked']): marked,
+                          FieldPath([widget.other.email, 'marked']): !marked,
                         },
                       );
+                      // print(marked);
                     });
                   },
                 ),
@@ -129,6 +142,7 @@ class _ConversationState extends State<Conversation> {
             var conversation = [], lastReadIndex = -1;
             if (chats.chatMaps.containsKey(widget.other.email)) {
               conversation = chats.chatMaps[widget.other.email]['chats'];
+              marked = chats.chatMaps[widget.other.email]['marked'];
               for (var conv in conversation) {
                 if (widget.other.email == conv['sender'])
                   conv['read'] = true;

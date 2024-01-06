@@ -143,6 +143,7 @@ class _ChatItemState extends State<ChatItem> {
                 me: widget.me,
                 other: widget.other,
                 chats: widget.chats,
+                marked: widget.marked,
               ),
             );
           },

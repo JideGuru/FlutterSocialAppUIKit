@@ -234,7 +234,6 @@ Map<String, String> detailHintTexts = {
   'sex': '성별',
   'studentNumber': '학번',
   'dormitory': '호관',
-
   'smoking': '흡연',
   'sleepingHabits': '잠버릇',
   'relationship': '관계',
@@ -247,4 +246,5 @@ Map<String, String> detailHintTexts = {
   'earphone': '이어폰',
   'eating': '취식',
   'lateStand': '스탠드',
+  'etc': '전하고 싶은 말',
 };

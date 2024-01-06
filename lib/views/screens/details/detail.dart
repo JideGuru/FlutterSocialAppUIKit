@@ -52,13 +52,14 @@ class _DetailState extends State<Detail> {
                     max: surveyMaps[key]!.length.toDouble() - 1,
                     value: (widget.user.surveys[key]).toDouble(),
                     divisions: surveyMaps[key]!.length - 1,
-                    onChanged: (widget.detailMode == Owner.OTHERS)
-                        ? null
-                        : (value) {
+                    onChanged: (widget.detailMode != Owner.OTHERS &&
+                            !variables['auth'])
+                        ? (value) {
                             setState(() {
                               widget.user.surveys[key] = value.round();
                             });
-                          },
+                          }
+                        : null,
                     onChangeEnd: (value) {
                       usersColRef
                           .doc(widget.user.email)
@@ -97,8 +98,10 @@ class _DetailState extends State<Detail> {
                         borderRadius: BorderRadius.circular(5.0)),
                     controller: GroupButtonController(
                       selectedIndex: widget.user.surveys[key],
-                      disabledIndexes:
-                          (widget.detailMode == Owner.OTHERS) ? [0, 1] : [],
+                      disabledIndexes: (widget.detailMode != Owner.OTHERS &&
+                              !variables['auth'])
+                          ? []
+                          : [0, 1],
                     ),
                     onSelected: (value, index, isSelected) {
                       widget.user.surveys[key] = index;
@@ -169,9 +172,9 @@ class _DetailState extends State<Detail> {
                                 );
                               },
                             ).toList(),
-                            onChanged: (widget.detailMode == Owner.OTHERS)
-                                ? null
-                                : (value) {
+                            onChanged: (widget.detailMode != Owner.OTHERS &&
+                                    !variables['auth'])
+                                ? (value) {
                                     widget.user.essentials[key] = value;
                                     usersColRef.doc(widget.user.email).update({
                                       'dormitory': widget.user.essentials[key]
@@ -182,7 +185,8 @@ class _DetailState extends State<Detail> {
                                       animation: StyledToastAnimation.fade,
                                     );
                                     setState(() {});
-                                  },
+                                  }
+                                : null,
                           ),
                         ),
                       ],
@@ -244,7 +248,7 @@ class _DetailState extends State<Detail> {
           } else if (key == 'etc') {
             return Column(
               children: [
-                Text(consts['etc'].toString()),
+                Text(detailHintTexts['etc'].toString()),
                 SizedBox(
                   height: 10,
                 ),
@@ -257,10 +261,11 @@ class _DetailState extends State<Detail> {
                         .doc(widget.user.email)
                         .update({'surveys.etc': text});
                     showToast(
-                      consts['etc'].toString(),
+                      consts['saved'].toString(),
                       context: context,
                       animation: StyledToastAnimation.fade,
                     );
+                    setState(() {});
                   },
                 ),
                 SizedBox(

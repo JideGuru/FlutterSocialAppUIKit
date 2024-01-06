@@ -29,46 +29,58 @@ class MyProfile extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: 10),
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              SizedBox(height: 50),
-              ProfileCard(
-                profileMode: Owner.MINE,
-                user: me,
-                me: me,
+      body: FutureBuilder(
+        future: usersColRef.doc(me.email).get(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            User me = User.fromFirestore(snapshot.data!);
+            return SingleChildScrollView(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(height: 50),
+                    ProfileCard(
+                      profileMode: Owner.MINE,
+                      user: me,
+                      me: me,
+                    ),
+                    SizedBox(height: 25),
+                    SizedBox(height: 25),
+                    Text(consts['finding'].toString()),
+                    GroupButton(
+                      options: GroupButtonOptions(
+                          borderRadius: BorderRadius.circular(5.0)),
+                      controller: GroupButtonController(
+                        selectedIndex: me.essentials['status'],
+                      ),
+                      onSelected: (value, index, isSelected) {
+                        me.essentials['status'] = index;
+                        usersColRef
+                            .doc(me.email)
+                            .update({'status': me.essentials['status']});
+                        showToast(
+                          consts['saved'].toString(),
+                          context: context,
+                          animation: StyledToastAnimation.fade,
+                        );
+                      },
+                      buttons: [
+                        consts['yes'].toString(),
+                        consts['no'].toString()
+                      ],
+                    ),
+                    SizedBox(height: screenHeight * 0.1),
+                  ],
+                ).fadeInList(1, true),
               ),
-              SizedBox(height: 25),
-              SizedBox(height: 25),
-              Text(consts['finding'].toString()),
-              GroupButton(
-                options: GroupButtonOptions(
-                    borderRadius: BorderRadius.circular(5.0)),
-                controller: GroupButtonController(
-                  selectedIndex: me.essentials['status'],
-                ),
-                onSelected: (value, index, isSelected) {
-                  me.essentials['status'] = index;
-                  usersColRef
-                      .doc(me.email)
-                      .update({'status': me.essentials['status']});
-                  showToast(
-                    consts['saved'].toString(),
-                    context: context,
-                    animation: StyledToastAnimation.fade,
-                  );
-                },
-                buttons: [consts['yes'].toString(), consts['no'].toString()],
-              ),
-              SizedBox(height: screenHeight * 0.1),
-            ],
-          ).fadeInList(1, true),
-        ),
+            );
+          }
+          return Container();
+        },
       ),
     );
   }

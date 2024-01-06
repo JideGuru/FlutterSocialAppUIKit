@@ -175,7 +175,7 @@ class ProfileCard extends StatelessWidget {
                                           children: [
                                             Expanded(
                                               child: Text(
-                                                "email",
+                                                "이메일",
                                                 style: TextStyle(
                                                     color: Color.fromRGBO(
                                                         0, 0, 0, 0.8),

@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:social_app_ui/util/animations.dart';
@@ -223,14 +222,10 @@ class _LoginState extends State<Login> {
           ),
         ),
         Visibility(
-          visible: formMode != FormMode.REGISTER,
+          visible: formMode == FormMode.LOGIN,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                consts['register'].toString(),
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
               TextButton(
                 onPressed: () {
                   formMode = FormMode.REGISTER;

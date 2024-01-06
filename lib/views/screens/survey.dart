@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:group_button/group_button.dart';
+import 'package:social_app_ui/util/auth.dart';
 import 'package:social_app_ui/util/configs/configs.dart';
 import 'package:social_app_ui/util/data.dart';
 import 'package:social_app_ui/util/extensions.dart';
@@ -26,6 +27,9 @@ class _SurveyState extends State<Survey> {
   int index = -1;
   final int survey_Max_num = 17;
   List<String> keys = List.from(essentialHintTexts.keys)..addAll(surveyKeys);
+
+  bool nickname_chk = false;
+  bool etc_chk = false;
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -60,20 +64,26 @@ class _SurveyState extends State<Survey> {
             form(key).fadeInList(3, false),
             CustomButton(
               onPressed: () {
-                setState(
-                  () {
-                    if (index < keys.length) {
-                      index++;
-                    } else {
-                      usersColRef.doc(me.email).set(me.toFirestore());
-                      chatsColRef.doc(me.email).set({});
-                      Navigate.pushPageReplacement(
-                        context,
-                        InitScreen(email: me.email),
-                      );
-                    }
-                  },
-                );
+                if ((key == 'nickname' && !nickname_chk) ||
+                    (key == 'etc' && !etc_chk)) {
+                  final auth = Auth();
+                  auth.showAuthDialog(context, '내용을 입력해주세요.');
+                } else {
+                  setState(
+                    () {
+                      if (index < keys.length) {
+                        index++;
+                      } else {
+                        usersColRef.doc(me.email).set(me.toFirestore());
+                        chatsColRef.doc(me.email).set({});
+                        Navigate.pushPageReplacement(
+                          context,
+                          InitScreen(email: me.email),
+                        );
+                      }
+                    },
+                  );
+                }
               },
             ),
           ],
@@ -173,6 +183,10 @@ class _SurveyState extends State<Survey> {
             ),
             CustomTextField(
               onChange: (text) {
+                if (text == '')
+                  etc_chk = false;
+                else
+                  etc_chk = true;
                 me.surveys[key] = text;
               },
             ),
@@ -190,6 +204,10 @@ class _SurveyState extends State<Survey> {
             ),
             CustomTextField(
               onChange: (text) {
+                if (text == '')
+                  nickname_chk = false;
+                else
+                  nickname_chk = true;
                 me.essentials[key] = text;
               },
             ),
