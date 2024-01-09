@@ -61,14 +61,14 @@ class _ConversationState extends State<Conversation> {
                               fontFamily: GoogleFonts.inter().fontFamily,
                               color: Colors.black),
                         ),
-                        Visibility(
-                          visible: widget.marked,
-                          child: Image.asset(
-                            'assets/images/pin.png',
-                            width: 13,
-                            height: 15.588,
-                          ),
-                        )
+                        // Visibility(
+                        //   visible: widget.marked,
+                        //   child: Image.asset(
+                        //     'assets/images/pin.png',
+                        //     width: 13,
+                        //     height: 15.588,
+                        //   ),
+                        // )
                       ],
                     ),
                     Text(

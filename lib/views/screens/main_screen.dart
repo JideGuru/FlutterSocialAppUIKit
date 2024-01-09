@@ -4,7 +4,6 @@ import 'package:social_app_ui/util/user.dart';
 import 'package:social_app_ui/views/screens/chat/chats.dart';
 import 'package:social_app_ui/views/screens/home.dart';
 import 'package:social_app_ui/views/screens/my_profile.dart';
-import 'package:social_app_ui/views/screens/settings.dart';
 
 class MainScreen extends StatefulWidget {
   late final User me;
@@ -35,7 +34,7 @@ class _MainScreenState extends State<MainScreen> {
             onStatusChanged: onStatusChagned,
           ),
           Chats(me: widget.me),
-          Settings(user: widget.me),
+          // Settings(user: widget.me),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -54,10 +53,10 @@ class _MainScreenState extends State<MainScreen> {
             icon: Icon(Icons.message),
             label: consts['chat'].toString(),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: consts['setting'].toString(),
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.settings),
+          //   label: consts['setting'].toString(),
+          // ),
         ],
         onTap: navigationTapped,
         currentIndex: _page,
@@ -84,6 +83,8 @@ class _MainScreenState extends State<MainScreen> {
   void onStatusChagned(int index) {
     mounted
         ? setState(() {
+            widget.me.essentials['status'] = index;
+
             if (index == 0)
               this._page = 1;
             else

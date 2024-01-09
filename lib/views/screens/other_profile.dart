@@ -28,9 +28,12 @@ class OtherProfile extends StatelessWidget {
         ),
       ),
       body: SingleChildScrollView(
-        child: Detail(
-          detailMode: Owner.OTHERS,
-          user: other,
+        child: Container(
+          padding: EdgeInsets.all(20.0),
+          child: Detail(
+            detailMode: Owner.OTHERS,
+            user: other,
+          ),
         ),
       ),
     );

@@ -95,24 +95,28 @@ class _DetailState extends State<Detail> {
                   ),
                   GroupButton(
                     options: GroupButtonOptions(
-                        borderRadius: BorderRadius.circular(5.0)),
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
                     controller: GroupButtonController(
                       selectedIndex: widget.user.surveys[key],
                       disabledIndexes: (widget.detailMode != Owner.OTHERS &&
                               !variables['auth'])
                           ? []
-                          : [0, 1],
+                          : [(widget.user.surveys[key] - 1) * (-1)],
                     ),
                     onSelected: (value, index, isSelected) {
-                      widget.user.surveys[key] = index;
-                      usersColRef
-                          .doc(widget.user.email)
-                          .update({'surveys.$key': widget.user.surveys[key]});
-                      showToast(
-                        consts['saved'].toString(),
-                        context: context,
-                        animation: StyledToastAnimation.fade,
-                      );
+                      if (widget.detailMode != Owner.OTHERS &&
+                          !variables['auth']) {
+                        widget.user.surveys[key] = index;
+                        usersColRef
+                            .doc(widget.user.email)
+                            .update({'surveys.$key': widget.user.surveys[key]});
+                        showToast(
+                          consts['saved'].toString(),
+                          context: context,
+                          animation: StyledToastAnimation.fade,
+                        );
+                      }
                     },
                     buttons: surveyMaps[key]!,
                   ),
