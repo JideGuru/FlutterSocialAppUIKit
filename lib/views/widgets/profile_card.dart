@@ -63,7 +63,7 @@ class ProfileCard extends StatelessWidget {
                     children: [
                       user.essentials['designLevel'] == 0
                           ? Text(
-                              user.essentials['nickname'],
+                              user.essentials['nickname'].toString(),
                               style: TextStyle(
                                 fontSize: 35,
                                 fontWeight: FontWeight.w700,
@@ -72,7 +72,7 @@ class ProfileCard extends StatelessWidget {
                             )
                           : (user.essentials['designLevel'] == 1
                               ? GradientText(
-                                  user.essentials['nickname'],
+                                  user.essentials['nickname'].toString(),
                                   style: TextStyle(
                                     fontSize: 35,
                                     fontWeight: FontWeight.w700,
@@ -85,7 +85,8 @@ class ProfileCard extends StatelessWidget {
                                     Color.fromRGBO(255, 186, 171, 1.0),
                                   ],
                                 )
-                              : GradientText(user.essentials['nickname'],
+                              : GradientText(
+                                  user.essentials['nickname'].toString(),
                                   gradientType: GradientType.linear,
                                   style: TextStyle(
                                     fontSize: 35,
