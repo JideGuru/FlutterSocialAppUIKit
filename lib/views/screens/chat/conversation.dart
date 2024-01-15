@@ -270,11 +270,13 @@ class _ConversationState extends State<Conversation> {
                                             FieldValue.arrayUnion([msg])
                                       },
                                     );
-                                    Notify.notify(
-                                      from: widget.me,
-                                      to: widget.me,
-                                      message: msg['message'],
-                                    );
+                                    if (!widget.me.essentials['notification']) {
+                                      Notify.notify(
+                                        from: widget.me,
+                                        to: widget.me,
+                                        message: msg['message'],
+                                      );
+                                    }
                                     controller.text = '';
                                   },
                                 )

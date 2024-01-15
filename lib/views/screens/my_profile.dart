@@ -74,7 +74,7 @@ class MyProfile extends StatelessWidget {
                         consts['no'].toString()
                       ],
                     ),
-                    SizedBox(height: screenHeight * 0.1),
+                    SizedBox(height: screenHeight * 0.04),
                     Text("${consts['notification'].toString()}을 수신하시나요?"),
                     GroupButton(
                       options: GroupButtonOptions(
