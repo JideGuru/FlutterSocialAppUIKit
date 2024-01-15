@@ -13,6 +13,7 @@ class ThemeConfig {
   static Color lightOnSurface = Color(0xff121212);
   static Color lightText = Color(0xff121212);
   static Color lightTabBackground = Color(0xff86a2bc);
+  static Color meanRoommates = Color(0xffffc107);
 
   // static Color darkPrimary = Color(0xff1f1f1f);
   // static Color darkSecondary = Color(0xfffcfcff);

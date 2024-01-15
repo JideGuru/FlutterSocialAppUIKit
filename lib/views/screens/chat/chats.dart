@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:social_app_ui/util/chat_util.dart';
+import 'package:social_app_ui/util/chat.dart';
+import 'package:social_app_ui/util/configs/configs.dart';
 import 'package:social_app_ui/util/data.dart';
+import 'package:social_app_ui/util/extensions.dart';
+import 'package:social_app_ui/util/user.dart';
 import 'package:social_app_ui/views/widgets/chat_item.dart';
 
 class Chats extends StatefulWidget {
-  final String email;
+  final User me;
   Chats({
     super.key,
-    required this.email,
+    required this.me,
   });
   @override
   _ChatsState createState() => _ChatsState();
@@ -27,16 +29,20 @@ class _ChatsState extends State<Chats>
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "채팅",
+          consts['chat'].toString(),
           style: Theme.of(context).textTheme.bodyLarge,
         ),
         centerTitle: true,
       ),
       body: StreamBuilder(
-        stream: chatsColRef.doc(widget.email).snapshots(),
+        stream: chatsColRef.doc(widget.me.email).snapshots(),
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            var chatsFromSnapshot = getChatsFromSnapshot(snapshot);
+          if (snapshot.hasData &&
+              snapshot.connectionState == ConnectionState.active) {
+            var chatFromFirestore = Chat.fromFirestore(snapshot.data!);
+            var chatMaps = chatFromFirestore.chatMaps;
+            var orderedEmails = chatFromFirestore.orderedEmails;
+
             return ListView.separated(
               padding: EdgeInsets.all(10),
               separatorBuilder: (BuildContext context, int index) {
@@ -49,22 +55,33 @@ class _ChatsState extends State<Chats>
                   ),
                 );
               },
-              itemCount: chatsFromSnapshot.length,
+              itemCount: orderedEmails.length,
               itemBuilder: (BuildContext context, int index) {
-                Chat chat = chatsFromSnapshot[index];
-                return ChatItem(
-                  email: widget.email,
-                  chat: chat,
+                return FutureBuilder(
+                  future: usersColRef.doc(orderedEmails[index]).get(),
+                  builder: (context, snapshot) {
+                    var email = orderedEmails[index];
+                    var chats = chatMaps[email]['chats'];
+                    var marked = false;
+                    if ((chatMaps[email] as Map<String, dynamic>)
+                        .containsKey('marked'))
+                      marked = chatMaps[email]['marked'];
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      var other = User.fromFirestore(snapshot.data!);
+                      return ChatItem(
+                        me: widget.me,
+                        other: other,
+                        chats: chats,
+                        marked: marked,
+                      );
+                    } else
+                      return Container();
+                  },
                 );
               },
-            );
+            ).fadeInList(3, false);
           } else
-            return Center(
-              child: LoadingAnimationWidget.waveDots(
-                color: Colors.grey,
-                size: 50,
-              ),
-            );
+            return Container();
         },
       ),
     );

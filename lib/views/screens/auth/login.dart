@@ -1,12 +1,15 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:social_app_ui/util/animations.dart';
 import 'package:social_app_ui/util/auth.dart';
-import 'package:social_app_ui/util/const.dart';
+import 'package:social_app_ui/util/configs/configs.dart';
+import 'package:social_app_ui/util/data.dart';
 import 'package:social_app_ui/util/enum.dart';
+import 'package:social_app_ui/util/notify.dart';
 import 'package:social_app_ui/util/router.dart';
 import 'package:social_app_ui/util/validations.dart';
-import 'package:social_app_ui/views/screens/main_screen.dart';
+import 'package:social_app_ui/views/screens/init_screen.dart';
 import 'package:social_app_ui/views/screens/survey.dart';
 import 'package:social_app_ui/views/widgets/custom_button.dart';
 import 'package:social_app_ui/views/widgets/custom_text_field.dart';
@@ -22,10 +25,11 @@ class _LoginState extends State<Login> {
   bool validate = false;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  String email = '', password = '';
+  String email = '', password = '', emailVal = '';
   FocusNode emailFN = FocusNode();
   FocusNode passFN = FocusNode();
   FormMode formMode = FormMode.LOGIN;
+  int emailValNum = 12345;
 
   final auth = Auth();
 
@@ -53,14 +57,35 @@ class _LoginState extends State<Login> {
       else
         switch (formMode) {
           case FormMode.REGISTER:
-            Navigate.pushPageReplacement(
-              context,
-              Survey(email: email),
-            );
+            FirebaseAuth.instance.currentUser!.sendEmailVerification();
+            auth.showAuthDialog(context, consts['auth-link'].toString());
+            formMode = FormMode.LOGIN;
+            setState(() {});
             break;
           case FormMode.LOGIN:
+            // if (!FirebaseAuth.instance.currentUser!.emailVerified) {
+            //   FirebaseAuth.instance.currentUser!.sendEmailVerification();
+            //   auth.showAuthDialog(
+            //       context, consts['auth-link-again'].toString());
+            // } else {
+            //   usersColRef.doc(email).get().then((value) {
+            //     if (value.exists) {
+            //       Navigate.pushPageReplacement(
+            //           context, InitScreen(email: email));
+            //     } else
+            //       Navigate.pushPageReplacement(context, Survey(email: email));
+            //   });
+            // }
+            usersColRef.doc(email).get().then((value) {
+              if (value.exists) {
+                Notify.updateToken(email: email);
+                Navigate.pushPageReplacement(context, InitScreen(email: email));
+              } else
+                Navigate.pushPageReplacement(context, Survey(email: email));
+            });
+            break;
           case FormMode.FORGOT_PASSWORD:
-            Navigate.pushPageReplacement(context, MainScreen(email: email));
+            // Navigate.pushPageReplacement(context, InitScreen(email: email));
             break;
         }
     }
@@ -100,11 +125,8 @@ class _LoginState extends State<Login> {
       duration: Duration(milliseconds: 500),
       color: Theme.of(context).colorScheme.secondary.withOpacity(0.3),
       child: Center(
-        child: Lottie.asset(
-          AppAnimations.chatAnimation,
-          height: 400,
-          fit: BoxFit.cover,
-        ),
+        child: Lottie.asset(AppAnimations.chatAnimation,
+            height: 400, fit: BoxFit.cover),
       ),
     );
   }
@@ -115,14 +137,48 @@ class _LoginState extends State<Login> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        Text(
-          '${Constants.appName}',
-          style: TextStyle(
-            fontSize: 40.0,
-            fontWeight: FontWeight.bold,
+        Text('${appName}',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 40,
+              fontWeight: FontWeight.w800,
+            )).fadeInList(0, false),
+        Visibility(
+          visible: formMode == FormMode.REGISTER,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(height: 20.0),
+              Text(
+                consts['register'].toString(),
+                style: TextStyle(
+                  fontSize: 15,
+                ),
+              ),
+              SizedBox(height: 50.0),
+            ],
           ),
         ).fadeInList(0, false),
-        SizedBox(height: 70.0),
+        Visibility(
+          visible: formMode == FormMode.FORGOT_PASSWORD,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(height: 20.0),
+              Text(
+                consts['forget-password'].toString(),
+                style: TextStyle(
+                  fontSize: 15,
+                ),
+              ),
+              SizedBox(height: 50.0),
+            ],
+          ),
+        ).fadeInList(0, false),
+        Visibility(
+          visible: formMode == FormMode.LOGIN,
+          child: SizedBox(height: 70.0),
+        ),
         Form(
           autovalidateMode: AutovalidateMode.onUserInteraction,
           key: formKey,
@@ -132,7 +188,7 @@ class _LoginState extends State<Login> {
           visible: formMode == FormMode.LOGIN,
           child: Column(
             children: [
-              SizedBox(height: 10.0),
+              // SizedBox(height: 10.0),
               Align(
                 alignment: Alignment.centerRight,
                 child: TextButton(
@@ -140,70 +196,75 @@ class _LoginState extends State<Login> {
                     formMode = FormMode.FORGOT_PASSWORD;
                     setState(() {});
                   },
-                  child: Text('비밀번호를 잊으셨나요?'),
+                  child: Text(consts['forget-password'].toString()),
                 ),
               ),
             ],
           ),
         ).fadeInList(3, false),
-        SizedBox(height: 20.0),
+        SizedBox(height: 10.0),
         buildButton(),
-        Visibility(
-          visible: formMode == FormMode.LOGIN,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                '계정이 없으신가요?',
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
-              TextButton(
-                onPressed: () {
-                  formMode = FormMode.REGISTER;
-                  setState(() {});
-                },
-                child: Text('가입하기'),
-              ),
-            ],
-          ),
-        ).fadeInList(5, false),
         Visibility(
           visible: formMode != FormMode.LOGIN,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                '이미 계정이 있으신가요?',
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
+              Text(consts['registered-already'].toString(),
+                  style: Theme.of(context).textTheme.bodySmall),
               TextButton(
                 onPressed: () {
                   formMode = FormMode.LOGIN;
                   setState(() {});
                 },
-                child: Text('로그인하기'),
+                child: Text(consts['login'].toString()),
               ),
             ],
           ),
         ),
+        Visibility(
+          visible: formMode == FormMode.LOGIN,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextButton(
+                onPressed: () {
+                  formMode = FormMode.REGISTER;
+                  setState(() {});
+                },
+                child: Text(consts['register'].toString()),
+              ),
+            ],
+          ),
+        ).fadeInList(5, false),
       ],
     );
   }
 
   buildForm() {
+    final screenWidth = MediaQuery.of(context).size.width;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        CustomTextField(
-          enabled: !loading,
-          hintText: "학교 이메일",
-          textInputAction: TextInputAction.next,
-          validateFunction: Validations.validateEmail,
-          onSaved: (String? val) {
-            email = val ?? '';
-          },
-          focusNode: emailFN,
-          nextFocusNode: passFN,
+        Row(
+          children: [
+            Expanded(
+              child: Container(
+                width: formMode == FormMode.REGISTER
+                    ? screenWidth * 0.8
+                    : screenWidth * 0.8,
+                child: CustomTextField(
+                  enabled: !loading,
+                  hintText: consts['university-email'].toString(),
+                  textInputAction: TextInputAction.next,
+                  validateFunction: Validations.validateEmail,
+                  onChange: (String? val) {
+                    email = val ?? '';
+                  },
+                  focusNode: emailFN,
+                ),
+              ),
+            ),
+          ],
         ).fadeInList(1, false),
         Visibility(
           visible: formMode != FormMode.FORGOT_PASSWORD,
@@ -212,7 +273,7 @@ class _LoginState extends State<Login> {
               SizedBox(height: 20.0),
               CustomTextField(
                 enabled: !loading,
-                hintText: "비밀번호",
+                hintText: consts['password'].toString(),
                 textInputAction: TextInputAction.done,
                 validateFunction: Validations.validatePassword,
                 submitAction: login,
@@ -233,8 +294,11 @@ class _LoginState extends State<Login> {
     return loading
         ? Center(child: CircularProgressIndicator())
         : CustomButton(
-            label: "제출",
-            onPressed: () => login(),
-          ).fadeInList(4, false);
+            label: formMode == FormMode.LOGIN
+                ? consts['login'].toString()
+                : (formMode == FormMode.REGISTER
+                    ? consts['register'].toString()
+                    : consts['submit'].toString()),
+            onPressed: () => login()).fadeInList(4, false);
   }
 }

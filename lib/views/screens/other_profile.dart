@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:social_app_ui/util/configs/configs.dart';
+import 'package:social_app_ui/util/enum.dart';
 import 'package:social_app_ui/util/user.dart';
-import 'package:social_app_ui/views/screens/detail.dart';
+import 'package:social_app_ui/views/screens/details/detail.dart';
 
 class OtherProfile extends StatelessWidget {
-  final User user;
+  final User other;
   OtherProfile({
     super.key,
-    required this.user,
+    required this.other,
   });
 
   @override
@@ -14,7 +16,7 @@ class OtherProfile extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "자세한 프로필",
+          consts['details'].toString(),
           style: Theme.of(context).textTheme.bodyLarge,
         ),
         centerTitle: true,
@@ -26,7 +28,13 @@ class OtherProfile extends StatelessWidget {
         ),
       ),
       body: SingleChildScrollView(
-        child: Detail(user: user),
+        child: Container(
+          padding: EdgeInsets.all(20.0),
+          child: Detail(
+            detailMode: Owner.OTHERS,
+            user: other,
+          ),
+        ),
       ),
     );
   }

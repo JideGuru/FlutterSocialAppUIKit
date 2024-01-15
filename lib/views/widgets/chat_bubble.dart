@@ -3,11 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:social_app_ui/util/enum.dart';
 
 class ChatBubble extends StatefulWidget {
-  final Map<String, dynamic> conversation;
+  final bool withDayBar, withRead;
+  final Map<String, dynamic> message;
   final Owner sender;
   ChatBubble({
-    required this.conversation,
-    this.sender = Owner.MINE,
+    required this.withDayBar,
+    required this.withRead,
+    required this.message,
+    required this.sender,
   });
   @override
   _ChatBubbleState createState() => _ChatBubbleState();
@@ -17,63 +20,112 @@ class _ChatBubbleState extends State<ChatBubble> {
   @override
   Widget build(BuildContext context) {
     final color = widget.sender == Owner.MINE
-        ? Theme.of(context).colorScheme.secondary
-        : Theme.of(context).colorScheme.onBackground;
+        ? Color.fromRGBO(12, 73, 127, 1)
+        : Color.fromRGBO(144, 144, 144, 1.0);
     final align = widget.sender == Owner.MINE
-        ? CrossAxisAlignment.end
-        : CrossAxisAlignment.start;
+        ? MainAxisAlignment.end
+        : MainAxisAlignment.start;
     final radius = widget.sender == Owner.MINE
         ? BorderRadius.only(
-            topLeft: Radius.circular(5.0),
-            bottomLeft: Radius.circular(5.0),
-            bottomRight: Radius.circular(10.0),
+            topLeft: Radius.circular(18.0),
+            bottomLeft: Radius.circular(18.0),
+            bottomRight: Radius.circular(18.0),
           )
         : BorderRadius.only(
-            topRight: Radius.circular(5.0),
-            bottomLeft: Radius.circular(10.0),
-            bottomRight: Radius.circular(5.0),
+            topRight: Radius.circular(18.0),
+            bottomLeft: Radius.circular(18.0),
+            bottomRight: Radius.circular(18.0),
           );
-    DateTime time = (widget.conversation['time'] as Timestamp).toDate();
+    var time = (widget.message['time'] as Timestamp)
+        .toDate()
+        .toIso8601String()
+        .split('T');
     return Column(
-      crossAxisAlignment: align,
-      children: <Widget>[
-        Container(
-          margin: const EdgeInsets.all(3.0),
-          padding: const EdgeInsets.all(5.0),
-          decoration: BoxDecoration(
-            color: color,
-            borderRadius: radius,
-          ),
-          constraints: BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width / 1.3,
-            minWidth: 20.0,
-          ),
+      children: [
+        Visibility(
+          visible: widget.withDayBar,
           child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.all(5),
-                child: Text(
-                  widget.conversation['message'],
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: widget.sender == Owner.MINE
-                            ? Theme.of(context).colorScheme.onSecondary
-                            : Theme.of(context).colorScheme.onSurface,
-                      ),
-                ),
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(height: 8.0),
+              Text(
+                time[0].toString(),
+                style: Theme.of(context).textTheme.bodySmall,
               ),
+              SizedBox(height: 8.0),
             ],
           ),
         ),
-        Padding(
-          padding: widget.sender == Owner.MINE
-              ? EdgeInsets.only(right: 10, bottom: 10.0)
-              : EdgeInsets.only(left: 10, bottom: 10.0),
-          child: Text(
-            "${time.hour}:${time.minute}",
-            style: Theme.of(context).textTheme.bodySmall,
-          ),
+        Row(
+          mainAxisAlignment: align,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          verticalDirection: VerticalDirection.down,
+          children: <Widget>[
+            Visibility(
+              visible: widget.sender == Owner.MINE,
+              child: Column(
+                // crossAxisAlignment: CrossAxisAlignment.baseline,
+                children: [
+                  Visibility(
+                    visible: widget.withRead,
+                    child: Text(
+                      '읽음',
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ),
+                  Text(
+                    "${time[1].substring(0, 5)}",
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.all(3.0),
+              padding: const EdgeInsets.all(5.0),
+              decoration: BoxDecoration(
+                color: color,
+                borderRadius: radius,
+              ),
+              constraints: BoxConstraints(
+                maxWidth: MediaQuery.of(context).size.width / 1.3,
+                minWidth: 20.0,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.all(5),
+                    child: Text(
+                      widget.message['message'],
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: widget.sender == Owner.MINE
+                                ? Theme.of(context).colorScheme.onSecondary
+                                : Theme.of(context).colorScheme.onSurface,
+                          ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Visibility(
+              visible: widget.sender == Owner.OTHERS,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '',
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                  Text(
+                    "${time[1].substring(0, 5)}",
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ],
     );
