@@ -154,19 +154,31 @@ class _DetailState extends State<Detail> {
                       children: [
                         Expanded(
                           flex: 1,
-                          child: Text(detailHintTexts[key]!,
-                              style: TextStyle(
-                                  color: Color.fromRGBO(0, 0, 0, 0.8),
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w700,
-                                  fontFamily:
-                                      GoogleFonts.catamaran().fontFamily)),
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text(detailHintTexts[key]!,
+                                style: TextStyle(
+                                    color: Color.fromRGBO(0, 0, 0, 0.8),
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w700,
+                                    fontFamily:
+                                        GoogleFonts.catamaran().fontFamily)),
+                          ),
                         ),
-                        // SizedBox(height: 10.0),
+                        VerticalDivider(
+                          color: Colors.black,
+                          thickness: 3,
+                          indent: 20,
+                          endIndent: 0,
+                          width: 20,
+                        ),
                         Expanded(
                           flex: 3,
                           child: Align(
-                            alignment: Alignment.center,
+                            alignment: widget.detailMode != Owner.OTHERS &&
+                                    !variables['auth']
+                                ? Alignment.centerLeft
+                                : Alignment.center,
                             child: DropdownButton(
                               value: widget.user.essentials[key],
                               items:
@@ -176,7 +188,7 @@ class _DetailState extends State<Detail> {
                                   return DropdownMenuItem(
                                     child: Text(building,
                                         style: TextStyle(
-                                            fontSize: 15,
+                                            fontSize: 16,
                                             fontWeight: FontWeight.w500,
                                             color:
                                                 Color.fromRGBO(0, 0, 0, 0.8))),
@@ -247,21 +259,34 @@ class _DetailState extends State<Detail> {
                       children: [
                         Expanded(
                           flex: 1,
-                          child: Text(detailHintTexts[key]!,
-                              style: TextStyle(
-                                  color: Color.fromRGBO(0, 0, 0, 0.8),
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w700,
-                                  fontFamily:
-                                      GoogleFonts.catamaran().fontFamily)),
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text(detailHintTexts[key]!,
+                                style: TextStyle(
+                                    color: Color.fromRGBO(0, 0, 0, 0.8),
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w700,
+                                    fontFamily:
+                                        GoogleFonts.catamaran().fontFamily)),
+                          ),
+                        ),
+                        VerticalDivider(
+                          color: Colors.black,
+                          thickness: 3,
+                          indent: 20,
+                          endIndent: 0,
+                          width: 20,
                         ),
                         Expanded(
                           flex: 3,
                           child: Align(
-                            alignment: Alignment.center,
+                            alignment: widget.detailMode != Owner.OTHERS &&
+                                    !variables['auth']
+                                ? Alignment.centerLeft
+                                : Alignment.center,
                             child: Text(value,
                                 style: TextStyle(
-                                    fontSize: 15,
+                                    fontSize: 16,
                                     fontWeight: FontWeight.w500,
                                     color: Color.fromRGBO(0, 0, 0, 0.8))),
                           ),
