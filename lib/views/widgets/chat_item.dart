@@ -51,12 +51,12 @@ class _ChatItemState extends State<ChatItem> {
                           ? TextStyle(
                               fontWeight: FontWeight.w600,
                               fontFamily: GoogleFonts.inter().fontFamily,
-                              fontSize: 15,
+                              fontSize: 18,
                             )
                           : TextStyle(
                               fontWeight: FontWeight.w400,
                               fontFamily: GoogleFonts.inter().fontFamily,
-                              fontSize: 15,
+                              fontSize: 18,
                               color: Color.fromRGBO(0, 0, 0, 0.76),
                             ),
                     ),
@@ -74,12 +74,12 @@ class _ChatItemState extends State<ChatItem> {
                       ? TextStyle(
                           fontWeight: FontWeight.w600,
                           fontFamily: GoogleFonts.inter().fontFamily,
-                          fontSize: 15,
+                          fontSize: 18,
                         )
                       : TextStyle(
                           fontWeight: FontWeight.w400,
                           fontFamily: GoogleFonts.inter().fontFamily,
-                          fontSize: 15,
+                          fontSize: 18,
                           color: Color.fromRGBO(0, 0, 0, 0.76),
                         ),
                 ),

@@ -45,39 +45,43 @@ class _DetailState extends State<Detail> {
                   Text(detailHintTexts[key]!),
                   Text(
                     "[${surveyMaps[key]?[widget.user.surveys[key]]}]",
-                    style: TextStyle(fontSize: 12),
+                    style: TextStyle(fontSize: 15),
                   ),
-                  Slider(
-                    min: 0,
-                    max: surveyMaps[key]!.length.toDouble() - 1,
-                    value: (widget.user.surveys[key]).toDouble(),
-                    divisions: surveyMaps[key]!.length - 1,
-                    onChanged: (widget.detailMode != Owner.OTHERS &&
-                            !variables['auth'])
-                        ? (value) {
-                            setState(() {
-                              widget.user.surveys[key] = value.round();
-                            });
-                          }
-                        : null,
-                    onChangeEnd: (value) {
-                      usersColRef
-                          .doc(widget.user.email)
-                          .update({'surveys.$key': widget.user.surveys[key]});
-                      showToast(
-                        consts['saved'].toString(),
-                        context: context,
-                        animation: StyledToastAnimation.fade,
-                      );
-                    },
-                  ),
+                  SliderTheme(
+                      data: SliderTheme.of(context).copyWith(
+                        disabledThumbColor: Color.fromRGBO(0, 76, 129, 1.0),
+                      ),
+                      child: Slider(
+                        min: 0,
+                        max: surveyMaps[key]!.length.toDouble() - 1,
+                        value: (widget.user.surveys[key]).toDouble(),
+                        divisions: surveyMaps[key]!.length - 1,
+                        onChanged: (widget.detailMode != Owner.OTHERS &&
+                                !variables['auth'])
+                            ? (value) {
+                                setState(() {
+                                  widget.user.surveys[key] = value.round();
+                                });
+                              }
+                            : null,
+                        onChangeEnd: (value) {
+                          usersColRef.doc(widget.user.email).update(
+                              {'surveys.$key': widget.user.surveys[key]});
+                          showToast(
+                            consts['saved'].toString(),
+                            context: context,
+                            animation: StyledToastAnimation.fade,
+                          );
+                        },
+                      )),
                   meanSurveys.length > 0
                       ? Slider(
                           min: 0,
                           max: surveyMaps[key]!.length.toDouble() - 1,
                           divisions: surveyMaps[key]!.length - 1,
                           value: meanSurveys[key]!.toDouble(),
-                          onChanged: null)
+                          onChanged: null,
+                        )
                       : Container(),
                   SizedBox(
                     height: 7,
@@ -133,7 +137,7 @@ class _DetailState extends State<Detail> {
                         )
                       : Container(),
                   SizedBox(
-                    height: 50,
+                    height: 10,
                   ),
                 ],
               );
@@ -149,48 +153,69 @@ class _DetailState extends State<Detail> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Expanded(
-                          child: Text(detailHintTexts[key]!,
-                              style: TextStyle(
-                                  color: Color.fromRGBO(0, 0, 0, 0.8),
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w700,
-                                  fontFamily:
-                                      GoogleFonts.catamaran().fontFamily)),
+                          flex: 1,
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text(detailHintTexts[key]!,
+                                style: TextStyle(
+                                    color: Color.fromRGBO(0, 0, 0, 0.8),
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w700,
+                                    fontFamily:
+                                        GoogleFonts.catamaran().fontFamily)),
+                          ),
                         ),
-                        // SizedBox(height: 10.0),
+                        VerticalDivider(
+                          color: Colors.black,
+                          thickness: 3,
+                          indent: 20,
+                          endIndent: 0,
+                          width: 20,
+                        ),
                         Expanded(
-                          child: DropdownButton(
-                            value: widget.user.essentials[key],
-                            items: dormitoryList[widget.user.essentials['sex']]
-                                .map(
-                              (String building) {
-                                return DropdownMenuItem(
-                                  child: Text(building,
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w500,
-                                          color: Color.fromRGBO(0, 0, 0, 0.8))),
-                                  value: dormitoryList[
-                                          widget.user.essentials['sex']]
-                                      .indexOf(building),
-                                );
-                              },
-                            ).toList(),
-                            onChanged: (widget.detailMode != Owner.OTHERS &&
-                                    !variables['auth'])
-                                ? (value) {
-                                    widget.user.essentials[key] = value;
-                                    usersColRef.doc(widget.user.email).update({
-                                      'dormitory': widget.user.essentials[key]
-                                    });
-                                    showToast(
-                                      consts['saved'].toString(),
-                                      context: context,
-                                      animation: StyledToastAnimation.fade,
-                                    );
-                                    setState(() {});
-                                  }
-                                : null,
+                          flex: 3,
+                          child: Align(
+                            alignment: widget.detailMode != Owner.OTHERS &&
+                                    !variables['auth']
+                                ? Alignment.centerLeft
+                                : Alignment.center,
+                            child: DropdownButton(
+                              value: widget.user.essentials[key],
+                              items:
+                                  dormitoryList[widget.user.essentials['sex']]
+                                      .map(
+                                (String building) {
+                                  return DropdownMenuItem(
+                                    child: Text(building,
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500,
+                                            color:
+                                                Color.fromRGBO(0, 0, 0, 0.8))),
+                                    value: dormitoryList[
+                                            widget.user.essentials['sex']]
+                                        .indexOf(building),
+                                  );
+                                },
+                              ).toList(),
+                              onChanged: (widget.detailMode != Owner.OTHERS &&
+                                      !variables['auth'])
+                                  ? (value) {
+                                      widget.user.essentials[key] = value;
+                                      usersColRef
+                                          .doc(widget.user.email)
+                                          .update({
+                                        'dormitory': widget.user.essentials[key]
+                                      });
+                                      showToast(
+                                        consts['saved'].toString(),
+                                        context: context,
+                                        animation: StyledToastAnimation.fade,
+                                      );
+                                      setState(() {});
+                                    }
+                                  : null,
+                            ),
                           ),
                         ),
                       ],
@@ -226,25 +251,49 @@ class _DetailState extends State<Detail> {
                     essentialMaps[key]![widget.user.essentials[key]].toString();
               return Container(
                 padding: EdgeInsets.only(bottom: 5),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                child: Column(
                   children: [
-                    Expanded(
-                      child: Text(detailHintTexts[key]!,
-                          style: TextStyle(
-                              color: Color.fromRGBO(0, 0, 0, 0.8),
-                              fontSize: 15,
-                              fontWeight: FontWeight.w700,
-                              fontFamily: GoogleFonts.catamaran().fontFamily)),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text(detailHintTexts[key]!,
+                                style: TextStyle(
+                                    color: Color.fromRGBO(0, 0, 0, 0.8),
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w700,
+                                    fontFamily:
+                                        GoogleFonts.catamaran().fontFamily)),
+                          ),
+                        ),
+                        VerticalDivider(
+                          color: Colors.black,
+                          thickness: 3,
+                          indent: 20,
+                          endIndent: 0,
+                          width: 20,
+                        ),
+                        Expanded(
+                          flex: 3,
+                          child: Align(
+                            alignment: widget.detailMode != Owner.OTHERS &&
+                                    !variables['auth']
+                                ? Alignment.centerLeft
+                                : Alignment.center,
+                            child: Text(value,
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    color: Color.fromRGBO(0, 0, 0, 0.8))),
+                          ),
+                        ),
+                      ],
                     ),
-                    Expanded(
-                      child: Text(value,
-                          style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500,
-                              color: Color.fromRGBO(0, 0, 0, 0.8))),
-                    ),
+                    SizedBox(height: 3.0)
                   ],
                 ),
               );

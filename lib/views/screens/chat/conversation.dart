@@ -54,7 +54,7 @@ class _ConversationState extends State<Conversation> {
                     Row(
                       children: [
                         Text(
-                          widget.other.essentials['nickname'],
+                          widget.other.essentials['nickname'].toString(),
                           style: TextStyle(
                               fontWeight: FontWeight.w800,
                               fontSize: 20,
@@ -139,7 +139,8 @@ class _ConversationState extends State<Conversation> {
           if (snapshot.hasData &&
               snapshot.connectionState == ConnectionState.active) {
             var chats = Chat.fromFirestore(snapshot.data!);
-            var conversation = [], lastReadIndex = -1;
+            var conversation = [];
+            var lastReadIndex = -1;
             if (chats.chatMaps.containsKey(widget.other.email)) {
               conversation = chats.chatMaps[widget.other.email]['chats'];
               if ((chats.chatMaps[widget.other.email] as Map<String, dynamic>)
@@ -158,9 +159,9 @@ class _ConversationState extends State<Conversation> {
             chatsColRef.doc(widget.other.email).get().then(
               (value) {
                 var otherChats = Chat.fromFirestore(value);
-                var conversation = [];
                 if (otherChats.chatMaps.containsKey(widget.me.email)) {
-                  conversation = otherChats.chatMaps[widget.me.email]['chats'];
+                  var conversation =
+                      otherChats.chatMaps[widget.me.email]['chats'] ?? [];
                   for (var conv in conversation) {
                     if (widget.other.email == conv['sender'])
                       conv['read'] = true;
@@ -275,17 +276,23 @@ class _ConversationState extends State<Conversation> {
                                             FieldValue.arrayUnion([msg])
                                       },
                                     );
-
-                                    Notify.notify(
-                                      from: widget.me,
-                                      to: widget.other,
-                                      message: msg['message'],
-                                    );
-                                    controller.text = '';
+                                    if (widget.me.essentials['notification'] ==
+                                        0) {
+                                      Notify.notify(
+                                        from: widget.me,
+                                        to: widget.other,
+                                        message: msg['message'],
+                                      );
+                                      controller.text = '';
+                                    }
                                   },
                                 )
                               ],
                             ),
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            height: 10,
                           ),
                         ],
                       ),
