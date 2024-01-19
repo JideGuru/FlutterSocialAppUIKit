@@ -25,9 +25,9 @@ class Validations {
     return null;
   }
 
-  static String? validatePassword(String? value) {
+  static String? validatePassword(String? value, bool isLoginPage) {
     if (value == null || value.isEmpty || value.length < 6)
-      return consts['invalid-password-format'].toString();
+      return isLoginPage ? "유효한 비밀번호를 입력해주세요." : '비밀번호는 6자 이상이여야 합니다.';
     return null;
   }
 }

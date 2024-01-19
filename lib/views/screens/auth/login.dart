@@ -52,9 +52,9 @@ class _LoginState extends State<Login> {
           authMessage = await auth.sendPasswordResetEmail(email);
           break;
       }
-      if (authMessage != 'verified')
+      if (authMessage != 'verified') {
         auth.showAuthDialog(context, authMessage);
-      else
+      } else
         switch (formMode) {
           case FormMode.REGISTER:
             FirebaseAuth.instance.currentUser!.sendEmailVerification();
@@ -273,7 +273,8 @@ class _LoginState extends State<Login> {
                 enabled: !loading,
                 hintText: consts['password'].toString(),
                 textInputAction: TextInputAction.done,
-                validateFunction: Validations.validatePassword,
+                validateFunction: (value) => Validations.validatePassword(
+                    value, formMode == FormMode.LOGIN),
                 submitAction: login,
                 obscureText: true,
                 onSaved: (String? val) {

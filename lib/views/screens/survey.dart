@@ -25,7 +25,7 @@ class Survey extends StatefulWidget {
 class _SurveyState extends State<Survey> {
   late User me = User.onlyEmail(widget.email);
   int index = -1;
-  final int survey_Max_num = 17;
+  final int survey_Max_num = 18;
   List<String> keys = List.from(essentialHintTexts.keys)..addAll(surveyKeys);
 
   bool nickname_chk = false;
@@ -44,17 +44,36 @@ class _SurveyState extends State<Survey> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            Visibility(
+              visible: key != 'introduction',
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: IconButton(
+                    onPressed: () {
+                      if (index > 0) {
+                        setState(() {
+                          index--;
+                        });
+                      }
+                    },
+                    icon: Icon(Icons.arrow_back),
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+            ),
             Text(
               consts['survey'].toString(),
               style: GoogleFonts.atkinsonHyperlegible(
                 fontSize: 40.0,
               ),
             ),
-            SizedBox(height: 25.0),
             Visibility(
               visible: key != 'introduction',
               child: Text(
-                "(${index}/17)",
+                '(${index + 1}/18)',
                 style: TextStyle(
                   fontSize: 20.0,
                 ),
@@ -69,20 +88,18 @@ class _SurveyState extends State<Survey> {
                   final auth = Auth();
                   auth.showAuthDialog(context, '내용을 입력해주세요.');
                 } else {
-                  setState(
-                    () {
-                      if (index < keys.length) {
-                        index++;
-                      } else {
-                        usersColRef.doc(me.email).set(me.toFirestore());
-                        chatsColRef.doc(me.email).set({});
-                        Navigate.pushPageReplacement(
-                          context,
-                          InitScreen(email: me.email),
-                        );
-                      }
-                    },
-                  );
+                  setState(() {
+                    if (index < keys.length) {
+                      index++;
+                    } else {
+                      usersColRef.doc(me.email).set(me.toFirestore());
+                      chatsColRef.doc(me.email).set({});
+                      Navigate.pushPageReplacement(
+                        context,
+                        InitScreen(email: me.email),
+                      );
+                    }
+                  });
                 }
               },
             ),
