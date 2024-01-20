@@ -25,7 +25,7 @@ class Validations {
     return null;
   }
 
-  static String? validatePassword(String? value) {
+  static String? validatePassword(String? value, bool isLoginPage) {
     if (value == null || value.isEmpty || value.length < 6)
       return consts['short-password-format'].toString();
 
@@ -37,7 +37,7 @@ class Validations {
     if (!value.contains(RegExp(r'[!@#\$%^&*(),.?":{}|<>]'))) {
       return consts['special-char-password-format'].toString();
     }
-
+    
     return null;
   }
 }

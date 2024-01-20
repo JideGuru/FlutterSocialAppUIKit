@@ -52,9 +52,9 @@ class _LoginState extends State<Login> {
           authMessage = await auth.sendPasswordResetEmail(email);
           break;
       }
-      if (authMessage != 'verified')
+      if (authMessage != 'verified') {
         auth.showAuthDialog(context, authMessage);
-      else
+      } else
         switch (formMode) {
           case FormMode.REGISTER:
             FirebaseAuth.instance.currentUser!.sendEmailVerification();

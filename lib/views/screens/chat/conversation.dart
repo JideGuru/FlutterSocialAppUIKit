@@ -141,11 +141,10 @@ class _ConversationState extends State<Conversation> {
             var chats = Chat.fromFirestore(snapshot.data!);
             var conversation = [];
             var lastReadIndex = -1;
+
             if (chats.chatMaps.containsKey(widget.other.email)) {
               conversation = chats.chatMaps[widget.other.email]['chats'];
-              if ((chats.chatMaps[widget.other.email] as Map<String, dynamic>)
-                  .containsKey('marked'))
-                marked = chats.chatMaps[widget.other.email]['marked'];
+              marked = chats.chatMaps[widget.other.email]['marked'] ?? false;
               for (var conv in conversation) {
                 if (widget.other.email == conv['sender'])
                   conv['read'] = true;
