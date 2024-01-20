@@ -69,7 +69,8 @@ class Auth {
           content: Text(failMessage),
           actions: <Widget>[
             TextButton(
-              onPressed: () => Navigator.pop(context, consts['close'].toString()),
+              onPressed: () =>
+                  Navigator.pop(context, consts['close'].toString()),
               child: Text(consts['close'].toString()),
             ),
           ],
