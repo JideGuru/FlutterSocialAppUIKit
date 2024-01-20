@@ -25,7 +25,6 @@ class Detail extends StatefulWidget {
 class _DetailState extends State<Detail> {
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
     List<String> details = List.from(essentialHintTexts.keys)
       ..addAll(surveyHintTexts.keys);
 

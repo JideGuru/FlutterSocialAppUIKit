@@ -30,7 +30,6 @@ class Auth {
         email: email,
         password: password,
       );
-      var verified = FirebaseAuth.instance.currentUser!.emailVerified;
       // if (!verified) {
       //   FirebaseAuth.instance.currentUser!.sendEmailVerification();
       //   return '학교 계정 인증을 완료해주세요.';
