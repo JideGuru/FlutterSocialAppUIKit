@@ -27,7 +27,17 @@ class Validations {
 
   static String? validatePassword(String? value) {
     if (value == null || value.isEmpty || value.length < 6)
-      return consts['invalid-password-format'].toString();
+      return consts['short-password-format'].toString();
+
+    if (!value.contains(RegExp(r'[A-Z]')) ||
+        !value.contains(RegExp(r'[a-z]'))) {
+      return consts['uppercase-password-format'].toString();
+    }
+
+    if (!value.contains(RegExp(r'[!@#\$%^&*(),.?":{}|<>]'))) {
+      return consts['special-char-password-format'].toString();
+    }
+
     return null;
   }
 }

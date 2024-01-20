@@ -256,7 +256,9 @@ class _LoginState extends State<Login> {
                   enabled: !loading,
                   hintText: consts['university-email'].toString(),
                   textInputAction: TextInputAction.next,
-                  validateFunction: Validations.validateEmail,
+                  validateFunction: formMode == FormMode.REGISTER
+                      ? Validations.validateEmail
+                      : null,
                   onChange: (String? val) {
                     email = val ?? '';
                   },
@@ -275,7 +277,9 @@ class _LoginState extends State<Login> {
                 enabled: !loading,
                 hintText: consts['password'].toString(),
                 textInputAction: TextInputAction.done,
-                validateFunction: Validations.validatePassword,
+                validateFunction: formMode == FormMode.REGISTER
+                    ? Validations.validatePassword
+                    : null,
                 submitAction: login,
                 obscureText: true,
                 onSaved: (String? val) {

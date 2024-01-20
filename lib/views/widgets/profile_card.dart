@@ -179,7 +179,8 @@ class ProfileCard extends StatelessWidget {
                                                 Expanded(
                                                   flex: 1,
                                                   child: Align(
-                                                    alignment: Alignment.center,
+                                                    alignment:
+                                                        Alignment.centerLeft,
                                                     child: Text(
                                                       "이메일",
                                                       style: TextStyle(

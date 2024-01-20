@@ -90,8 +90,8 @@ class _DetailState extends State<Detail> {
               );
             } else if (surveyMaps[key]!.length == 2) {
               return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
+                // mainAxisAlignment: MainAxisAlignment.center,
+                // crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(detailHintTexts[key]!),
                   SizedBox(
@@ -149,13 +149,13 @@ class _DetailState extends State<Detail> {
                 child: Column(
                   children: [
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      // mainAxisAlignment: MainAxisAlignment.start,
+                      // crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Expanded(
                           flex: 1,
                           child: Align(
-                            alignment: Alignment.center,
+                            alignment: Alignment.centerLeft,
                             child: Text(detailHintTexts[key]!,
                                 style: TextStyle(
                                     color: Color.fromRGBO(0, 0, 0, 0.8),
@@ -175,10 +175,7 @@ class _DetailState extends State<Detail> {
                         Expanded(
                           flex: 3,
                           child: Align(
-                            alignment: widget.detailMode != Owner.OTHERS &&
-                                    !variables['auth']
-                                ? Alignment.centerLeft
-                                : Alignment.center,
+                            alignment: Alignment.centerLeft,
                             child: DropdownButton(
                               value: widget.user.essentials[key],
                               items:
@@ -260,7 +257,7 @@ class _DetailState extends State<Detail> {
                         Expanded(
                           flex: 1,
                           child: Align(
-                            alignment: Alignment.center,
+                            alignment: Alignment.centerLeft,
                             child: Text(detailHintTexts[key]!,
                                 style: TextStyle(
                                     color: Color.fromRGBO(0, 0, 0, 0.8),
@@ -280,10 +277,7 @@ class _DetailState extends State<Detail> {
                         Expanded(
                           flex: 3,
                           child: Align(
-                            alignment: widget.detailMode != Owner.OTHERS &&
-                                    !variables['auth']
-                                ? Alignment.centerLeft
-                                : Alignment.center,
+                            alignment: Alignment.centerLeft,
                             child: Text(value,
                                 style: TextStyle(
                                     fontSize: 16,
