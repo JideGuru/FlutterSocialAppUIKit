@@ -145,7 +145,7 @@ class _SurveyState extends State<Survey> {
             SizedBox(
               height: 25,
             ),
-            Text(surveyMaps[key]?[me.surveys[key]]),
+            Text('[${surveyMaps[key]?[me.surveys[key]]}]'),
             SizedBox(
               height: 50,
             ),
@@ -241,39 +241,44 @@ class _SurveyState extends State<Survey> {
               child: Text(essentialHintTexts[key]!),
             ),
             SizedBox(height: 10.0),
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(5.0),
-                ),
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5), // 그림자 색상
-                    blurRadius: 7, // 그림자 흐림 정도
-                    offset: Offset(0, 9), // 그림자 위치 (x, y)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(5.0),
+                    ),
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5), // 그림자 색상
+                        blurRadius: 7, // 그림자 흐림 정도
+                        offset: Offset(0, 9), // 그림자 위치 (x, y)
+                      ),
+                    ],
                   ),
-                ],
-              ),
-              child: DropdownButton(
-                value: me.essentials[key],
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10.0),
+                  child: DropdownButton(
+                    value: me.essentials[key],
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10.0),
+                    ),
+                    underline: const SizedBox(),
+                    items: majorList.map(
+                      (String major) {
+                        return DropdownMenuItem(
+                          child: Text(major),
+                          value: majorList.indexOf(major),
+                        );
+                      },
+                    ).toList(),
+                    onChanged: (value) {
+                      me.essentials[key] = value;
+                      setState(() {});
+                    },
+                  ),
                 ),
-                underline: const SizedBox(),
-                items: majorList.map(
-                  (String major) {
-                    return DropdownMenuItem(
-                      child: Text(major),
-                      value: majorList.indexOf(major),
-                    );
-                  },
-                ).toList(),
-                onChanged: (value) {
-                  me.essentials[key] = value;
-                  setState(() {});
-                },
-              ),
+              ],
             ),
             SizedBox(height: 20.0),
           ],

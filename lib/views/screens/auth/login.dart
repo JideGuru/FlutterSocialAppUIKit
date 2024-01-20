@@ -188,7 +188,7 @@ class _LoginState extends State<Login> {
           visible: formMode == FormMode.LOGIN,
           child: Column(
             children: [
-              SizedBox(height: 10.0),
+              // SizedBox(height: 10.0),
               Align(
                 alignment: Alignment.centerRight,
                 child: TextButton(
@@ -202,7 +202,7 @@ class _LoginState extends State<Login> {
             ],
           ),
         ).fadeInList(3, false),
-        SizedBox(height: 20.0),
+        SizedBox(height: 10.0),
         buildButton(),
         Visibility(
           visible: formMode != FormMode.LOGIN,
@@ -247,19 +247,23 @@ class _LoginState extends State<Login> {
       children: <Widget>[
         Row(
           children: [
-            Container(
-              width: formMode == FormMode.REGISTER
-                  ? screenWidth * 0.8
-                  : screenWidth * 0.8,
-              child: CustomTextField(
-                enabled: !loading,
-                hintText: consts['university-email'].toString(),
-                textInputAction: TextInputAction.next,
-                validateFunction: Validations.validateEmail,
-                onChange: (String? val) {
-                  email = val ?? '';
-                },
-                focusNode: emailFN,
+            Expanded(
+              child: Container(
+                width: formMode == FormMode.REGISTER
+                    ? screenWidth * 0.8
+                    : screenWidth * 0.8,
+                child: CustomTextField(
+                  enabled: !loading,
+                  hintText: consts['university-email'].toString(),
+                  textInputAction: TextInputAction.next,
+                  validateFunction: formMode == FormMode.REGISTER
+                      ? Validations.validateEmail
+                      : null,
+                  onChange: (String? val) {
+                    email = val ?? '';
+                  },
+                  focusNode: emailFN,
+                ),
               ),
             ),
           ],
@@ -273,8 +277,9 @@ class _LoginState extends State<Login> {
                 enabled: !loading,
                 hintText: consts['password'].toString(),
                 textInputAction: TextInputAction.done,
-                validateFunction: (value) => Validations.validatePassword(
-                    value, formMode == FormMode.LOGIN),
+                validateFunction: formMode == FormMode.REGISTER
+                    ? Validations.validatePassword
+                    : null,
                 submitAction: login,
                 obscureText: true,
                 onSaved: (String? val) {

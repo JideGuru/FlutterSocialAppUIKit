@@ -27,7 +27,17 @@ class Validations {
 
   static String? validatePassword(String? value, bool isLoginPage) {
     if (value == null || value.isEmpty || value.length < 6)
-      return isLoginPage ? "유효한 비밀번호를 입력해주세요." : '비밀번호는 6자 이상이여야 합니다.';
+      return consts['short-password-format'].toString();
+
+    if (!value.contains(RegExp(r'[A-Z]')) ||
+        !value.contains(RegExp(r'[a-z]'))) {
+      return consts['uppercase-password-format'].toString();
+    }
+
+    if (!value.contains(RegExp(r'[!@#\$%^&*(),.?":{}|<>]'))) {
+      return consts['special-char-password-format'].toString();
+    }
+    
     return null;
   }
 }

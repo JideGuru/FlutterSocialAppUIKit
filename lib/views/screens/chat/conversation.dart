@@ -178,30 +178,33 @@ class _ConversationState extends State<Conversation> {
                 children: [
                   Flexible(
                     child: ListView.builder(
+                      reverse: true,
                       itemCount: conversation.length,
                       itemBuilder: (context, index) {
+                        var itemIndex = conversation.length - index - 1;
                         var befDay = 'a';
                         var curDay = 'b';
-                        if (index > 0 && index < conversation.length) {
+                        if (itemIndex > 0 && itemIndex < conversation.length) {
                           befDay =
-                              (conversation[index - 1]['time'] as Timestamp)
+                              (conversation[itemIndex - 1]['time'] as Timestamp)
                                   .toDate()
                                   .toIso8601String()
                                   .split('T')[0];
-                          curDay = (conversation[index]['time'] as Timestamp)
-                              .toDate()
-                              .toIso8601String()
-                              .split('T')[0];
+                          curDay =
+                              (conversation[itemIndex]['time'] as Timestamp)
+                                  .toDate()
+                                  .toIso8601String()
+                                  .split('T')[0];
                         }
 
                         return ChatBubble(
-                          withRead: index == lastReadIndex,
+                          withRead: itemIndex == lastReadIndex,
                           withDayBar: befDay != curDay,
-                          message: conversation[index],
-                          sender:
-                              widget.me.email == conversation[index]['sender']
-                                  ? Owner.MINE
-                                  : Owner.OTHERS,
+                          message: conversation[itemIndex],
+                          sender: widget.me.email ==
+                                  conversation[itemIndex]['sender']
+                              ? Owner.MINE
+                              : Owner.OTHERS,
                         );
                       },
                     ),
@@ -272,16 +275,23 @@ class _ConversationState extends State<Conversation> {
                                             FieldValue.arrayUnion([msg])
                                       },
                                     );
-                                    Notify.notify(
-                                      from: widget.me,
-                                      to: widget.me,
-                                      message: msg['message'],
-                                    );
-                                    controller.text = '';
+                                    if (widget.me.essentials['notification'] ==
+                                        0) {
+                                      Notify.notify(
+                                        from: widget.me,
+                                        to: widget.other,
+                                        message: msg['message'],
+                                      );
+                                      controller.text = '';
+                                    }
                                   },
                                 )
                               ],
                             ),
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            height: 10,
                           ),
                         ],
                       ),

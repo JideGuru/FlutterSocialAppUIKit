@@ -44,37 +44,27 @@ class _ChatBubbleState extends State<ChatBubble> {
       children: [
         Visibility(
           visible: widget.withDayBar,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(
-                width: 145,
-                height: 1,
-                child: Container(
-                  color: Color.fromRGBO(0, 0, 0, 0.5),
-                ),
-              ),
+              SizedBox(height: 8.0),
               Text(
                 time[0].toString(),
                 style: Theme.of(context).textTheme.bodySmall,
               ),
-              SizedBox(
-                width: 145,
-                height: 1,
-                child: Container(
-                  color: Color.fromRGBO(0, 0, 0, 0.5),
-                ),
-              ),
+              SizedBox(height: 8.0),
             ],
           ),
         ),
         Row(
           mainAxisAlignment: align,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          verticalDirection: VerticalDirection.down,
           children: <Widget>[
             Visibility(
               visible: widget.sender == Owner.MINE,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                // crossAxisAlignment: CrossAxisAlignment.baseline,
                 children: [
                   Visibility(
                     visible: widget.withRead,
