@@ -59,6 +59,7 @@ Map<String, String> surveyHintTexts = {
   'earphone': 'earphone hint text',
   'eating': 'eating hint text',
   'lateStand': 'lateStand hint text',
+  'etc': 'etc hint text',
 };
 
 Map<String, List<dynamic>> essentialMaps = {

@@ -4,11 +4,13 @@ class CustomButton extends StatelessWidget {
   final String label;
   final Function? onPressed;
   final Color? color;
+  final double width;
 
   CustomButton({
-    this.label = 'Continue',
+    this.label = '다음',
     this.onPressed,
     this.color,
+    required this.width,
   });
 
   bool isSmallScreen(BuildContext context) {
@@ -19,7 +21,7 @@ class CustomButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 50.0,
-      width: MediaQuery.of(context).size.width,
+      width: width,
       child: TextButton(
         onPressed: () => onPressed!(),
         style: ButtonStyle(

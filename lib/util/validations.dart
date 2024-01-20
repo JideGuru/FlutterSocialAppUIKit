@@ -11,6 +11,13 @@ class Validations {
     return null;
   }
 
+  static String? validateEtc(String? value) {
+    if (value == null || value.isEmpty)
+      return surveyHintTexts['etc'].toString();
+    if (value.length > 50) return consts['less-than-fifty'].toString();
+    return null;
+  }
+
   static String? validateEmail(String? value) {
     if (value == null || value.isEmpty)
       return consts['write-university-email'].toString();

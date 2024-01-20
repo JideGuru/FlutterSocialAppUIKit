@@ -41,6 +41,7 @@ class _EvaluateState extends State<Evaluate> {
           children: [
             form(key).fadeInList(3, false),
             CustomButton(
+              width: screenWidth,
               onPressed: () {
                 setState(
                   () {

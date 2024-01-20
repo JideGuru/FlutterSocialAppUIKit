@@ -249,9 +249,7 @@ class _LoginState extends State<Login> {
           children: [
             Expanded(
               child: Container(
-                width: formMode == FormMode.REGISTER
-                    ? screenWidth * 0.8
-                    : screenWidth * 0.8,
+                width: screenWidth * 0.8,
                 child: CustomTextField(
                   enabled: !loading,
                   hintText: consts['university-email'].toString(),
@@ -298,6 +296,7 @@ class _LoginState extends State<Login> {
     return loading
         ? Center(child: CircularProgressIndicator())
         : CustomButton(
+            width: MediaQuery.of(context).size.width,
             label: formMode == FormMode.LOGIN
                 ? consts['login'].toString()
                 : (formMode == FormMode.REGISTER
