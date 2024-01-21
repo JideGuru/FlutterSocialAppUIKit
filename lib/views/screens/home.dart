@@ -26,13 +26,10 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(consts['recommended-profiles'].toString(),
-            style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w400,
-                fontStyle: FontStyle.normal,
-                letterSpacing: -0.24,
-                color: Color.fromRGBO(0, 0, 0, 1.0))),
+        title: Text(
+          consts['recommended-profiles'].toString(),
+          style: Theme.of(context).textTheme.bodyLarge,
+        ),
         centerTitle: true,
       ),
       body: FutureBuilder(

@@ -32,24 +32,24 @@ class Notify {
     required String message,
   }) async {
     try {
-      final msg = {
-        'to': to.essentials['token'],
-        'notification': {
-          'title': to.essentials['nickname'],
-          'body': message,
-        },
-      };
-      post(
-        Uri.parse("https://fcm.googleapis.com/fcm/send"),
-        headers: {
-          HttpHeaders.contentTypeHeader: 'application/json',
-          HttpHeaders.authorizationHeader:
-              'key=AAAAlTydX30:APA91bH5vYC6SJ39hlw57MAWQZXqrS58UH3TLi2yYJw4qwR-K-ipCyeHoqbM6n5f78jkU1u_iC22ewYTvGsnGVXQY-ekYMCN5whKjyD9JZY1uLMSaCXatxfw8nuJ3MpmPAFFPnH5T2Db',
-        },
-        body: jsonEncode(msg),
-      );
-    } catch (e) {
-      print(e);
-    }
+        final msg = {
+          'to': to.essentials['token'],
+          'notification': {
+            'title': from.essentials['nickname'],
+            'body': message,
+          },
+        };
+        post(
+          Uri.parse("https://fcm.googleapis.com/fcm/send"),
+          headers: {
+            HttpHeaders.contentTypeHeader: 'application/json',
+            HttpHeaders.authorizationHeader:
+                'key=AAAAlTydX30:APA91bH5vYC6SJ39hlw57MAWQZXqrS58UH3TLi2yYJw4qwR-K-ipCyeHoqbM6n5f78jkU1u_iC22ewYTvGsnGVXQY-ekYMCN5whKjyD9JZY1uLMSaCXatxfw8nuJ3MpmPAFFPnH5T2Db',
+          },
+          body: jsonEncode(msg),
+        );
+      } catch (e) {
+        print(e);
+      }
   }
 }

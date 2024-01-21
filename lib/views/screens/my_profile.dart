@@ -75,29 +75,29 @@ class MyProfile extends StatelessWidget {
                       ],
                     ),
                     SizedBox(height: screenHeight * 0.04),
-                    Text("${consts['notification'].toString()}을 수신하시나요?"),
-                    GroupButton(
-                      options: GroupButtonOptions(
-                          borderRadius: BorderRadius.circular(5.0)),
-                      controller: GroupButtonController(
-                        selectedIndex: me.essentials['notification'],
-                      ),
-                      onSelected: (value, index, isSelected) {
-                        me.essentials['notification'] = index;
-                        usersColRef.doc(me.email).update(
-                            {'notification': me.essentials['notification']});
-                        showToast(
-                          consts['saved'].toString(),
-                          context: context,
-                          animation: StyledToastAnimation.fade,
-                        );
-                      },
-                      buttons: [
-                        consts['yes'].toString(),
-                        consts['no'].toString()
-                      ],
-                    ),
-                    SizedBox(height: screenHeight * 0.1),
+                    // Text("${consts['notification'].toString()}을 수신하시나요?"),
+                    // GroupButton(
+                    //   options: GroupButtonOptions(
+                    //       borderRadius: BorderRadius.circular(5.0)),
+                    //   controller: GroupButtonController(
+                    //     selectedIndex: me.essentials['notification'],
+                    //   ),
+                    //   onSelected: (value, index, isSelected) {
+                    //     me.essentials['notification'] = index;
+                    //     usersColRef.doc(me.email).update(
+                    //         {'notification': me.essentials['notification']});
+                    //     showToast(
+                    //       consts['saved'].toString(),
+                    //       context: context,
+                    //       animation: StyledToastAnimation.fade,
+                    //     );
+                    //   },
+                    //   buttons: [
+                    //     consts['yes'].toString(),
+                    //     consts['no'].toString()
+                    //   ],
+                    // ),
+                    // SizedBox(height: screenHeight * 0.1),
                   ],
                 ).fadeInList(1, true),
               ),
