@@ -10,7 +10,7 @@ import 'package:social_app_ui/util/notify.dart';
 import 'package:social_app_ui/util/router.dart';
 import 'package:social_app_ui/util/validations.dart';
 import 'package:social_app_ui/views/screens/init_screen.dart';
-import 'package:social_app_ui/views/screens/survey.dart';
+import 'package:social_app_ui/views/screens/policy.dart';
 import 'package:social_app_ui/views/widgets/custom_button.dart';
 import 'package:social_app_ui/views/widgets/custom_text_field.dart';
 import 'package:social_app_ui/util/extensions.dart';
@@ -81,7 +81,8 @@ class _LoginState extends State<Login> {
                 Notify.updateToken(email: email);
                 Navigate.pushPageReplacement(context, InitScreen(email: email));
               } else
-                Navigate.pushPageReplacement(context, Survey(email: email));
+                Navigate.pushPageReplacement(
+                    context, TermsAndPrivacy(email: email));
             });
             break;
           case FormMode.FORGOT_PASSWORD:

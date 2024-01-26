@@ -83,6 +83,98 @@ class _ConversationState extends State<Conversation> {
                   ],
                 ),
               ),
+              IconButton(
+                icon: Icon(
+                  Icons.report,
+                  color: Colors.red,
+                ),
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          content: Text("신고하시겠습니까?"),
+                          actions: [
+                            ElevatedButton(
+                              child: Text(
+                                "신고",
+                                style: TextStyle(color: Colors.black),
+                              ),
+                              onPressed: () async {
+                                String _formatTime(DateTime dateTime) {
+                                  String period =
+                                      dateTime.hour < 12 ? '오전' : '오후';
+                                  int hour = dateTime.hour % 12 == 0
+                                      ? 12
+                                      : dateTime.hour % 12;
+                                  String minute = dateTime.minute
+                                      .toString()
+                                      .padLeft(2, '0');
+                                  String second = dateTime.second
+                                      .toString()
+                                      .padLeft(2, '0');
+                                  return '$period $hour시 $minute분 $second초';
+                                }
+
+                                DateTime now = DateTime.now();
+                                String formattedDateTime =
+                                    "${now.year}년 ${now.month}월 ${now.day}일 ${_formatTime(now)}";
+                                print(formattedDateTime);
+
+                                var reportDoc = await FirebaseFirestore.instance
+                                    .collection('report')
+                                    .doc(widget.other.email)
+                                    .get();
+
+                                var newReporter = {
+                                  'email': widget.me.email,
+                                  'time': formattedDateTime,
+                                };
+                                var existingReporters = reportDoc.exists &&
+                                        reportDoc.data()!.containsKey("신고자")
+                                    ? List.from(reportDoc["신고자"])
+                                    : [];
+                                existingReporters.add(newReporter);
+                                await FirebaseFirestore.instance
+                                    .collection('report')
+                                    .doc(widget.other.email)
+                                    .set(
+                                  {
+                                    '신고자': existingReporters,
+                                  },
+                                );
+                                Navigator.of(context).pop();
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      content: Text("신고되었습니다."),
+                                      actions: [
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text("확인"),
+                                        )
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                            ElevatedButton(
+                                child: Text(
+                                  "취소",
+                                  style: TextStyle(color: Colors.black),
+                                ),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                })
+                          ],
+                        );
+                      });
+                },
+              )
             ],
           ),
           onTap: () {

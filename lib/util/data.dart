@@ -14,3 +14,6 @@ CollectionReference<Map<String, dynamic>> constsColRef =
 
 CollectionReference<Map<String, dynamic>> evalsColRef =
     FirebaseFirestore.instance.collection('roommateEvals');
+
+CollectionReference<Map<String, dynamic>> reportColRef =
+    FirebaseFirestore.instance.collection('report');
