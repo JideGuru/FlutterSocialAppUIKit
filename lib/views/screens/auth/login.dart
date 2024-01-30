@@ -25,7 +25,7 @@ class _LoginState extends State<Login> {
   bool validate = false;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  String email = '', password = '', emailVal = '';
+  String email = '', password = '', passwordVal = '', emailVal = '';
   FocusNode emailFN = FocusNode();
   FocusNode passFN = FocusNode();
   FormMode formMode = FormMode.LOGIN;
@@ -283,8 +283,29 @@ class _LoginState extends State<Login> {
                 obscureText: true,
                 onSaved: (String? val) {
                   password = val ?? '';
+                  Validations.passwordForVal = val ?? '';
                 },
                 focusNode: passFN,
+              ),
+            ],
+          ),
+        ).fadeInList(2, false),
+        Visibility(
+          visible: formMode == FormMode.REGISTER,
+          child: Column(
+            children: [
+              SizedBox(height: 20.0),
+              CustomTextField(
+                enabled: !loading,
+                hintText: '${consts['password'].toString()} 확인',
+                textInputAction: TextInputAction.done,
+                validateFunction: formMode == FormMode.REGISTER
+                    ? Validations.validatePasswordCheck
+                    : null,
+                obscureText: true,
+                onSaved: (String? val) {
+                  passwordVal = val ?? '';
+                },
               ),
             ],
           ),

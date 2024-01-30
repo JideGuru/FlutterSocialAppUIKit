@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:social_app_ui/util/extensions.dart';
 import 'package:social_app_ui/views/screens/survey.dart';
+import 'package:social_app_ui/views/widgets/custom_button.dart';
 
 class TermsAndPrivacy extends StatefulWidget {
   final String email;
@@ -19,7 +21,12 @@ class _TermsAndPrivacyState extends State<TermsAndPrivacy> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text("이용약관 및 개인정보 처리방침")),
+        title: Center(
+          child: Text(
+            "이용약관 및 개인정보 처리방침",
+            style: Theme.of(context).textTheme.bodyLarge,
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
@@ -176,48 +183,48 @@ class _TermsAndPrivacyState extends State<TermsAndPrivacy> {
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: ElevatedButton(
-          onPressed: () {
-            String message = "";
+          padding: EdgeInsets.all(16.0),
+          child: CustomButton(
+              width: MediaQuery.of(context).size.width - 10,
+              label: '완료',
+              onPressed: () {
+                String message = "";
 
-            if (!agreeTerms && !agreePrivacy) {
-              message = "이용약관과 개인정보 처리방침에 모두 동의해야 합니다.";
-            } else if (!agreeTerms) {
-              message = "이용약관에 동의해야 합니다.";
-            } else if (!agreePrivacy) {
-              message = "개인정보 처리방침에 동의해야 합니다.";
-            }
+                if (!agreeTerms && !agreePrivacy) {
+                  message = "이용약관과 개인정보 처리방침에 모두 동의해야 합니다.";
+                } else if (!agreeTerms) {
+                  message = "이용약관에 동의해야 합니다.";
+                } else if (!agreePrivacy) {
+                  message = "개인정보 처리방침에 동의해야 합니다.";
+                }
 
-            if (message.isNotEmpty) {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    content: Text(message, style: TextStyle(fontSize: 20.0)),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        child: Text("확인"),
-                      ),
-                    ],
+                if (message.isNotEmpty) {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        content:
+                            Text(message, style: TextStyle(fontSize: 20.0)),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text("확인"),
+                          ),
+                        ],
+                      );
+                    },
                   );
-                },
-              );
-            } else {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => Survey(email: widget.email),
-                ),
-              );
-            }
-          },
-          child: Text('완료'),
-        ),
-      ),
+                } else {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Survey(email: widget.email),
+                    ),
+                  );
+                }
+              }).fadeInList(4, false)),
     );
   }
 }

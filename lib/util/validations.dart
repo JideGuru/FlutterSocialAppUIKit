@@ -45,6 +45,16 @@ class Validations {
       return consts['special-char-password-format'].toString();
     }
 
+    passwordForVal = value;
+
+    return null;
+  }
+
+  static String passwordForVal = '';
+
+  static String? validatePasswordCheck(String? value) {
+    if (value != passwordForVal) return '비밀번호가 일치하지 않습니다.';
+
     return null;
   }
 }
