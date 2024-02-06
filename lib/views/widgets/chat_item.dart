@@ -8,7 +8,7 @@ import 'package:social_app_ui/util/user.dart';
 import 'package:social_app_ui/views/screens/chat/conversation.dart';
 
 class ChatItem extends StatefulWidget {
-  final User me, other;
+  final MyUser me, other;
   final List<dynamic> chats;
   final bool marked;
 

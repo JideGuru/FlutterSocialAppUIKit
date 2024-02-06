@@ -12,7 +12,7 @@ import 'package:social_app_ui/views/widgets/profile_card.dart';
 import 'package:swiping_card_deck/swiping_card_deck.dart';
 
 class Home extends StatefulWidget {
-  final User me;
+  final MyUser me;
   Home({
     super.key,
     required this.me,
@@ -36,7 +36,7 @@ class _HomeState extends State<Home> {
           future: usersColRef.doc(widget.me.email).get(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
-              User me = User.fromFirestore(snapshot.data!);
+              MyUser me = MyUser.fromFirestore(snapshot.data!);
               return FutureBuilder(
                 future: usersColRef
                     .where(
@@ -55,7 +55,7 @@ class _HomeState extends State<Home> {
                       builder: (context, weightsSnapshot) {
                         for (var doc in usersSnapshot.data!.docs) {
                           if (doc.id == widget.me.email)
-                            me = User.fromFirestore(doc);
+                            me = MyUser.fromFirestore(doc);
                         }
                         if (weightsSnapshot.connectionState ==
                             ConnectionState.done) {

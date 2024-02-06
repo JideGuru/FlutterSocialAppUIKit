@@ -13,7 +13,7 @@ import 'package:social_app_ui/views/screens/other_profile.dart';
 import 'package:social_app_ui/views/widgets/chat_bubble.dart';
 
 class Conversation extends StatefulWidget {
-  final User me, other;
+  final MyUser me, other;
   final List<dynamic> chats;
   final bool marked;
   Conversation({

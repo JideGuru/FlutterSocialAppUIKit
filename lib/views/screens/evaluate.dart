@@ -11,7 +11,7 @@ import 'package:social_app_ui/views/widgets/custom_button.dart';
 import 'package:social_app_ui/views/widgets/custom_text_field.dart';
 
 class Evaluate extends StatefulWidget {
-  final User me;
+  final MyUser me;
   const Evaluate({
     super.key,
     required this.me,

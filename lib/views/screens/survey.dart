@@ -25,7 +25,7 @@ class Survey extends StatefulWidget {
 class _SurveyState extends State<Survey> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  late User me = User.onlyEmail(widget.email);
+  late MyUser me = MyUser.onlyEmail(widget.email);
   int index = -1;
   final int survey_Max_num = 18;
   List<String> keys = List.from(essentialHintTexts.keys)..addAll(surveyKeys);

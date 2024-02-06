@@ -6,7 +6,7 @@ import 'package:social_app_ui/views/screens/home.dart';
 import 'package:social_app_ui/views/screens/my_profile.dart';
 
 class MainScreen extends StatefulWidget {
-  late final User me;
+  late final MyUser me;
   MainScreen({
     super.key,
     required this.me,

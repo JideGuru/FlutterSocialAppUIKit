@@ -4,7 +4,7 @@ import 'package:social_app_ui/util/user.dart';
 class CustomDropdownButton extends StatefulWidget {
   final List<String> items;
   final String surveyMode;
-  final User user;
+  final MyUser user;
   CustomDropdownButton({
     super.key,
     required this.items,

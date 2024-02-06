@@ -5,11 +5,11 @@ import 'package:social_app_ui/util/configs/configs.dart';
 import 'package:social_app_ui/util/user.dart';
 
 class ContentsFilter {
-  List<User> orderedUsers = [];
+  List<MyUser> orderedUsers = [];
   List<Map<String, dynamic>> orderedScores = [];
 
   void filt(
-      User me, DocumentSnapshot domainSnapshot, QuerySnapshot usersSnapshot) {
+      MyUser me, DocumentSnapshot domainSnapshot, QuerySnapshot usersSnapshot) {
     var domains = getWeightDomains(domainSnapshot);
     var weights = getWeights(domains);
     var ordered = getOrderedUsers(me, usersSnapshot, weights);
@@ -70,7 +70,7 @@ class ContentsFilter {
   }
 
   Map<String, dynamic> getScore(
-      User u1, User u2, Map<String, double> weights, int tag) {
+      MyUser u1, MyUser u2, Map<String, double> weights, int tag) {
     var s1 = u1.surveys;
     var s2 = u2.surveys;
     tag -= 1;
@@ -98,19 +98,19 @@ class ContentsFilter {
   }
 
   List<dynamic> getOrderedUsers(
-      User me, QuerySnapshot snapshot, Map<String, double> weights) {
+      MyUser me, QuerySnapshot snapshot, Map<String, double> weights) {
     Map<String, double> usersOnlyTotalScore = {};
     Map<String, dynamic> usersWithScore = {};
     for (var doc in snapshot.docs) {
       if (doc.id == me.email) continue;
-      var other = User.fromFirestore(doc);
+      var other = MyUser.fromFirestore(doc);
       var score = getScore(me, other, weights, me.essentials['tag']);
       usersOnlyTotalScore[other.email] = score['total'];
       usersWithScore[other.email] = [other, score];
     }
     var orderedEmails =
         getMaxValKeys(usersOnlyTotalScore, usersOnlyTotalScore.length);
-    List<User> orderedUsers = [];
+    List<MyUser> orderedUsers = [];
     List<Map<String, dynamic>> orderedScores = [];
     for (var email in orderedEmails) {
       var other = usersWithScore[email];

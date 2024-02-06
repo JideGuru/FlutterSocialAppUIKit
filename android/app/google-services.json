@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:640967073661:android:0b8732de044fb098f2f614",
         "android_client_info": {
-          "package_name": "com.example.roomie_v2"
+          "package_name": "com.roomie.app"
         }
       },
       "oauth_client": [

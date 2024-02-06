@@ -1,15 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:social_app_ui/util/configs/configs.dart';
 
-class User {
+class MyUser {
   late String email;
   Map<String, dynamic> essentials = {}, surveys = {}, roommateSurveys = {};
 
-  User({
+  MyUser({
     required this.email,
   });
 
-  User.onlyEmail(String onlyEmail) {
+  MyUser.onlyEmail(String onlyEmail) {
     email = onlyEmail;
     for (var key in essentialKeys) {
       essentials[key] = 0;
@@ -19,7 +19,7 @@ class User {
     }
   }
 
-  User.fromFirestore(DocumentSnapshot snapshot) {
+  MyUser.fromFirestore(DocumentSnapshot snapshot) {
     var fromFirestore = snapshot.data() as Map<String, dynamic>;
     var surveysFromFirestore = fromFirestore['surveys'] as Map<String, dynamic>;
     var roommateSurveysFromFirestore =

@@ -10,7 +10,7 @@ import 'package:social_app_ui/util/validations.dart';
 import 'package:social_app_ui/views/widgets/custom_text_field.dart';
 
 class Detail extends StatefulWidget {
-  final User user;
+  final MyUser user;
   final Owner detailMode;
   const Detail({
     super.key,

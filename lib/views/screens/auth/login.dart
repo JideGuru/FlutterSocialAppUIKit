@@ -63,27 +63,30 @@ class _LoginState extends State<Login> {
             setState(() {});
             break;
           case FormMode.LOGIN:
-            // if (!FirebaseAuth.instance.currentUser!.emailVerified) {
-            //   FirebaseAuth.instance.currentUser!.sendEmailVerification();
-            //   auth.showAuthDialog(
-            //       context, consts['auth-link-again'].toString());
-            // } else {
-            //   usersColRef.doc(email).get().then((value) {
-            //     if (value.exists) {
-            //       Navigate.pushPageReplacement(
-            //           context, InitScreen(email: email));
-            //     } else
-            //       Navigate.pushPageReplacement(context, Survey(email: email));
-            //   });
-            // }
-            usersColRef.doc(email).get().then((value) {
-              if (value.exists) {
-                Notify.updateToken(email: email);
-                Navigate.pushPageReplacement(context, InitScreen(email: email));
-              } else
-                Navigate.pushPageReplacement(
-                    context, TermsAndPrivacy(email: email));
-            });
+            if (!FirebaseAuth.instance.currentUser!.emailVerified) {
+              FirebaseAuth.instance.currentUser!.sendEmailVerification();
+              auth.showAuthDialog(
+                  context, consts['auth-link-again'].toString());
+            } else {
+              usersColRef.doc(email).get().then((value) {
+                if (value.exists) {
+                  Notify.updateToken(email: email);
+                  Navigate.pushPageReplacement(
+                      context, InitScreen(email: email));
+                } else
+                  Navigate.pushPageReplacement(
+                      context, TermsAndPrivacy(email: email));
+              });
+            }
+
+            // usersColRef.doc(email).get().then((value) {
+            //   if (value.exists) {
+            //     Notify.updateToken(email: email);
+            //     Navigate.pushPageReplacement(context, InitScreen(email: email));
+            //   } else
+            //     Navigate.pushPageReplacement(
+            //         context, TermsAndPrivacy(email: email));
+            // });
             break;
           case FormMode.FORGOT_PASSWORD:
             // Navigate.pushPageReplacement(context, InitScreen(email: email));

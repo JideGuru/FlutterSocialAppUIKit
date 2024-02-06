@@ -1,4 +1,4 @@
-package com.example.roomie_v2
+package com.roomie.app
 
 import io.flutter.embedding.android.FlutterActivity
 

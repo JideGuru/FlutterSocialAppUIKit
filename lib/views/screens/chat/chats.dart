@@ -7,7 +7,7 @@ import 'package:social_app_ui/util/user.dart';
 import 'package:social_app_ui/views/widgets/chat_item.dart';
 
 class Chats extends StatefulWidget {
-  final User me;
+  final MyUser me;
   Chats({
     super.key,
     required this.me,
@@ -67,7 +67,7 @@ class _ChatsState extends State<Chats>
                         .containsKey('marked'))
                       marked = chatMaps[email]['marked'];
                     if (snapshot.connectionState == ConnectionState.done) {
-                      var other = User.fromFirestore(snapshot.data!);
+                      var other = MyUser.fromFirestore(snapshot.data!);
                       return ChatItem(
                         me: widget.me,
                         other: other,

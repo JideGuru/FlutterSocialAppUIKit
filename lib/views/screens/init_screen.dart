@@ -19,11 +19,11 @@ class InitScreen extends StatelessWidget {
         future: usersColRef.doc(email).get(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            User me = User.fromFirestore(snapshot.data!);
+            MyUser me = MyUser.fromFirestore(snapshot.data!);
             if (me.essentials['status'] == 2) {
               return Evaluate(me: me);
-            }
-            else return MainScreen(me: me);
+            } else
+              return MainScreen(me: me);
           } else
             return Center(
               child:
