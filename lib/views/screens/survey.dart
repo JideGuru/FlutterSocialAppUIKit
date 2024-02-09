@@ -115,6 +115,7 @@ class _SurveyState extends State<Survey> {
                         } else {
                           usersColRef.doc(me.email).set(me.toFirestore());
                           chatsColRef.doc(me.email).set({});
+                          blockColRef.doc(me.email).set({});
                           Navigate.pushPageReplacement(
                             context,
                             InitScreen(email: me.email),

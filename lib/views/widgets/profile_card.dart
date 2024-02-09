@@ -408,7 +408,7 @@ class ProfileCard extends StatelessWidget {
                           onPressed: () {
                             Navigate.pushPage(
                               context,
-                              OtherProfile(other: user),
+                              OtherProfile(other: user, me: me),
                             );
                           },
                         ),

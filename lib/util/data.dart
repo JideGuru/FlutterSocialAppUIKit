@@ -17,3 +17,6 @@ CollectionReference<Map<String, dynamic>> evalsColRef =
 
 CollectionReference<Map<String, dynamic>> reportColRef =
     FirebaseFirestore.instance.collection('report');
+
+CollectionReference<Map<String, dynamic>> blockColRef =
+    FirebaseFirestore.instance.collection('block');
