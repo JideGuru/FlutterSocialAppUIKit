@@ -75,246 +75,132 @@ class _OtherProfile extends State<OtherProfile> {
               PopupMenuItem(
                   child: Text("신고하기"),
                   onTap: () {
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            content: Text("신고하기"),
-                            actions: [
-                              TextField(
-                                decoration:
-                                    InputDecoration(hintText: '사유를 작성해주세요.'),
-                                onChanged: (value) {
-                                  report = value;
-                                },
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.red),
-                                    child: Text(
-                                      "신고",
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                    onPressed: () async {
-                                      String _formatTime(DateTime dateTime) {
-                                        String period =
-                                            dateTime.hour < 12 ? '오전' : '오후';
-                                        int hour = dateTime.hour % 12 == 0
-                                            ? 12
-                                            : dateTime.hour % 12;
-                                        String minute = dateTime.minute
-                                            .toString()
-                                            .padLeft(2, '0');
-                                        String second = dateTime.second
-                                            .toString()
-                                            .padLeft(2, '0');
-                                        return '$period $hour시 $minute분 $second초';
-                                      }
-
-                                      DateTime now = DateTime.now();
-                                      String formattedDateTime =
-                                          "${now.year}년 ${now.month}월 ${now.day}일 ${_formatTime(now)}";
-                                      print(formattedDateTime);
-
-                                      var reportDoc = await FirebaseFirestore
-                                          .instance
-                                          .collection('report')
-                                          .doc(widget.other.email)
-                                          .get();
-
-                                      var newReporter = {
-                                        'report': report,
-                                        'time': formattedDateTime,
-                                      };
-                                      var existingReporters =
-                                          reportDoc.exists &&
-                                                  reportDoc
-                                                      .data()!
-                                                      .containsKey("reports")
-                                              ? List.from(reportDoc["reports"])
-                                              : [];
-                                      existingReporters.add(newReporter);
-                                      await FirebaseFirestore.instance
-                                          .collection('report')
-                                          .doc(widget.other.email)
-                                          .set(
-                                        {
-                                          'reports': existingReporters,
-                                        },
-                                      );
-                                      Navigator.of(context).pop();
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            content: Text("신고되었습니다."),
-                                            actions: [
-                                              ElevatedButton(
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                },
-                                                style: ElevatedButton.styleFrom(
-                                                    backgroundColor:
-                                                        Colors.grey),
-                                                child: Text(
-                                                  "확인",
-                                                  style: TextStyle(
-                                                      color:
-                                                          const Color.fromARGB(
-                                                              255, 91, 91, 91)),
-                                                ),
-                                              )
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    },
-                                  ),
-                                  SizedBox(
-                                    width: 10.0,
-                                  ),
-                                  ElevatedButton(
+                    print('debug');
+                    Future<void>.delayed(
+                      Duration.zero,
+                      () => showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              content: Text("신고하기"),
+                              actions: [
+                                TextField(
+                                  decoration:
+                                      InputDecoration(hintText: '사유를 작성해주세요.'),
+                                  onChanged: (value) {
+                                    report = value;
+                                  },
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    ElevatedButton(
                                       style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.grey),
+                                          backgroundColor: Colors.red),
                                       child: Text(
-                                        "취소",
-                                        style: TextStyle(
-                                            color: const Color.fromARGB(
-                                                255, 91, 91, 91)),
+                                        "신고",
+                                        style: TextStyle(color: Colors.white),
                                       ),
-                                      onPressed: () {
+                                      onPressed: () async {
+                                        String _formatTime(DateTime dateTime) {
+                                          String period =
+                                              dateTime.hour < 12 ? '오전' : '오후';
+                                          int hour = dateTime.hour % 12 == 0
+                                              ? 12
+                                              : dateTime.hour % 12;
+                                          String minute = dateTime.minute
+                                              .toString()
+                                              .padLeft(2, '0');
+                                          String second = dateTime.second
+                                              .toString()
+                                              .padLeft(2, '0');
+                                          return '$period $hour시 $minute분 $second초';
+                                        }
+
+                                        DateTime now = DateTime.now();
+                                        String formattedDateTime =
+                                            "${now.year}년 ${now.month}월 ${now.day}일 ${_formatTime(now)}";
+                                        print(formattedDateTime);
+
+                                        var reportDoc = await FirebaseFirestore
+                                            .instance
+                                            .collection('report')
+                                            .doc(widget.other.email)
+                                            .get();
+
+                                        var newReporter = {
+                                          'report': report,
+                                          'time': formattedDateTime,
+                                        };
+                                        var existingReporters = reportDoc
+                                                    .exists &&
+                                                reportDoc
+                                                    .data()!
+                                                    .containsKey("reports")
+                                            ? List.from(reportDoc["reports"])
+                                            : [];
+                                        existingReporters.add(newReporter);
+                                        await FirebaseFirestore.instance
+                                            .collection('report')
+                                            .doc(widget.other.email)
+                                            .set(
+                                          {
+                                            'reports': existingReporters,
+                                          },
+                                        );
                                         Navigator.of(context).pop();
-                                      }),
-                                ],
-                              ),
-                            ],
-                          );
-                        });
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              content: Text("신고되었습니다."),
+                                              actions: [
+                                                ElevatedButton(
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                          backgroundColor:
+                                                              Colors.grey),
+                                                  child: Text(
+                                                    "확인",
+                                                    style: TextStyle(
+                                                        color: const Color
+                                                                .fromARGB(
+                                                            255, 91, 91, 91)),
+                                                  ),
+                                                )
+                                              ],
+                                            );
+                                          },
+                                        );
+                                      },
+                                    ),
+                                    SizedBox(
+                                      width: 10.0,
+                                    ),
+                                    ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            backgroundColor: Colors.grey),
+                                        child: Text(
+                                          "취소",
+                                          style: TextStyle(
+                                              color: const Color.fromARGB(
+                                                  255, 91, 91, 91)),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        }),
+                                  ],
+                                ),
+                              ],
+                            );
+                          }),
+                    );
                   })
             ];
           }),
-          IconButton(
-            icon: Icon(
-              Icons.report,
-              color: Color.fromRGBO(0, 0, 0, 0.4),
-            ),
-            onPressed: () {
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      content: Text("신고하기"),
-                      actions: [
-                        TextField(
-                          decoration: InputDecoration(hintText: '사유를 작성해주세요.'),
-                          onChanged: (value) {
-                            report = value;
-                          },
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.red),
-                              child: Text(
-                                "신고",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              onPressed: () async {
-                                String _formatTime(DateTime dateTime) {
-                                  String period =
-                                      dateTime.hour < 12 ? '오전' : '오후';
-                                  int hour = dateTime.hour % 12 == 0
-                                      ? 12
-                                      : dateTime.hour % 12;
-                                  String minute = dateTime.minute
-                                      .toString()
-                                      .padLeft(2, '0');
-                                  String second = dateTime.second
-                                      .toString()
-                                      .padLeft(2, '0');
-                                  return '$period $hour시 $minute분 $second초';
-                                }
-
-                                DateTime now = DateTime.now();
-                                String formattedDateTime =
-                                    "${now.year}년 ${now.month}월 ${now.day}일 ${_formatTime(now)}";
-                                print(formattedDateTime);
-
-                                var reportDoc = await FirebaseFirestore.instance
-                                    .collection('report')
-                                    .doc(widget.other.email)
-                                    .get();
-
-                                var newReporter = {
-                                  'report': report,
-                                  'time': formattedDateTime,
-                                };
-                                var existingReporters = reportDoc.exists &&
-                                        reportDoc.data()!.containsKey("reports")
-                                    ? List.from(reportDoc["reports"])
-                                    : [];
-                                existingReporters.add(newReporter);
-                                await FirebaseFirestore.instance
-                                    .collection('report')
-                                    .doc(widget.other.email)
-                                    .set(
-                                  {
-                                    'reports': existingReporters,
-                                  },
-                                );
-                                Navigator.of(context).pop();
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      content: Text("신고되었습니다."),
-                                      actions: [
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          style: ElevatedButton.styleFrom(
-                                              backgroundColor: Colors.grey),
-                                          child: Text(
-                                            "확인",
-                                            style: TextStyle(
-                                                color: const Color.fromARGB(
-                                                    255, 91, 91, 91)),
-                                          ),
-                                        )
-                                      ],
-                                    );
-                                  },
-                                );
-                              },
-                            ),
-                            SizedBox(
-                              width: 10.0,
-                            ),
-                            ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.grey),
-                                child: Text(
-                                  "취소",
-                                  style: TextStyle(
-                                      color: const Color.fromARGB(
-                                          255, 91, 91, 91)),
-                                ),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                }),
-                          ],
-                        ),
-                      ],
-                    );
-                  });
-            },
-          )
         ],
       ),
       body: SingleChildScrollView(

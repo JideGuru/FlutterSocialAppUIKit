@@ -174,7 +174,7 @@ class _ChatItemState extends State<ChatItem> {
                           },
                         ),
                         PopupMenuItem(
-                          child: Text(consts['close'].toString()),
+                          child: Text(consts['leave'].toString()),
                           onTap: () {
                             chatsColRef.doc(widget.me.email).update(
                               {
