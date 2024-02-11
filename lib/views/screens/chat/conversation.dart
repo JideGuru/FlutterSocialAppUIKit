@@ -29,9 +29,27 @@ class Conversation extends StatefulWidget {
 
 class _ConversationState extends State<Conversation> {
   var controller = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     var marked = widget.marked;
+    bool isOther = false, isMe = false;
+    List<String> otherId = widget.other.email.split('@');
+    List<String> meId = widget.me.email.split('@');
+    blockColRef.doc(widget.other.email).get().then((value) {
+      Map<String, dynamic> num = value.data() as Map<String, dynamic>;
+      if (num[meId[0]] == null) {
+      } else if (num[meId[0]]) {
+        isMe = true;
+      }
+    });
+    blockColRef.doc(widget.me.email).get().then((value) {
+      Map<String, dynamic> num = value.data() as Map<String, dynamic>;
+      if (num[otherId[0]] == null) {
+      } else if (num[otherId[0]]) {
+        isOther = true;
+      }
+    });
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -88,9 +106,7 @@ class _ConversationState extends State<Conversation> {
           onTap: () {
             Navigate.pushPage(
               context,
-              OtherProfile(
-                other: widget.other,
-              ),
+              OtherProfile(other: widget.other, me: widget.me),
             );
           },
         ).fadeInList(1, false),
@@ -115,6 +131,22 @@ class _ConversationState extends State<Conversation> {
                     });
                   },
                 ),
+                PopupMenuItem(
+                    child: isOther ? Text("차단 해제") : Text("차단하기"),
+                    onTap: () {
+                      setState(() {
+                        if (isOther) {
+                          final updates = <String, dynamic>{
+                            otherId[0]: FieldValue.delete(),
+                          };
+                          blockColRef.doc(widget.me.email).update(updates);
+                        } else {
+                          blockColRef
+                              .doc(widget.me.email)
+                              .update({(otherId[0]): true});
+                        }
+                      });
+                    }),
                 PopupMenuItem(
                   child: Text(consts['leave'].toString()),
                   onTap: () {
@@ -257,32 +289,57 @@ class _ConversationState extends State<Conversation> {
                                 IconButton(
                                   icon: Icon(Icons.send),
                                   onPressed: () {
-                                    Map<String, dynamic> msg = {};
-                                    msg['message'] = controller.text;
-                                    msg['read'] = false;
-                                    msg['sender'] = widget.me.email;
-                                    msg['time'] = Timestamp.now();
-                                    chatsColRef.doc(widget.me.email).update(
-                                      {
-                                        FieldPath(
-                                                [widget.other.email, 'chats']):
-                                            FieldValue.arrayUnion([msg])
-                                      },
-                                    );
-                                    chatsColRef.doc(widget.other.email).update(
-                                      {
-                                        FieldPath([widget.me.email, 'chats']):
-                                            FieldValue.arrayUnion([msg])
-                                      },
-                                    );
-                                    if (widget.me.essentials['notification'] ==
-                                        0) {
-                                      Notify.notify(
-                                        from: widget.me,
-                                        to: widget.other,
-                                        message: msg['message'],
+                                    if (!isOther) {
+                                      Map<String, dynamic> msg = {};
+                                      msg['message'] = controller.text;
+                                      msg['read'] = false;
+                                      msg['sender'] = widget.me.email;
+                                      msg['time'] = Timestamp.now();
+                                      chatsColRef.doc(widget.me.email).update(
+                                        {
+                                          FieldPath([
+                                            widget.other.email,
+                                            'chats'
+                                          ]): FieldValue.arrayUnion([msg])
+                                        },
                                       );
+                                      if (!isMe) {
+                                        chatsColRef
+                                            .doc(widget.other.email)
+                                            .update(
+                                          {
+                                            FieldPath(
+                                                    [widget.me.email, 'chats']):
+                                                FieldValue.arrayUnion([msg])
+                                          },
+                                        );
+                                        if (widget.me
+                                                .essentials['notification'] ==
+                                            0) {
+                                          Notify.notify(
+                                            from: widget.me,
+                                            to: widget.other,
+                                            message: msg['message'],
+                                          );
+                                        }
+                                      }
                                       controller.text = '';
+                                    } else {
+                                      showDialog<String>(
+                                        context: context,
+                                        builder: (BuildContext context) =>
+                                            AlertDialog(
+                                          title: const Text('차단'),
+                                          content: const Text('차단된 계정입니다.'),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              onPressed: () =>
+                                                  Navigator.of(context).pop(),
+                                              child: const Text('확인'),
+                                            ),
+                                          ],
+                                        ),
+                                      );
                                     }
                                   },
                                 )
