@@ -1,3 +1,4 @@
+// This is the Main Screen for the App
 import 'package:flutter/material.dart';
 import 'package:social_app_ui/views/widgets/icon_badge.dart';
 import 'package:social_app_ui/views/screens/chat/chats.dart';
@@ -30,6 +31,7 @@ class _MainScreenState extends State<MainScreen> {
           Profile(),
         ],
       ),
+      // Navigation Bar: used to navigate between the Screen
       bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(
           // sets the background color of the `BottomNavigationBar`
@@ -40,40 +42,44 @@ class _MainScreenState extends State<MainScreen> {
                 bodySmall: TextStyle(color: Colors.grey[500]),
               ),
         ),
-        child: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.message,
-              ),
-              label: '',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.group,
-              ),
-              label: '',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.home,
-              ),
-              label: '',
-            ),
-            BottomNavigationBarItem(
-              icon: IconBadge(icon: Icons.notifications),
-              label: '',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: '',
-            ),
-          ],
-          onTap: navigationTapped,
-          currentIndex: _page,
-        ),
+        child: BottomNaviationBar(),
       ),
+    );
+  }
+
+  dynamic BottomNaviationBar() {
+    return BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
+      items: <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: Icon(
+            Icons.message,
+          ),
+          label: '',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(
+            Icons.group,
+          ),
+          label: 'Friends',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(
+            Icons.home,
+          ),
+          label: 'HOme',
+        ),
+        BottomNavigationBarItem(
+          icon: IconBadge(icon: Icons.notifications),
+          label: 'Notifications',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.person),
+          label: 'Profile',
+        ),
+      ],
+      onTap: navigationTapped,
+      currentIndex: _page,
     );
   }
 
