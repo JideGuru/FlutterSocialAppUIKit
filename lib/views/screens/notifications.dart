@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:social_app_ui/util/data.dart';
 
 class Notifications extends StatefulWidget {
@@ -13,6 +14,10 @@ class _NotificationsState extends State<Notifications> {
       appBar: AppBar(
         title: Text(
           "Notifications",
+          style: GoogleFonts.montserrat(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         centerTitle: true,
         actions: <Widget>[
